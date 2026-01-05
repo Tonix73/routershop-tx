@@ -144,8 +144,8 @@ function toggleModoLogin() {
 }
 
 async function manejarAuth() {
-    const email = document.getElementById('email-input').value;
-    const password = document.getElementById('password-input').value;
+    const email = document.getElementById('email-input').value.trim(); 
+const password = document.getElementById('password-input').value.trim();
     const errorElem = document.getElementById('error-login');
     
     if(!email || !password) {
