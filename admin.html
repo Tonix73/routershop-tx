@@ -362,16 +362,26 @@
         }
 
         async function registrarHistorialCorreo(ventaId, destinatario, asunto, tipo) {
-            // Insertamos el registro de que se envió un correo
-            await clienteSupabase.from('historial_correos').insert([{
-                venta_id: ventaId,
-                destinatario: destinatario,
-                asunto: asunto,
-                tipo_correo: tipo,
-                provedor_id: 1,
-                estado: 'enviado',
-                fecha_envio: new Date()
-            }]);
+            try {
+                const { error } = await clienteSupabase.from('historial_correos').insert([{
+                    venta_id: ventaId,
+                    destinatario: destinatario,
+                    asunto: asunto,
+                    tipo_correo: tipo,
+                    // Ajustamos nombres comunes que suelen causar el error 400
+                    proveedor_id: 1, // Verifica si en tu BD es 'provedor_id' o 'proveedor_id'
+                    estado: 'enviado',
+                    fecha_envio: new Date().toISOString() // Formato ISO correcto para timestamptz
+                }]);
+
+                if (error) {
+                    console.warn("⚠️ No se pudo guardar el historial, pero el correo sí se envió:", error.message);
+                    // Si el error persiste, intenta comentar la línea de 'proveedor_id' o 'fecha_envio'
+                    // para identificar cuál columna es la que no existe.
+                }
+            } catch (err) {
+                console.error("Error técnico en historial:", err);
+            }
         }
 
         // Función auxiliar para sacar el email del string "Usuario: correo@..."
