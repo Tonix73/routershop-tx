@@ -292,98 +292,97 @@
         }
 
         async function confirmarCompra() {
-    if (!direccionID) return mostrarNotificacion("Selecciona dirección", "error");
+            if (!direccionID) return mostrarNotificacion("Selecciona dirección", "error");
 
-    const btn = document.getElementById('btn-finalizar');
-    const envio = document.querySelector('input[name="envio"]:checked').value;
-    const pago = document.querySelector('input[name="pago"]:checked').value;
-    const estadoInicial = (pago === 'transferencia') ? 'pendiente_pago' : 'pagado';
+            const btn = document.getElementById('btn-finalizar');
+            const envio = document.querySelector('input[name="envio"]:checked').value;
+            const pago = document.querySelector('input[name="pago"]:checked').value;
+            const estadoInicial = (pago === 'transferencia') ? 'pendiente_pago' : 'pagado';
 
-    btn.innerText = "Procesando...";
-    btn.disabled = true;
+            btn.innerText = "Procesando...";
+            btn.disabled = true;
 
-    let idVenta = null;
+            let idVenta = null;
 
-    try {
-        // 1. OBTENER DATOS DEL DOM
-        const elemNombre = document.getElementById('dir-nombre');
-        const elemCalle = document.getElementById('dir-calle');
-        const elemDetalles = document.getElementById('dir-detalles');
-        const textoNombre = elemNombre ? elemNombre.innerText : "Cliente";
-        const textoDireccion = (elemCalle && elemDetalles) ? `${elemCalle.innerText} ${elemDetalles.innerText}` : "Dirección no especificada";
+            try {
+                // 1. OBTENER DATOS DEL DOM
+                const elemNombre = document.getElementById('dir-nombre');
+                const elemCalle = document.getElementById('dir-calle');
+                const elemDetalles = document.getElementById('dir-detalles');
+                const textoNombre = elemNombre ? elemNombre.innerText : "Cliente";
+                const textoDireccion = (elemCalle && elemDetalles) ? `${elemCalle.innerText} ${elemDetalles.innerText}` : "Dirección no especificada";
 
-        // 2. CREAR VENTA EN SUPABASE
-        const { data: venta, error: errorVenta } = await clienteSupabase.from('ventas').insert([{
-            usuario_id: usuarioActual.id,
-            direccion_envio_id: direccionID,
-            total: totalFinal,
-            estado: estadoInicial,
-            fecha_compra: new Date(),
-            paqueteria: envio,
-            numero_guia_envio: 'PENDIENTE',
-            direccion_envio: `${textoNombre} - ${textoDireccion}`,
-            detalles_contacto: `Usuario: ${usuarioActual.email}`,
-            productos_json: carrito
-        }]).select();
+                // 2. CREAR VENTA EN SUPABASE
+                const { data: venta, error: errorVenta } = await clienteSupabase.from('ventas').insert([{
+                    usuario_id: usuarioActual.id,
+                    direccion_envio_id: direccionID,
+                    total: totalFinal,
+                    estado: estadoInicial,
+                    fecha_compra: new Date(),
+                    paqueteria: envio,
+                    numero_guia_envio: 'PENDIENTE',
+                    direccion_envio: `${textoNombre} - ${textoDireccion}`,
+                    detalles_contacto: `Usuario: ${usuarioActual.email}`,
+                    productos_json: carrito
+                }]).select();
 
-        if (errorVenta) throw errorVenta;
-        idVenta = venta[0].id;
+                if (errorVenta) throw errorVenta;
+                idVenta = venta[0].id;
 
-        // 3. GUARDAR DETALLES DE PRODUCTOS
-        const detalles = carrito.map(i => ({
-            venta_id: idVenta,
-            producto_id: i.id,
-            cantidad: i.cantidad,
-            precio_unitario: i.precio
-        }));
+                // 3. GUARDAR DETALLES DE PRODUCTOS
+                const detalles = carrito.map(i => ({
+                    venta_id: idVenta,
+                    producto_id: i.id,
+                    cantidad: i.cantidad,
+                    precio_unitario: i.precio
+                }));
 
-        const { error: errorDetalle } = await clienteSupabase.from('detalle_ventas').insert(detalles);
-        if (errorDetalle) throw errorDetalle;
+                const { error: errorDetalle } = await clienteSupabase.from('detalle_ventas').insert(detalles);
+                if (errorDetalle) throw errorDetalle;
 
-        // 4. ENVÍO DE CORREO (Aislado para que no rompa el proceso)
-        try {
-            const { data: { session } } = await clienteSupabase.auth.getSession();
-            const emailDestino = session ? session.user.email : null;
+                // 4. ENVÍO DE CORREO (Aislado para que no rompa el proceso)
+                try {
+                    const { data: { session } } = await clienteSupabase.auth.getSession();
+                    const emailDestino = session ? session.user.email : null;
 
-            if (!emailDestino) {
-                console.error("❌ ERROR: No se encontró el email del destinatario.");
-            } else {
-                const parametrosEmail = {
-                    to_name: textoNombre,
-                    to_email: emailDestino,
-                    order_id: idVenta,
-                    total: totalFinal.toFixed(2),
-                    address: textoDireccion,
-                    products: carrito.map(item => `- ${item.cantidad}x ${item.nombre}`).join('\n')
-                };
+                    if (!emailDestino) {
+                        console.error("❌ ERROR: No se encontró el email del destinatario.");
+                    } else {
+                        const parametrosEmail = {
+                            to_name: textoNombre,
+                            to_email: emailDestino,
+                            order_id: idVenta,
+                            total: totalFinal.toFixed(2),
+                            address: textoDireccion,
+                            products: carrito.map(item => `- ${item.cantidad}x ${item.nombre}`).join('\n')
+                        };
 
-                console.log("🚀 ENVIANDO A EMAILJS CON ESTOS DATOS:", parametrosEmail);
+                        console.log("🚀 ENVIANDO A EMAILJS CON ESTOS DATOS:", parametrosEmail);
 
-                const resEmail = await emailjs.send("service_i1yzl9c", "template_o6nl56z", parametrosEmail);
-                console.log("✅ RESPUESTA EXITOSA DE EMAILJS:", resEmail);
+                        const resEmail = await emailjs.send("service_i1yzl9c", "template_o6nl56z", parametrosEmail);
+                        console.log("✅ RESPUESTA EXITOSA DE EMAILJS:", resEmail);
+                    }
+                } catch (errorMail) {
+                    console.error("❌ ERROR ESPECÍFICO DE EMAILJS:", errorMail);
+                }
+
+                // 5. FINALIZACIÓN
+                mostrarNotificacion("¡Compra realizada con éxito!", "success");
+                localStorage.removeItem('carrito');
+
+                // Quitamos los logs de prueba y activamos la redirección real
+                setTimeout(() => {
+                    window.location.href = `confirmacion.html?id=${idVenta}`;
+                }, 1500); // 1.5 segundos para que alcancen a ver la notificación de éxito
+
+            } catch (error) {
+                console.error("Error crítico en la compra:", error);
+                mostrarNotificacion("Hubo un problema: " + (error.message || "Error de BD"), "error");
+                btn.disabled = false;
+                btn.innerText = "PAGAR AHORA";
             }
-        } catch (errorMail) {
-            console.error("❌ ERROR ESPECÍFICO DE EMAILJS:", errorMail);
         }
 
-        // 5. FINALIZACIÓN
-        mostrarNotificacion("¡Compra realizada con éxito!", "success");
-        localStorage.removeItem('carrito');
-
-        console.log("🏁 PROCESO TERMINADO. Revisa arriba los mensajes de EmailJS.");
-        btn.innerText = "¡COMPRA LISTA!";
-        
-        // LA REDIRECCIÓN SIGUE COMENTADA PARA QUE PUEDAS VER EL LOG
-        // setTimeout(() => { window.location.href = `confirmacion.html?id=${idVenta}`; }, 2000);
-
-    } catch (error) {
-        console.error("Error crítico en la compra:", error);
-        mostrarNotificacion("Hubo un problema: " + (error.message || "Error de BD"), "error");
-        btn.disabled = false;
-        btn.innerText = "PAGAR AHORA";
-    }
-}
-        
         // Agrega esta función al final de tu script en finalizar_compra.html
         async function registrarHistorialCorreo(ventaId, destinatario, asunto, tipo, estado) {
             const { error } = await clienteSupabase.from('historial_correos').insert([{
