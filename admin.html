@@ -294,13 +294,17 @@
                             products: "Pago recibido satisfactoriamente."
                         };
 
-                        // USAR TUS IDS REALES AQUÍ
+                        // Código para cambiarEstado y guardarDatosEnvio
                         emailjs.send("service_i1yzl9c", "template_o6nl56z", params)
-                            .then(() => {
-                                registrarHistorialCorreo(id, emailCliente, "Pago Confirmado", "confirmacion_pago");
-                                mostrarNotificacion("Correo de confirmación enviado", "success");
+                            .then((res) => {
+                                console.log("✅ Enviado:", res.status);
+                                mostrarNotificacion("Correo enviado con éxito", "success");
                             })
-                            .catch(err => console.error("Error EmailJS:", err));
+                            .catch((error) => {
+                                console.error("❌ Error detallado de EmailJS:", error);
+                                // Esto evita el 'Uncaught' y te muestra el error real en la notificación
+                                mostrarNotificacion("EmailJS: " + (error.text || "ID de servicio inválido"), "error");
+                            });
                     }
                 }
             }
@@ -341,13 +345,17 @@
                             products: `Envío en tránsito vía ${paq}`
                         };
 
+                        // Código para cambiarEstado y guardarDatosEnvio
                         emailjs.send("service_i1yzl9c", "template_o6nl56z", params)
-                            .then(() => {
-                                registrarHistorialCorreo(id, emailCliente, "Pedido Enviado", "envio_guia");
-                                mostrarNotificacion("Correo con guía enviado", "success");
-                                setTimeout(() => cargarVentas(), 1000);
+                            .then((res) => {
+                                console.log("✅ Enviado:", res.status);
+                                mostrarNotificacion("Correo enviado con éxito", "success");
                             })
-                            .catch(err => console.error("Error EmailJS:", err));
+                            .catch((error) => {
+                                console.error("❌ Error detallado de EmailJS:", error);
+                                // Esto evita el 'Uncaught' y te muestra el error real en la notificación
+                                mostrarNotificacion("EmailJS: " + (error.text || "ID de servicio inválido"), "error");
+                            });
                     }
                 }
             }
