@@ -23,7 +23,8 @@
 <body>
     <div id="loader-wrapper" class="loader-container">
         <div class="loader-brand">
-            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" style="height: 60px;">
+            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
+                style="height: 60px;">
 
             <div style="text-align: left;">
                 <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
@@ -307,6 +308,8 @@
             const snapshotDireccion = `${textoNombre} - ${textoDireccion}`;
             const snapshotContacto = `Usuario: ${usuarioActual.email}`;
 
+            let idVenta = null;
+
             try {
                 // 1. CREAR VENTA EN SUPABASE
                 const { data: venta, error } = await clienteSupabase.from('ventas').insert([{
@@ -323,7 +326,7 @@
                 }]).select();
 
                 if (error) throw error;
-                const idVenta = venta[0].id;
+                idVenta = venta[0].id;
 
                 // 2. GUARDAR DETALLES
                 const detalles = carrito.map(i => ({
@@ -373,18 +376,17 @@
 
             } catch (e) {
                 console.error(e);
-                // Si falla el correo, no detenemos la compra, pero avisamos en consola
-                // Opcional: mostrarNotificacion("Compra exitosa, pero error al enviar correo", "warning");
 
-                // Si el error fue de Supabase (no hay ID de venta), sí detenemos todo
-                if (!e.text) { // e.text suele ser el error de EmailJS
+                // Si el error NO es de Supabase (ej: falló EmailJS), dejamos pasar al usuario
+                if (!e.message.includes("violates") && idVenta) {
+                    // El correo falló, pero la venta SÍ se guardó.
+                    localStorage.removeItem('carrito');
+                    window.location.href = `confirmacion.html?id=${idVenta}`; // <--- AGREGAR EL ID AQUÍ
+                } else {
+                    // Si fue error grave de base de datos
                     mostrarNotificacion("Error al procesar: " + e.message, "error");
                     btn.disabled = false;
                     btn.innerText = "PAGAR AHORA";
-                } else {
-                    // Si falló solo el email, redirigimos igual
-                    localStorage.removeItem('carrito');
-                    window.location.href = "confirmacion.html";
                 }
             }
         }
