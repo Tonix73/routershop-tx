@@ -190,7 +190,7 @@
         let ventasCache = []; // AGREGADO: Variable para guardar los datos y usarlos en el modal
 
         async function cargarVentas() {
-            const { data } = await clienteSupabase.from('ventas').select('*').order('fecha_compra', { ascending: false }).limit(20);
+            const { data } = await clienteSupabase.from('ventas').select('*').order('fecha_compra', { ascending: false }).order('id', { ascending: false });
             const tbody = document.getElementById('tabla-ventas');
             tbody.innerHTML = '';
 
