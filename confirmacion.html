@@ -3,134 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estado del Pedido - NetStore MX</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding-top: 80px;
-            text-align: center;
-            color: #333;
-        }
-
-        .container-confirmacion {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            background: white;
-            transition: all 0.3s ease;
-        }
-
-        .icon-status {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            margin: 10px 0;
-            font-size: 2em;
-        }
-
-        p {
-            font-size: 1.1em;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .order-id-box {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 1.4em;
-            letter-spacing: 2px;
-            margin: 20px 0;
-            border: 1px solid #eee;
-            color: #333;
-        }
-
-        .btn-box {
-            margin-top: 30px;
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .btn {
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .btn-secondary {
-            background-color: #e9ecef;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background-color: #ddd;
-        }
-
-        /* --- ESTILOS DINÁMICOS --- */
-
-        /* ESTILO: PAGADO (Verde) */
-        .tipo-pagado {
-            border-top: 6px solid #28a745;
-        }
-
-        .tipo-pagado .icon-status {
-            color: #28a745;
-        }
-
-        .tipo-pagado h1 {
-            color: #28a745;
-        }
-
-        /* ESTILO: PENDIENTE (Amarillo) */
-        .tipo-pendiente {
-            border-top: 6px solid #ffc107;
-        }
-
-        .tipo-pendiente .icon-status {
-            color: #ffc107;
-        }
-
-        .tipo-pendiente h1 {
-            color: #d39e00;
-        }
-
-        /* Un amarillo más oscuro para leerse bien */
-
-        /* Instrucciones de pago (Solo visible en pendiente) */
-        .instrucciones-pago {
-            text-align: left;
-            background-color: #fff3cd;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 0.95em;
-            border: 1px solid #ffeeba;
-            display: none;
-            /* Oculto por defecto */
-        }
-    </style>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 
 <body>
@@ -142,14 +20,10 @@
     </div>
 
     <div id="app-footer"></div>
-    <script src="loader.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/app.js"></script>
 
     <script>
-        // CONFIGURACIÓN SUPABASE
-        const SUPABASE_URL = 'https://qalbtsegnuwbnjnndvag.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhbGJ0c2VnbnV3Ym5qbm5kdmFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczODEwNjcsImV4cCI6MjA4Mjk1NzA2N30.fkezwSO8PjUT-1I8uqbsRGtxGRIGNdYY_5W1sGi09cc';
-        const clienteSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
         window.onload = async function () {
             // 1. Verificar Sesión (Si se cerró, mandamos al login/inicio)
             const { data: { session } } = await clienteSupabase.auth.getSession();
