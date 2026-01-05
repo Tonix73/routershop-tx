@@ -62,7 +62,8 @@
 
     <div id="loader-wrapper" class="loader-container">
         <div class="loader-brand">
-            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" style="height: 60px;">
+            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
+                style="height: 60px;">
 
             <div style="text-align: left;">
                 <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
@@ -263,65 +264,65 @@
 
             document.getElementById('modal-detalles').style.display = 'block';
         }
-
+        // --- FUNCIÓN PARA CAMBIAR ESTADO DE PAGO ---
         async function cambiarEstado(id, selectElement) {
             const nuevoEstado = selectElement.value;
 
-            // 1. Actualizamos Supabase
             const { error } = await clienteSupabase.from('ventas').update({ estado: nuevoEstado }).eq('id', id);
             if (error) { mostrarNotificacion("Error: " + error.message, "error"); return; }
 
             selectElement.className = 'select-estado ' + (nuevoEstado === 'pagado' ? 'estado-pagado' : 'estado-pendiente');
             mostrarNotificacion("Estado actualizado", "success");
 
-            // 2. Lógica de Correo si pasa a PAGADO
+            // Lógica de Correo si pasa a PAGADO
             if (nuevoEstado === 'pagado') {
-                // Buscamos la venta en el caché para sacar el email y nombre
                 const venta = ventasCache.find(v => v.id === id);
                 if (venta) {
                     const emailCliente = obtenerEmailDeVenta(venta);
-                    const nombreCliente = venta.direccion_envio.split('-')[0].trim(); // Sacamos nombre de la dirección
+                    const nombreCliente = venta.direccion_envio.split('-')[0].trim();
 
                     if (emailCliente) {
-                        mostrarNotificacion("Enviando correo de pago confirmado...", "info");
+                        mostrarNotificacion("Enviando confirmación de pago...", "info");
 
                         const params = {
                             to_email: emailCliente,
                             to_name: nombreCliente,
                             order_id: id,
-                            message: "Tu pago ha sido confirmado exitosamente. Prepararemos tu envío.",
-                            products: "Ver detalles en tu cuenta", // Resumen simplificado
-                            total: venta.total,
-                            address: venta.direccion_envio
+                            total: venta.total.toFixed(2),
+                            message: "Tu pago ha sido confirmado. Estamos preparando tu paquete.",
+                            address: venta.direccion_envio,
+                            products: "Pago recibido satisfactoriamente."
                         };
 
-                        // Enviamos correo
-                        emailjs.send("TU_SERVICE_ID", "TU_TEMPLATE_ID", params)
+                        // USAR TUS IDS REALES AQUÍ
+                        emailjs.send("service_i1yzl9c", "template_o6nl56z", params)
                             .then(() => {
-                                // Guardamos historial
                                 registrarHistorialCorreo(id, emailCliente, "Pago Confirmado", "confirmacion_pago");
-                                mostrarNotificacion("Correo enviado al cliente", "success");
-                            });
+                                mostrarNotificacion("Correo de confirmación enviado", "success");
+                            })
+                            .catch(err => console.error("Error EmailJS:", err));
                     }
                 }
             }
         }
 
+        // --- FUNCIÓN PARA GUARDAR GUÍA Y ENVIAR CORREO ---
         async function guardarDatosEnvio(id) {
             const guia = document.getElementById(`guia-${id}`).value;
             const paq = document.getElementById(`paq-${id}`).value;
 
             if (!guia || !paq) return mostrarNotificacion("Llena paquetería y guía", "error");
 
-            // 1. Actualizamos Supabase
-            const { error } = await clienteSupabase.from('ventas').update({ numero_guia_envio: guia, paqueteria: paq }).eq('id', id);
+            const { error } = await clienteSupabase.from('ventas').update({
+                numero_guia_envio: guia,
+                paqueteria: paq
+            }).eq('id', id);
 
             if (error) {
                 mostrarNotificacion("Error al guardar", "error");
             } else {
-                mostrarNotificacion("Datos guardados", "success");
+                mostrarNotificacion("Datos guardados en sistema", "success");
 
-                // 2. Enviar Correo con la Guía
                 const venta = ventasCache.find(v => v.id === id);
                 if (venta) {
                     const emailCliente = obtenerEmailDeVenta(venta);
@@ -334,21 +335,20 @@
                             to_email: emailCliente,
                             to_name: nombreCliente,
                             order_id: id,
-                            message: `¡Tu pedido va en camino! Paquetería: ${paq}. Guía: ${guia}`,
-                            products: "Envío en tránsito",
-                            total: venta.total,
-                            address: venta.direccion_envio
+                            total: venta.total.toFixed(2),
+                            message: `¡Tu pedido ha sido enviado! Paquetería: ${paq}. Tu número de guía es: ${guia}`,
+                            address: venta.direccion_envio,
+                            products: `Envío en tránsito vía ${paq}`
                         };
 
-                        emailjs.send("TU_SERVICE_ID", "TU_TEMPLATE_ID", params)
+                        emailjs.send("service_i1yzl9c", "template_o6nl56z", params)
                             .then(() => {
-                                registrarHistorialCorreo(id, emailCliente, "Pedido Enviado - Guía", "envio_guia");
-                                mostrarNotificacion("Correo de guía enviado", "success");
+                                registrarHistorialCorreo(id, emailCliente, "Pedido Enviado", "envio_guia");
+                                mostrarNotificacion("Correo con guía enviado", "success");
                                 setTimeout(() => cargarVentas(), 1000);
-                            });
+                            })
+                            .catch(err => console.error("Error EmailJS:", err));
                     }
-                } else {
-                    setTimeout(() => cargarVentas(), 800);
                 }
             }
         }
