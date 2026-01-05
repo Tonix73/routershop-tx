@@ -321,6 +321,7 @@
                     estado: estadoInicial,
                     fecha_compra: new Date(),
                     paqueteria: envio,
+                    numero_guia_envio: 'PENDIENTE', // Forzamos que sea PENDIENTE y no null
                     direccion_envio: `${textoNombre} - ${textoDireccion}`,
                     detalles_contacto: `Usuario: ${usuarioActual.email}`,
                     productos_json: carrito
@@ -342,24 +343,42 @@
 
                 // 4. INTENTAR ENVIAR CORREO (Sin bloquear el flujo)
                 // Usamos un bloque try/catch interno para que EmailJS nunca detenga la redirección
+                // 4. INTENTAR ENVIAR CORREO
                 try {
-                    // Busca esta parte en tu función confirmarCompra
-                    const parametrosEmail = {
-                        to_name: textoNombre,
-                        to_email: usuarioActual ? usuarioActual.email : "correo_no_detectado@test.com", // <-- Cambio aquí
-                        order_id: idVenta,
-                        total: totalFinal.toFixed(2),
-                        address: textoDireccion,
-                        products: carrito.map(item => `- ${item.cantidad}x ${item.nombre}`).join('\n')
-                    };
+                    // REFUERZO: Obtenemos la sesión fresca para que no esté vacía
+                    const { data: { session } } = await clienteSupabase.auth.getSession();
+                    const emailDestino = session ? session.user.email : null;
 
-                    // Se envía sin 'await' para que la página no se quede esperando
-                    emailjs.send("service_i1yzl9c", "template_o6nl56z", parametrosEmail)
-                        .catch(err => console.warn("EmailJS falló (Ignorado):", err));
+                    if (!emailDestino) {
+                        console.error("❌ No se encontró el correo del usuario en la sesión");
+                    } else {
+                        const parametrosEmail = {
+                            to_name: textoNombre,
+                            to_email: emailDestino, // <--- Usamos la variable fresca
+                            order_id: idVenta,
+                            total: totalFinal.toFixed(2),
+                            address: textoDireccion,
+                            products: carrito.map(item => `- ${item.cantidad}x ${item.nombre}`).join('\n')
+                        };
 
+                        // Cambia tu bloque de correo por este
+                        try {
+                            console.log("Intentando enviar correo...");
+                            // Usamos AWAIT aquí solo para el correo, para forzar al navegador a esperar
+                            await emailjs.send("service_i1yzl9c", "template_o6nl56z", parametrosEmail);
+                            console.log("✅ Correo enviado con éxito");
+                        } catch (errorMail) {
+                            // Si falla el correo, lo registramos pero dejamos que la página siga
+                            console.error("❌ Falló EmailJS:", errorMail);
+                        }
+                    }
                 } catch (mailErr) {
-                    console.warn("Error preparando EmailJS:", mailErr);
+                    console.error("Error crítico preparando EmailJS:", mailErr);
                 }
+
+                // ESTO DEBE IR DESPUÉS DEL CATCH
+                localStorage.removeItem('carrito');
+                window.location.href = `confirmacion.html?id=${idVenta}`;
 
                 // 5. ÉXITO Y REDIRECCIÓN
                 mostrarNotificacion("¡Compra realizada con éxito!", "success");
