@@ -305,10 +305,15 @@
             let idVenta = null;
 
             try {
-                // 1. CREAR VENTA EN SUPABASE
-                const textoNombre = document.getElementById('dir-nombre').innerText;
-                const textoDireccion = document.getElementById('dir-calle').innerText + ' ' + document.getElementById('dir-detalles').innerText;
+                // 1. OBTENER DATOS DEL DOM CON SEGURIDAD
+                const elemNombre = document.getElementById('dir-nombre');
+                const elemCalle = document.getElementById('dir-calle');
+                const elemDetalles = document.getElementById('dir-detalles');
 
+                const textoNombre = elemNombre ? elemNombre.innerText : "Cliente";
+                const textoDireccion = (elemCalle && elemDetalles) ? `${elemCalle.innerText} ${elemDetalles.innerText}` : "Dirección no especificada";
+
+                // 2. CREAR VENTA EN SUPABASE
                 const { data: venta, error: errorVenta } = await clienteSupabase.from('ventas').insert([{
                     usuario_id: usuarioActual.id,
                     direccion_envio_id: direccionID,
@@ -324,7 +329,7 @@
                 if (errorVenta) throw errorVenta;
                 idVenta = venta[0].id;
 
-                // 2. GUARDAR DETALLES
+                // 3. GUARDAR DETALLES DE PRODUCTOS
                 const detalles = carrito.map(i => ({
                     venta_id: idVenta,
                     producto_id: i.id,
@@ -335,41 +340,47 @@
                 const { error: errorDetalle } = await clienteSupabase.from('detalle_ventas').insert(detalles);
                 if (errorDetalle) throw errorDetalle;
 
-                // 3. INTENTAR ENVIAR CORREO (Sin que bloquee la redirección)
+                // 4. INTENTAR ENVIAR CORREO (Sin bloquear el flujo)
+                // Usamos un bloque try/catch interno para que EmailJS nunca detenga la redirección
                 try {
                     const parametrosEmail = {
                         to_name: textoNombre,
-                        to_email: usuarioActual.email,
+                        to_email: usuarioActual.email || '', // Evita el error de 'empty address'
                         order_id: idVenta,
                         total: totalFinal.toFixed(2),
                         address: textoDireccion,
                         products: carrito.map(item => `- ${item.cantidad}x ${item.nombre}`).join('\n')
                     };
 
-                    // Quitamos el 'await' para que si falla el 422, no detenga la app
+                    // Se envía sin 'await' para que la página no se quede esperando
                     emailjs.send("service_i1yzl9c", "template_o6nl56z", parametrosEmail)
-                        .catch(err => console.log("EmailJS Error 422 u otro (Ignorado):", err));
+                        .catch(err => console.warn("EmailJS falló (Ignorado):", err));
 
-                } catch (eMail) {
-                    console.log("Error preparando datos de correo:", eMail);
+                } catch (mailErr) {
+                    console.warn("Error preparando EmailJS:", mailErr);
                 }
 
-                // 4. ÉXITO TOTAL - REDIRECCIÓN
+                // 5. ÉXITO Y REDIRECCIÓN
+                mostrarNotificacion("¡Compra realizada con éxito!", "success");
                 localStorage.removeItem('carrito');
-                window.location.href = `confirmacion.html?id=${idVenta}`;
+
+                // Pequeña pausa para que se guarde todo bien y luego redirigir
+                setTimeout(() => {
+                    window.location.href = `confirmacion.html?id=${idVenta}`;
+                }, 800);
 
             } catch (error) {
-                console.error("Error crítico:", error);
+                console.error("Error crítico en la compra:", error);
 
-                // Manejo de error seguro (evita el error de 'includes')
-                const mensajeError = error.message || "Error desconocido en el servidor";
-                mostrarNotificacion("Hubo un problema: " + mensajeError, "error");
+                // Manejo de error seguro: si 'error' no tiene message, usamos un texto genérico
+                const msg = (error && error.message) ? error.message : "Error al procesar la base de datos";
+                mostrarNotificacion("Hubo un problema: " + msg, "error");
 
                 btn.disabled = false;
                 btn.innerText = "PAGAR AHORA";
             }
         }
-        
+
         // Agrega esta función al final de tu script en finalizar_compra.html
         async function registrarHistorialCorreo(ventaId, destinatario, asunto, tipo, estado) {
             const { error } = await clienteSupabase.from('historial_correos').insert([{
