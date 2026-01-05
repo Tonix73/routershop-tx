@@ -302,30 +302,26 @@
             btn.innerText = "Procesando...";
             btn.disabled = true;
 
-            // DATOS PARA SUPABASE Y PARA EL CORREO
-            const textoNombre = document.getElementById('dir-nombre').innerText;
-            const textoDireccion = document.getElementById('dir-calle').innerText + ' ' + document.getElementById('dir-detalles').innerText;
-            const snapshotDireccion = `${textoNombre} - ${textoDireccion}`;
-            const snapshotContacto = `Usuario: ${usuarioActual.email}`;
-
             let idVenta = null;
 
             try {
                 // 1. CREAR VENTA EN SUPABASE
-                const { data: venta, error } = await clienteSupabase.from('ventas').insert([{
+                const textoNombre = document.getElementById('dir-nombre').innerText;
+                const textoDireccion = document.getElementById('dir-calle').innerText + ' ' + document.getElementById('dir-detalles').innerText;
+
+                const { data: venta, error: errorVenta } = await clienteSupabase.from('ventas').insert([{
                     usuario_id: usuarioActual.id,
                     direccion_envio_id: direccionID,
                     total: totalFinal,
                     estado: estadoInicial,
                     fecha_compra: new Date(),
-                    numero_guia_envio: 'PENDIENTE',
                     paqueteria: envio,
-                    direccion_envio: snapshotDireccion,
-                    detalles_contacto: snapshotContacto,
+                    direccion_envio: `${textoNombre} - ${textoDireccion}`,
+                    detalles_contacto: `Usuario: ${usuarioActual.email}`,
                     productos_json: carrito
                 }]).select();
 
-                if (error) throw error;
+                if (errorVenta) throw errorVenta;
                 idVenta = venta[0].id;
 
                 // 2. GUARDAR DETALLES
@@ -336,61 +332,44 @@
                     precio_unitario: i.precio
                 }));
 
-                await clienteSupabase.from('detalle_ventas').insert(detalles);
+                const { error: errorDetalle } = await clienteSupabase.from('detalle_ventas').insert(detalles);
+                if (errorDetalle) throw errorDetalle;
 
-                // ============================================================
-                // 3. ENVIAR CORREO (BLOQUE AGREGADO)
-                // ============================================================
-                mostrarNotificacion("Enviando confirmación...", "info");
+                // 3. INTENTAR ENVIAR CORREO (Sin que bloquee la redirección)
+                try {
+                    const parametrosEmail = {
+                        to_name: textoNombre,
+                        to_email: usuarioActual.email,
+                        order_id: idVenta,
+                        total: totalFinal.toFixed(2),
+                        address: textoDireccion,
+                        products: carrito.map(item => `- ${item.cantidad}x ${item.nombre}`).join('\n')
+                    };
 
-                // Preparamos la lista de productos bonita para el correo
-                const resumenProductos = carrito.map(item =>
-                    `- ${item.cantidad}x ${item.nombre} ($${item.precio})`
-                ).join('\n');
+                    // Quitamos el 'await' para que si falla el 422, no detenga la app
+                    emailjs.send("service_i1yzl9c", "template_o6nl56z", parametrosEmail)
+                        .catch(err => console.log("EmailJS Error 422 u otro (Ignorado):", err));
 
-                const parametrosEmail = {
-                    to_name: textoNombre,           // Nombre del cliente
-                    to_email: usuarioActual.email,  // Correo del cliente
-                    order_id: idVenta,              // ID de la venta
-                    total: totalFinal.toFixed(2),   // Total pagado
-                    address: textoDireccion,        // Dirección
-                    products: resumenProductos,     // Lista de items
-                    message: (pago === 'transferencia') ? 'Recuerda enviar tu comprobante de pago.' : '¡Gracias por tu pago!'
-                };
+                } catch (eMail) {
+                    console.log("Error preparando datos de correo:", eMail);
+                }
 
-                // REEMPLAZA 'TU_SERVICE_ID' Y 'TU_TEMPLATE_ID' CON LOS TUYOS DE EMAILJS
-                await emailjs.send("service_i1yzl9c", "template_o6nl56z", parametrosEmail);
-                // Guardamos en el historial
-                await registrarHistorialCorreo(
-                    idVenta,
-                    usuarioActual.email,
-                    "Confirmación de Pedido",
-                    "confirmacion_compra",
-                    "enviado"
-                );
-                // ============================================================
-
-                // 4. LIMPIEZA Y REDIRECCIÓN
+                // 4. ÉXITO TOTAL - REDIRECCIÓN
                 localStorage.removeItem('carrito');
                 window.location.href = `confirmacion.html?id=${idVenta}`;
 
-            } catch (e) {
-                console.error(e);
+            } catch (error) {
+                console.error("Error crítico:", error);
 
-                // Si el error NO es de Supabase (ej: falló EmailJS), dejamos pasar al usuario
-                if (!e.message.includes("violates") && idVenta) {
-                    // El correo falló, pero la venta SÍ se guardó.
-                    localStorage.removeItem('carrito');
-                    window.location.href = `confirmacion.html?id=${idVenta}`; // <--- AGREGAR EL ID AQUÍ
-                } else {
-                    // Si fue error grave de base de datos
-                    mostrarNotificacion("Error al procesar: " + e.message, "error");
-                    btn.disabled = false;
-                    btn.innerText = "PAGAR AHORA";
-                }
+                // Manejo de error seguro (evita el error de 'includes')
+                const mensajeError = error.message || "Error desconocido en el servidor";
+                mostrarNotificacion("Hubo un problema: " + mensajeError, "error");
+
+                btn.disabled = false;
+                btn.innerText = "PAGAR AHORA";
             }
         }
-
+        
         // Agrega esta función al final de tu script en finalizar_compra.html
         async function registrarHistorialCorreo(ventaId, destinatario, asunto, tipo, estado) {
             const { error } = await clienteSupabase.from('historial_correos').insert([{
