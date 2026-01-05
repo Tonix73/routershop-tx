@@ -376,17 +376,13 @@
                     console.error("Error crítico preparando EmailJS:", mailErr);
                 }
 
-                // ESTO DEBE IR DESPUÉS DEL CATCH
-                localStorage.removeItem('carrito');
-                //window.location.href = `confirmacion.html?id=${idVenta}`;
-
                 // 5. ÉXITO Y REDIRECCIÓN
                 mostrarNotificacion("¡Compra realizada con éxito!", "success");
                 localStorage.removeItem('carrito');
 
                 // Pequeña pausa para que se guarde todo bien y luego redirigir
                 setTimeout(() => {
-                    window.location.href = `confirmacion.html?id=${idVenta}`;
+                    //window.location.href = `confirmacion.html?id=${idVenta}`;
                 }, 800);
 
             } catch (error) {
