@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Finalizar Compra - RouterShop TX</title>
+    <link rel="icon" type="image/png"
+        href="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script>
+        (function () {
+            emailjs.init("S6x887RD35YnO33Eg");
+        })();
+    </script>
+
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <div id="loader-wrapper" class="loader-container">
+        <div class="loader-brand">
+            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" style="height: 60px;">
+
+            <div style="text-align: left;">
+                <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
+                    RouterShop</div>
+                <div
+                    style="color: #ffc107; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif; line-height: 0.8;">
+                    TX</div>
+            </div>
+        </div>
+        <div class="spinner"></div>
+    </div>
+
+    <div id="app-navbar"></div>
+
+    <div id="notificacion-toast" class="notificacion-container">
+        <span id="notif-icono" class="material-icons">info</span><span id="notif-mensaje">Mensaje</span>
+    </div>
+
+    <div class="contenedor-checkout">
+        <div class="col-izq">
+            <div class="seccion">
+                <h2>1. Datos de Envío <button class="btn-azul" onclick="toggleFormDireccion()">Cambiar</button></h2>
+                <div id="card-direccion-guardada" class="direccion-card">
+                    <strong>Recibe:</strong> <span id="dir-nombre">...</span><br>
+                    <strong>Dirección:</strong> <span id="dir-calle">...</span><br>
+                    <span id="dir-detalles" style="color:#666; font-size:0.9em;">...</span>
+                </div>
+                <p id="msg-sin-direccion" style="display:none; color:#d63343; font-weight:bold;">⚠️ Agrega dirección.
+                </p>
+                <div id="form-direccion" class="form-direccion">
+                    <input type="text" id="in-nombre" class="full-width" placeholder="Nombre completo">
+
+                    <input type="text" id="in-calle" class="full-width" placeholder="Calle">
+
+                    <input type="text" id="in-num-ext" placeholder="Número Exterior">
+                    <input type="text" id="in-num-int" placeholder="Número Interior (Opcional)">
+
+                    <input type="text" id="in-colonia" placeholder="Colonia">
+                    <input type="text" id="in-cp" placeholder="CP">
+                    <input type="text" id="in-ciudad" placeholder="Ciudad">
+                    <input type="text" id="in-estado" placeholder="Estado">
+                    <input type="text" id="in-ref" class="full-width" placeholder="Referencias">
+                    <button class="btn-azul full-width" onclick="guardarDireccion()"
+                        style="margin-top:10px;">Guardar</button>
+                </div>
+            </div>
+
+            <div class="seccion">
+                <h2>2. Paquetería</h2>
+                <label class="opcion-radio">
+                    <input type="radio" name="envio" value="DHL" data-costo="250" onchange="recalcular()" checked>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/DHL_Logo.svg/320px-DHL_Logo.svg.png"
+                        alt="DHL" class="logo-opcion">
+                    <div class="opcion-texto"><strong>DHL Express</strong><br><small>Día siguiente</small></div><span
+                        class="precio-extra">$250</span>
+                </label>
+                <label class="opcion-radio">
+                    <input type="radio" name="envio" value="FedEx" data-costo="180" onchange="recalcular()">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/FedEx_Express.svg/320px-FedEx_Express.svg.png"
+                        alt="FedEx" class="logo-opcion">
+                    <div class="opcion-texto"><strong>FedEx Estándar</strong><br><small>3-5 días</small></div><span
+                        class="precio-extra">$180</span>
+                </label>
+                <label class="opcion-radio">
+                    <input type="radio" name="envio" value="Estafeta" data-costo="150" onchange="recalcular()">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7f/Logo_de_Estafeta.svg" alt="Estafeta"
+                        class="logo-opcion">
+                    <div class="opcion-texto"><strong>Estafeta Económico</strong><br><small>5-7 días</small></div><span
+                        class="precio-extra">$150</span>
+                </label>
+            </div>
+
+            <div class="seccion">
+                <h2>3. Método de Pago</h2>
+                <label class="opcion-radio">
+                    <input type="radio" name="pago" value="mercadopago" onclick="toggleInfoPago()" checked>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Mercado_Pago.svg" alt="MP"
+                        class="logo-opcion" style="width:60px;">
+                    <div class="opcion-texto"><strong>Mercado Pago</strong><br><small>Tarjetas de Credito o Debito,
+                            Oxxo, Dinero disponible en MP</small></div>
+                </label>
+                <label class="opcion-radio">
+                    <input type="radio" name="pago" value="transferencia" onclick="toggleInfoPago()">
+                    <span class="material-icons icon-opcion-big logo-opcion">savings</span>
+                    <div class="opcion-texto"><strong>Transferencia SPEI</strong><br><small>BBVA</small></div>
+                </label>
+                <div id="info-transferencia">
+                    <strong>Datos de Transferencia:</strong><br>Banco: BBVA<br>CLABE: 012 345 67890123456
+                    7<br>Beneficiario: RouterShop TX S.A. de C.V.<br>RFC: RSTX800101XXX<br>Monto: Total de tu
+                    compra<br><br>Envía el comprobante a <strong>compras@routershop.com.mx</strong> para acelerar el
+                    proceso.
+                </div>
+            </div>
+        </div>
+
+        <div class="col-der">
+            <div class="resumen-card">
+                <h2>Resumen</h2>
+                <div id="lista-resumen" style="max-height: 250px; overflow-y: auto;"></div>
+
+                <div class="cupon-container">
+                    <input type="text" id="input-cupon" class="input-cupon" placeholder="CÓDIGO DE CUPÓN">
+                    <button class="btn-cupon" onclick="aplicarCupon()">USAR</button>
+                </div>
+
+                <div class="totales">
+                    <div class="fila-total"><span>Subtotal:</span><span id="txt-subtotal">$0.00</span></div>
+
+                    <div class="fila-total"><span>IVA (16%):</span><span id="txt-iva">$0.00</span></div>
+
+                    <div class="fila-total"><span>Envío:</span><span id="txt-envio">$0.00</span></div>
+                    <div class="fila-total" id="fila-descuento" style="display:none;"><span
+                            class="descuento-texto">Descuento:</span><span id="txt-descuento"
+                            class="descuento-texto">-$0.00</span></div>
+                    <div class="fila-total final"><span>Total:</span><span id="txt-total">$0.00</span></div>
+                </div>
+
+                <button id="btn-finalizar" class="btn-pagar" onclick="confirmarCompra()">
+                    <span class="material-icons">lock</span> PAGAR AHORA
+                </button>
+                <p
+                    style="font-size: 0.85em; color: #777; margin-top: 15px; display: flex;justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <span class="material-icons" style="font-size: 1.2em; color: #28a745;">lock</span>
+
+                    <span>*Precios incluyen impuestos.</span>
+
+                    <span style="color:#ccc;">|</span>
+
+                    <img src="https://cdn-icons-png.flaticon.com/512/2438/2438078.png" alt="Pago Seguro SSL"
+                        style="height: 22px; width: auto; opacity: 0.8;">
+                    <span style="font-weight: 600; font-size: 0.9em;">Pagos 100% Seguros</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-footer"></div>
+    <script src="js/loader.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        let usuarioActual = null;
+        let direccionID = null;
+        let totalFinal = 0;
+        let descuentoPorcentaje = 0;
+
+        window.onload = async function () {
+            const { data: { session } } = await clienteSupabase.auth.getSession();
+            if (!session) { window.location.href = "index.html"; return; }
+            usuarioActual = session.user;
+            if (carrito.length === 0) { window.location.href = "index.html"; return; }
+            cargarDireccion(); renderItems(); recalcular();
+        };
+
+        // --- CUPÓN DE DESCUENTO ---
+        async function aplicarCupon() {
+            const codigo = document.getElementById('input-cupon').value.toUpperCase().trim();
+            if (!codigo) return mostrarNotificacion("Escribe un código", "error");
+            mostrarNotificacion("Validando...", "info");
+
+            const { data } = await clienteSupabase.from('cupones').select('*').eq('codigo', codigo).eq('activo', true).single();
+            if (!data) {
+                mostrarNotificacion("Cupón no válido", "error");
+                descuentoPorcentaje = 0;
+            } else {
+                descuentoPorcentaje = data.porcentaje_descuento;
+                mostrarNotificacion(`¡Ahorras ${descuentoPorcentaje}%!`, "success");
+                document.getElementById('input-cupon').disabled = true;
+            }
+            recalcular();
+        }
+
+        // --- CÁLCULO CON IVA (16%) ---
+        function recalcular() {
+            const subtotalProductos = carrito.reduce((sum, i) => sum + (i.precio * i.cantidad), 0);
+            const iva = subtotalProductos * 0.16;
+            const costoEnvio = parseFloat(document.querySelector('input[name="envio"]:checked').getAttribute('data-costo'));
+            const montoDescuento = subtotalProductos * (descuentoPorcentaje / 100);
+
+            totalFinal = subtotalProductos + iva + costoEnvio - montoDescuento;
+
+            document.getElementById('txt-subtotal').innerText = `$${subtotalProductos.toFixed(2)}`;
+            document.getElementById('txt-iva').innerText = `$${iva.toFixed(2)}`;
+            document.getElementById('txt-envio').innerText = `$${costoEnvio.toFixed(2)}`;
+
+            if (montoDescuento > 0) {
+                document.getElementById('fila-descuento').style.display = 'flex';
+                document.getElementById('txt-descuento').innerText = `-$${montoDescuento.toFixed(2)}`;
+            } else {
+                document.getElementById('fila-descuento').style.display = 'none';
+            }
+
+            document.getElementById('txt-total').innerText = `$${totalFinal.toFixed(2)}`;
+        }
+
+        function renderItems() {
+            const lista = document.getElementById('lista-resumen');
+            lista.innerHTML = '';
+            carrito.forEach(item => {
+                const img = item.imagen || 'https://via.placeholder.com/50';
+                lista.innerHTML += `<div class="item-resumen"><img src="${img}"><div class="item-info"><strong>${item.nombre}</strong><br><small>Cant: ${item.cantidad}</small></div><strong>$${(item.precio * item.cantidad).toFixed(2)}</strong></div>`;
+            });
+        }
+
+        async function cargarDireccion() {
+            const { data } = await clienteSupabase.from('direcciones').select('*').eq('usuario_id', usuarioActual.id).order('id', { ascending: false }).limit(1);
+            if (data && data.length > 0) {
+                direccionID = data[0].id;
+                document.getElementById('card-direccion-guardada').style.display = 'block';
+                document.getElementById('form-direccion').style.display = 'none';
+                document.getElementById('dir-nombre').innerText = data[0].nombre_receptor;
+
+                // CAMBIO: Mostrar los números en el resumen de dirección
+                const numExt = data[0].numero_exterior || '';
+                const numInt = data[0].numero_interior ? `Int. ${data[0].numero_interior}` : '';
+                document.getElementById('dir-calle').innerText = `${data[0].calle} #${numExt} ${numInt}, ${data[0].colonia}`;
+
+                document.getElementById('dir-detalles').innerText = `${data[0].ciudad}, CP: ${data[0].codigo_postal}`;
+                document.getElementById('msg-sin-direccion').style.display = 'none';
+            } else {
+                document.getElementById('msg-sin-direccion').style.display = 'block';
+                document.getElementById('form-direccion').style.display = 'grid';
+            }
+        }
+
+        function toggleFormDireccion() {
+            const form = document.getElementById('form-direccion');
+            const card = document.getElementById('card-direccion-guardada');
+            if (form.style.display === 'none') { form.style.display = 'grid'; card.style.display = 'none'; }
+            else if (direccionID) { form.style.display = 'none'; card.style.display = 'block'; }
+        }
+
+        async function guardarDireccion() {
+            const nombre = document.getElementById('in-nombre').value;
+            const calle = document.getElementById('in-calle').value;
+            const cp = document.getElementById('in-cp').value;
+
+            // CAMBIO: Capturar los nuevos campos
+            const numExt = document.getElementById('in-num-ext').value;
+            const numInt = document.getElementById('in-num-int').value;
+
+            if (!calle || !nombre || !numExt) return mostrarNotificacion("Faltan datos (Nombre, Calle, Num. Exterior)", "error");
+
+            // CAMBIO: Guardar usando los valores de los inputs
+            const { error } = await clienteSupabase.from('direcciones').insert([{
+                usuario_id: usuarioActual.id,
+                nombre_receptor: nombre,
+                calle,
+                numero_exterior: numExt,
+                numero_interior: numInt,
+                colonia: document.getElementById('in-colonia').value,
+                codigo_postal: cp,
+                ciudad: document.getElementById('in-ciudad').value,
+                estado_provincia: document.getElementById('in-estado').value,
+                referencias: document.getElementById('in-ref').value
+            }]);
+
+            if (!error) { mostrarNotificacion("Dirección guardada", "success"); cargarDireccion(); }
+            else mostrarNotificacion("Error: " + error.message, "error");
+        }
+
+        function toggleInfoPago() {
+            const tipo = document.querySelector('input[name="pago"]:checked').value;
+            document.getElementById('info-transferencia').style.display = (tipo === 'transferencia') ? 'block' : 'none';
+        }
+
+        async function confirmarCompra() {
+            if (!direccionID) return mostrarNotificacion("Selecciona dirección", "error");
+
+            const btn = document.getElementById('btn-finalizar');
+            const envio = document.querySelector('input[name="envio"]:checked').value;
+            const pago = document.querySelector('input[name="pago"]:checked').value;
+            const estadoInicial = (pago === 'transferencia') ? 'pendiente_pago' : 'pagado';
+
+            btn.innerText = "Procesando...";
+            btn.disabled = true;
+
+            // DATOS PARA SUPABASE Y PARA EL CORREO
+            const textoNombre = document.getElementById('dir-nombre').innerText;
+            const textoDireccion = document.getElementById('dir-calle').innerText + ' ' + document.getElementById('dir-detalles').innerText;
+            const snapshotDireccion = `${textoNombre} - ${textoDireccion}`;
+            const snapshotContacto = `Usuario: ${usuarioActual.email}`;
+
+            try {
+                // 1. CREAR VENTA EN SUPABASE
+                const { data: venta, error } = await clienteSupabase.from('ventas').insert([{
+                    usuario_id: usuarioActual.id,
+                    direccion_envio_id: direccionID,
+                    total: totalFinal,
+                    estado: estadoInicial,
+                    fecha_compra: new Date(),
+                    numero_guia_envio: 'PENDIENTE',
+                    paqueteria: envio,
+                    direccion_envio: snapshotDireccion,
+                    detalles_contacto: snapshotContacto,
+                    productos_json: carrito
+                }]).select();
+
+                if (error) throw error;
+                const idVenta = venta[0].id;
+
+                // 2. GUARDAR DETALLES
+                const detalles = carrito.map(i => ({
+                    venta_id: idVenta,
+                    producto_id: i.id,
+                    cantidad: i.cantidad,
+                    precio_unitario: i.precio
+                }));
+
+                await clienteSupabase.from('detalle_ventas').insert(detalles);
+
+                // ============================================================
+                // 3. ENVIAR CORREO (BLOQUE AGREGADO)
+                // ============================================================
+                mostrarNotificacion("Enviando confirmación...", "info");
+
+                // Preparamos la lista de productos bonita para el correo
+                const resumenProductos = carrito.map(item =>
+                    `- ${item.cantidad}x ${item.nombre} ($${item.precio})`
+                ).join('\n');
+
+                const parametrosEmail = {
+                    to_name: textoNombre,           // Nombre del cliente
+                    to_email: usuarioActual.email,  // Correo del cliente
+                    order_id: idVenta,              // ID de la venta
+                    total: totalFinal.toFixed(2),   // Total pagado
+                    address: textoDireccion,        // Dirección
+                    products: resumenProductos,     // Lista de items
+                    message: (pago === 'transferencia') ? 'Recuerda enviar tu comprobante de pago.' : '¡Gracias por tu pago!'
+                };
+
+                // REEMPLAZA 'TU_SERVICE_ID' Y 'TU_TEMPLATE_ID' CON LOS TUYOS DE EMAILJS
+                await emailjs.send("service_i1yzl9c", "template_o6nl56z", parametrosEmail);
+                // Guardamos en el historial
+                await registrarHistorialCorreo(
+                    idVenta,
+                    usuarioActual.email,
+                    "Confirmación de Pedido",
+                    "confirmacion_compra",
+                    "enviado"
+                );
+                // ============================================================
+
+                // 4. LIMPIEZA Y REDIRECCIÓN
+                localStorage.removeItem('carrito');
+                window.location.href = `confirmacion.html?id=${idVenta}`;
+
+            } catch (e) {
+                console.error(e);
+                // Si falla el correo, no detenemos la compra, pero avisamos en consola
+                // Opcional: mostrarNotificacion("Compra exitosa, pero error al enviar correo", "warning");
+
+                // Si el error fue de Supabase (no hay ID de venta), sí detenemos todo
+                if (!e.text) { // e.text suele ser el error de EmailJS
+                    mostrarNotificacion("Error al procesar: " + e.message, "error");
+                    btn.disabled = false;
+                    btn.innerText = "PAGAR AHORA";
+                } else {
+                    // Si falló solo el email, redirigimos igual
+                    localStorage.removeItem('carrito');
+                    window.location.href = "confirmacion.html";
+                }
+            }
+        }
+
+        // Agrega esta función al final de tu script en finalizar_compra.html
+        async function registrarHistorialCorreo(ventaId, destinatario, asunto, tipo, estado) {
+            const { error } = await clienteSupabase.from('historial_correos').insert([{
+                venta_id: ventaId,
+                destinatario: destinatario,
+                asunto: asunto,
+                tipo_correo: tipo,
+                provedor_id: 1, // 1 = EmailJS (o el ID que tú uses para identificar el servicio)
+                estado: estado,  // 'enviado' o 'pendiente'
+                fecha_envio: new Date() // Asegúrate de tener esta columna o quítala si no existe
+            }]);
+            if (error) console.error("Error guardando historial correo:", error);
+        }
+    </script>
+</body>
+
+</html>

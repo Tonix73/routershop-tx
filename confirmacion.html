@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Estado del Pedido - NetStore MX</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding-top: 80px;
+            text-align: center;
+            color: #333;
+        }
+
+        .container-confirmacion {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .icon-status {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 10px 0;
+            font-size: 2em;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .order-id-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1.4em;
+            letter-spacing: 2px;
+            margin: 20px 0;
+            border: 1px solid #eee;
+            color: #333;
+        }
+
+        .btn-box {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #e9ecef;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ddd;
+        }
+
+        /* --- ESTILOS DINÁMICOS --- */
+
+        /* ESTILO: PAGADO (Verde) */
+        .tipo-pagado {
+            border-top: 6px solid #28a745;
+        }
+
+        .tipo-pagado .icon-status {
+            color: #28a745;
+        }
+
+        .tipo-pagado h1 {
+            color: #28a745;
+        }
+
+        /* ESTILO: PENDIENTE (Amarillo) */
+        .tipo-pendiente {
+            border-top: 6px solid #ffc107;
+        }
+
+        .tipo-pendiente .icon-status {
+            color: #ffc107;
+        }
+
+        .tipo-pendiente h1 {
+            color: #d39e00;
+        }
+
+        /* Un amarillo más oscuro para leerse bien */
+
+        /* Instrucciones de pago (Solo visible en pendiente) */
+        .instrucciones-pago {
+            text-align: left;
+            background-color: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.95em;
+            border: 1px solid #ffeeba;
+            display: none;
+            /* Oculto por defecto */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app-navbar"></div>
+
+    <div id="card-status" class="container-confirmacion">
+        <p>Cargando estado del pedido...</p>
+    </div>
+
+    <div id="app-footer"></div>
+    <script src="loader.js"></script>
+
+    <script>
+        // CONFIGURACIÓN SUPABASE
+        const SUPABASE_URL = 'https://qalbtsegnuwbnjnndvag.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhbGJ0c2VnbnV3Ym5qbm5kdmFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczODEwNjcsImV4cCI6MjA4Mjk1NzA2N30.fkezwSO8PjUT-1I8uqbsRGtxGRIGNdYY_5W1sGi09cc';
+        const clienteSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        window.onload = async function () {
+            // 1. Verificar Sesión (Si se cerró, mandamos al login/inicio)
+            const { data: { session } } = await clienteSupabase.auth.getSession();
+            if (!session) {
+                alert("⚠️ Tu sesión ha expirado. Por favor inicia sesión nuevamente para ver tu pedido.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            // 2. Obtener ID de la URL
+            const params = new URLSearchParams(window.location.search);
+            const ventaId = params.get('id');
+
+            if (!ventaId) {
+                window.location.href = "index.html"; return;
+            }
+
+            cargarDetallePedido(ventaId);
+        };
+
+        async function cargarDetallePedido(id) {
+            const container = document.getElementById('card-status');
+
+            // 3. Consultar la Venta en BD
+            const { data: venta, error } = await clienteSupabase
+                .from('ventas')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error || !venta) {
+                container.innerHTML = '<h2>❌ Error al cargar pedido</h2><p>No pudimos encontrar la información.</p><a href="index.html" class="btn btn-primary">Volver al Inicio</a>';
+                return;
+            }
+
+            // 4. LÓGICA DE VISUALIZACIÓN (Aquí ocurre la magia)
+            if (venta.estado === 'pendiente_pago') {
+                // --- CASO: TRANSFERENCIA (AMARILLO) ---
+                container.className = 'container-confirmacion tipo-pendiente';
+                container.innerHTML = `
+                    <span class="material-icons icon-status">priority_high</span>
+                    <h1>¡Pedido Registrado!</h1>
+                    <p>Tu orden ha sido creada, pero está <strong>Pendiente de Pago</strong>.</p>
+                    
+                    <div class="order-id-box">PEDIDO #${venta.id}</div>
+                    
+                    <div class="instrucciones-pago" style="display:block;">
+                        <strong>⚠️ Acción Requerida:</strong><br>
+                        Por favor realiza tu transferencia por <strong>$${venta.total}</strong> a la siguiente cuenta:<br><br>
+                        • Banco: <strong>BBVA</strong><br>
+                        • CLABE: <strong>012 345 67890123456 7</strong><br>
+                        • Concepto: <strong>Pedido #${venta.id}</strong><br><br>
+                        Envía tu comprobante por WhatsApp para aprobar tu envío.
+                    </div>
+
+                    <div class="btn-box">
+                        <a href="perfil.html" class="btn btn-primary">Ver Mis Pedidos</a>
+                        <a href="https://wa.me/5212212070703?text=Hola%20RouterShop%20TX,%20envio%20comprobante%20del%20pedido%20${venta.id}" target="_blank" class="btn" style="background:#25D366; color:white;">Enviar Comprobante 📱</a>
+                    </div>
+                `;
+            } else {
+                // --- CASO: PAGADO (VERDE) ---
+                container.className = 'container-confirmacion tipo-pagado';
+                container.innerHTML = `
+                    <span class="material-icons icon-status">check_circle</span>
+                    <h1>¡Pago Exitoso!</h1>
+                    <p>Gracias por tu compra. Hemos recibido tu pago correctamente.</p>
+                    
+                    <div class="order-id-box">PEDIDO #${venta.id}</div>
+                    
+                    <p>Te hemos enviado un correo de confirmación.<br>Pronto recibirás tu número de guía.</p>
+
+                    <div class="btn-box">
+                        <a href="perfil.html" class="btn btn-primary">Rastrear mi Pedido</a>
+                        <a href="index.html" class="btn btn-secondary">Seguir Comprando</a>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - RouterShop TX</title>
+    <link rel="icon" type="image/png"
+        href="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <div id="loader-wrapper" class="loader-container">
+        <div class="loader-brand">
+            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" style="height: 60px;">
+
+            <div style="text-align: left;">
+                <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
+                    RouterShop</div>
+                <div
+                    style="color: #ffc107; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif; line-height: 0.8;">
+                    TX</div>
+            </div>
+        </div>
+        <div class="spinner"></div>
+    </div>
+
+    <div id="app-navbar"></div>
+    <div id="notificacion-toast" class="notificacion-container"><span id="notif-mensaje">Mensaje</span></div>
+
+    <div class="container-perfil">
+
+        <div class="card-usuario">
+            <div class="avatar-circle" id="user-initial">...</div>
+            <div class="user-email" id="user-email">Cargando...</div>
+            <div class="user-tag">Cliente Registrado</div>
+
+            <button class="btn-cerrar" onclick="cerrarSesion()">
+                <span class="material-icons" style="font-size:18px;">logout</span> Cerrar Sesión
+            </button>
+
+            <div class="danger-zone">
+                <p style="font-size:0.8em; color:#999; margin-bottom:10px;">Zona de Peligro</p>
+                <button class="btn-eliminar-cuenta" onclick="abrirConfirmacionEliminar()">
+                    <span class="material-icons" style="font-size:16px;">delete_forever</span> Eliminar Cuenta
+                </button>
+            </div>
+        </div>
+
+        <div class="card-pedidos">
+            <h2 style="display:flex; align-items:center; gap:10px; justify-content: center !important;">
+                <span class="material-icons" style="color:#0056b3;">inventory_2</span>
+                Historial de Pedidos
+            </h2>
+
+            <div class="container-tabla-historial">
+                <table class="tabla-historial">
+                    <thead>
+                        <tr>
+                            <th>Pedido #</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado Pago</th>
+                            <th>Envío / Guía</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-pedidos">
+                        <tr>
+                            <td colspan="6" style="text-align:center; padding:40px; color:#999;">
+                                <span class="material-icons"
+                                    style="font-size:30px; animation:spin 2s infinite linear;">autorenew</span><br>
+                                Cargando historial...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-footer"></div>
+
+    <div id="modal-eliminar" class="modal-fondo">
+        <div class="modal-contenido">
+            <span class="material-icons"
+                style="font-size: 50px; color: #dc3545; margin-bottom:10px;">warning_amber</span>
+            <h3 style="color:#333; margin-top:0;">¿Eliminar cuenta?</h3>
+            <p style="color:#555; line-height:1.5;">Esta acción borrará todo tu historial.<br><strong>No se puede
+                    deshacer.</strong></p>
+            <div style="margin-top:20px;">
+                <button
+                    style="background:#e2e6ea; border:none; padding:10px 20px; border-radius:20px; cursor:pointer; font-weight:bold; color:#555; margin-right:5px;"
+                    onclick="document.getElementById('modal-eliminar').style.display='none'">Cancelar</button>
+                <button onclick="ejecutarEliminacion()" class="btn-confirmar-danger">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-carrito" class="modal-fondo">
+        <div class="modal-contenido">
+            <span class="cerrar-modal"
+                onclick="document.getElementById('modal-carrito').style.display='none'">&times;</span>
+            <h2
+                style="margin-top:0; color:#333; display:flex; align-items:center; gap:10px; justify-content: center !important;">
+                <span class="material-icons" style="color:#0056b3;">shopping_cart</span> Tu Carrito
+            </h2>
+            <div style="max-height: 50vh; overflow-y: auto;">
+                <table class="tabla-carrito">
+                    <tbody id="cuerpo-tabla-carrito"></tbody>
+                </table>
+            </div>
+            <div class="total-pagar" id="total-carrito">Total: $0.00</div>
+            <button id="btn-pagar-dinamico" class="btn-ir-pagar" onclick="procederAlPago()">Proceder al Pago ➝</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Al cargar la página
+        window.addEventListener('load', async function () {
+            // Verificar si hay hash para abrir carrito
+            if (window.location.hash === '#abrir-carrito') {
+                setTimeout(() => abrirCarrito(), 500);
+            }
+            iniciarPerfil();
+        });
+
+        // Cargar datos del usuario y sus pedidos
+        async function iniciarPerfil() {
+            // Usamos clienteSupabase que viene de app.js
+            const { data: { session } } = await clienteSupabase.auth.getSession();
+
+            // Si no hay sesión, mandar al inicio
+            if (!session) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            // Llenar datos de la tarjeta izquierda
+            document.getElementById('user-email').innerText = session.user.email;
+            document.getElementById('user-initial').innerText = session.user.email.charAt(0).toUpperCase();
+
+            // Cargar la tabla de la derecha
+            cargarPedidos(session.user.id);
+        }
+
+        // Consultar Base de Datos
+        async function cargarPedidos(userId) {
+            const tbody = document.getElementById('lista-pedidos');
+
+            // Consulta a la tabla 'ventas'
+            const { data: ventas, error } = await clienteSupabase
+                .from('ventas')
+                .select('*')
+                .eq('usuario_id', userId)
+                .order('fecha_compra', { ascending: false });
+
+            if (error) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:red;">Error cargando datos.</td></tr>`;
+                return;
+            }
+
+            if (!ventas || ventas.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:50px; color:#aaa;"><span class="material-icons" style="font-size:40px; margin-bottom:10px;">shopping_bag</span><br>Aún no tienes compras registradas.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            ventas.forEach(v => {
+                const fecha = new Date(v.fecha_compra).toLocaleDateString();
+
+                // Lógica de estados (Pagado/Pendiente)
+                let estadoPagoHtml = v.estado === 'pendiente_pago'
+                    ? '<span class="badge bg-pendiente"><span class="material-icons" style="font-size:12px;">schedule</span> Pendiente</span>'
+                    : '<span class="badge bg-pagado"><span class="material-icons" style="font-size:12px;">check_circle</span> Pagado</span>';
+
+                // Lógica de Envío
+                let estadoEnvioHtml = v.numero_guia_envio === 'PENDIENTE'
+                    ? '<span style="color:#007bff; font-weight:500;">📦 Preparando</span>'
+                    : `<div class="info-guia"><span style="color:#28a745; font-weight:bold;">🚚 En camino</span><span>${v.paqueteria}: <strong>${v.numero_guia_envio}</strong></span><button class="btn-copy" onclick="copiarAlPortapapeles('${v.numero_guia_envio}')"><span class="material-icons" style="font-size:14px;">content_copy</span></button></div>`;
+
+                // Botón de Acción
+                let botonAccionHtml = v.estado === 'pendiente_pago'
+                    ? `<a href="confirmacion.html?id=${v.id}" class="btn-accion btn-azul">Pagar / Info</a>`
+                    : (v.numero_guia_envio !== 'PENDIENTE' ? `<a href="${obtenerLinkRastreo(v.paqueteria, v.numero_guia_envio)}" target="_blank" class="btn-accion btn-rastrear">Rastrear ↗</a>` : `<button class="btn-accion btn-disabled">...</button>`);
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>#${v.id}</td>
+                        <td>${fecha}</td>
+                        <td><strong>$${v.total.toFixed(2)}</strong></td>
+                        <td>${estadoPagoHtml}</td>
+                        <td>${estadoEnvioHtml}</td>
+                        <td>${botonAccionHtml}</td>
+                    </tr>`;
+            });
+        }
+
+        // Función específica para eliminar cuenta
+        function abrirConfirmacionEliminar() { document.getElementById('modal-eliminar').style.display = 'block'; }
+
+        async function ejecutarEliminacion() {
+            const btn = document.querySelector('.btn-confirmar-danger');
+            btn.innerText = "Eliminando...";
+            btn.disabled = true;
+
+            const { error } = await clienteSupabase.rpc('eliminar_mi_cuenta');
+
+            if (error) {
+                mostrarNotificacion("Error: " + error.message, "error");
+                btn.innerText = "Sí, eliminar";
+                btn.disabled = false;
+                document.getElementById('modal-eliminar').style.display = 'none';
+            } else {
+                localStorage.clear();
+                await clienteSupabase.auth.signOut();
+                alert("Cuenta eliminada.");
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+
+</html>

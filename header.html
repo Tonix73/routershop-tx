@@ -1,0 +1,291 @@
+<style>
+    /* 1. PALETA DE COLORES */
+    :root {
+        --color-primario: #0056b3;
+        --color-secundario: #ffc107;
+        --color-oscuro: #212529;
+        --color-fondo: #f4f6f9;
+        --color-texto: #333333;
+        --color-blanco: #ffffff;
+    }
+
+    /* Ajuste Body para compensar barras fijas */
+    body {
+        background-color: var(--color-fondo) !important;
+        color: var(--color-texto);
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        margin: 0;
+        padding-top: 105px !important;
+        /* 35px TopBar + 70px Navbar */
+    }
+
+    /* --- TOP BAR (Avisos) --- */
+    .top-bar {
+        background-color: #000000;
+        color: var(--color-blanco);
+        height: 35px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85em;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    /* --- NAVBAR --- */
+    .navbar {
+        background-color: var(--color-oscuro);
+        position: fixed;
+        top: 35px;
+        /* Debajo de la Top Bar */
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 0 15px;
+        box-sizing: border-box;
+        height: 70px;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* LOGO */
+    .brand {
+        color: var(--color-blanco);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.4em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: 0.5px;
+    }
+
+    .brand span {
+        color: var(--color-secundario);
+    }
+
+    /* GRUPO DERECHA */
+    .nav-right-group {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .nav-links a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 0.95em;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        color: var(--color-oscuro);
+        background-color: var(--color-secundario);
+    }
+
+    /* ICONOS */
+    .nav-icons {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border-left: 1px solid rgba(255, 255, 255, 0.2);
+        padding-left: 15px;
+    }
+
+    .icon-link {
+        color: var(--color-blanco);
+        text-decoration: none;
+        position: relative;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+    }
+
+    .icon-link:hover {
+        color: var(--color-secundario);
+        transform: scale(1.1);
+    }
+
+    .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #dc3545;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 5px;
+        min-width: 15px;
+        text-align: center;
+        font-size: 10px;
+        font-weight: bold;
+        display: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-toggle {
+        display: none;
+        color: var(--color-blanco);
+        font-size: 30px;
+        cursor: pointer;
+        margin-left: 15px;
+    }
+
+    /* --- BOTÓN WHATSAPP --- */
+    .btn-whatsapp-float {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #25d366;
+        color: white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+        z-index: 2000;
+        text-decoration: none;
+        transition: transform 0.3s;
+        overflow: hidden;
+        /* Asegura que la imagen no se salga */
+    }
+
+    .btn-whatsapp-float:hover {
+        transform: scale(1.1);
+        background-color: #128c7e;
+    }
+
+    /* AJUSTE IMAGEN LOGO */
+    .btn-whatsapp-float img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: block;
+        }
+
+        .nav-links {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background-color: var(--color-oscuro);
+            flex-direction: column;
+            gap: 0;
+            padding: 10px 0;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+            border-top: 2px solid var(--color-secundario);
+        }
+
+        .nav-links.active {
+            display: flex;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-links a {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-icons {
+            border-left: none;
+        }
+
+        .nav-right-group {
+            gap: 5px;
+        }
+
+        .top-bar {
+            font-size: 0.75em;
+            padding: 0 10px;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="top-bar">
+    🚚 Envíos GRATIS a todo México en compras > $1,500 | 💳 3 MSI con Tarjeta
+</div>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo-brand">
+            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" alt="Logo" class="logo-img">
+
+            <div class="logo-text-container">
+                <span class="txt-main">RouterShop</span>
+                <span class="txt-accent">TX</span>
+            </div>
+        </a>
+
+        <div class="nav-right-group">
+            <div class="nav-links" id="nav-links">
+                <a href="index.html" id="link-inicio">Inicio</a>
+                <a href="admin.html" id="link-admin" style="display:none; color:var(--color-secundario);">Panel
+                    Admin</a>
+            </div>
+
+            <div class="nav-icons">
+                <a href="#" class="icon-link" id="btn-carrito" onclick="abrirCarritoGlobal(event)">
+                    <span class="material-icons">shopping_cart</span>
+                    <span id="contador-carrito-global" class="cart-badge">0</span>
+                </a>
+                <a href="#" id="btn-login-nav" class="icon-link" onclick="abrirLoginGlobal(event)">
+                    <span class="material-icons">login</span>
+                </a>
+                <a href="perfil.html" id="user-display" class="icon-link" style="display:none;">
+                    <span class="material-icons">account_circle</span>Mi Cuenta
+                </a>
+            </div>
+
+            <span class="material-icons menu-toggle" onclick="toggleMenu()">menu</span>
+        </div>
+    </div>
+</nav>
+
+<a href="https://wa.me/5212212070703?text=Hola,%20tengo%20una%20duda%20sobre%20un%20producto" class="btn-whatsapp-float"
+    target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+</a>

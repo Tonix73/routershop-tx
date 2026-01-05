@@ -1,0 +1,142 @@
+<style>
+    /* Estilos exclusivos del Footer */
+    .site-footer {
+        background-color: var(--color-oscuro);
+        color: rgba(255, 255, 255, 0.8);
+        padding: 60px 0 20px 0;
+        margin-top: 50px;
+        font-size: 0.9em;
+        border-top: 5px solid var(--color-secundario);
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        padding: 0 20px;
+    }
+
+    /* Columnas */
+    .footer-col h3 {
+        color: var(--color-blanco);
+        font-size: 1.2em;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .footer-col h3::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -8px;
+        width: 40px;
+        height: 3px;
+        background-color: var(--color-secundario);
+    }
+
+    .footer-col p {
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* --- NUEVOS ESTILOS PARA REDES SOCIALES --- */
+    .social-box {
+        margin-top: 25px;
+        display: flex;
+        gap: 15px; /* Espacio entre iconos */
+    }
+
+    .social-btn {
+        color: rgba(255, 255, 255, 0.6); /* Gris original */
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .social-btn .material-icons {
+        font-size: 28px; /* MÁS GRANDES (Antes eran ~16px) */
+    }
+
+    .social-btn:hover {
+        color: var(--color-secundario); /* Amarillo al pasar mouse */
+        transform: translateY(-3px); /* Pequeño salto hacia arriba */
+    }
+
+    /* Enlaces de lista */
+    .footer-links { list-style: none; padding: 0; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a {
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .footer-links a:hover { color: var(--color-secundario); transform: translateX(5px); }
+
+    /* Contacto */
+    .contact-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px; color: rgba(255, 255, 255, 0.6); }
+    .contact-item .material-icons { color: var(--color-secundario); margin-top: 3px; }
+
+    /* Copyright */
+    .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 40px; padding-top: 20px; text-align: center; font-size: 0.85em; color: rgba(255, 255, 255, 0.4); }
+</style>
+
+<footer class="site-footer">
+    <div class="footer-container">
+        
+        <div class="footer-col">
+            <h3>RouterShop TX</h3>
+            <p>Especialistas en redes y conectividad. Llevamos la mejor tecnología hasta la puerta de tu hogar o negocio en todo México.</p>
+            
+            <div class="social-box">
+                <a href="https://facebook.com" target="_blank" class="social-btn" title="Síguenos en Facebook">
+                    <span class="material-icons">facebook</span>
+                </a>
+                <a href="https://instagram.com" target="_blank" class="social-btn" title="Síguenos en Instagram">
+                    <span class="material-icons">photo_camera</span>
+                </a>
+                <a href="https://youtube.com" target="_blank" class="social-btn" title="Nuestro canal">
+                    <span class="material-icons">smart_display</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h3>Enlaces Rápidos</h3>
+            <ul class="footer-links">
+                <li><a href="index.html"><span class="material-icons" style="font-size:16px;">chevron_right</span> Inicio</a></li>
+                <li><a href="perfil.html"><span class="material-icons" style="font-size:16px;">chevron_right</span> Mi Cuenta</a></li>
+                <li><a href="terminos.html"><span class="material-icons" style="font-size:16px;">chevron_right</span> Términos y Condiciones</a></li>
+                <li><a href="privacidad.html"><span class="material-icons" style="font-size:16px;">chevron_right</span> Aviso de Privacidad</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>Contáctanos</h3>
+            <div class="contact-item">
+                <span class="material-icons">location_on</span>
+                <span>Av. Reforma 123, Centro Histórico,<br>Puebla, PUE. CP 72000</span>
+            </div>
+            <div class="contact-item">
+                <span class="material-icons">phone</span>
+                <span>(221) 207-0703</span>
+            </div>
+            <div class="contact-item">
+                <span class="material-icons">email</span>
+                <span>contacto@routershop.mx</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        &copy; 2026 RouterShop TX. Todos los derechos reservados.
+    </div>
+</footer>

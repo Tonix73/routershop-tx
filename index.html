@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RouterShop TX - Tienda de Redes</title>
+    <link rel="icon" type="image/png"
+        href="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <style>
+        /* Estilo "Banner de Marca" MEJORADO */
+        .brand-section {
+            /* Aseguramos un color de fondo por si las variables fallan */
+            background-color: #003366;
+            background: linear-gradient(135deg, var(--color-primario, #0a192f) 0%, #003366 100%);
+            color: white;
+            padding: 100px 20px;
+            /* Un poco más de aire arriba y abajo */
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+
+            /* 2. APLICAMOS LA FUENTE AQUÍ */
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .brand-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            /* Centrado vertical en escritorio */
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .brand-content {
+            flex: 1.5;
+            text-align: left;
+            /* En escritorio va a la izquierda */
+        }
+
+        /* TÍTULO (Ahora todo amarillo si borraste el span, o blanco y amarillo) */
+        .brand-content h2 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            line-height: 1.1;
+            color: #ffc107;
+            /* Hacemos TODO el texto amarillo como pediste */
+            letter-spacing: -0.5px;
+        }
+
+        /* Subrayado decorativo opcional para el texto destacado */
+        .brand-content h2 span::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+        }
+
+        .brand-content p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 35px;
+            font-weight: 300;
+            /* Letra más fina para el párrafo, se ve elegante */
+            max-width: 90%;
+            /* Evita que el texto sea demasiado ancho para leer */
+        }
+
+        .btn-brand {
+            display: inline-block;
+            background-color: var(--color-secundario, #ffc107);
+            color: var(--color-oscuro, #333);
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            border: 2px solid var(--color-secundario, #ffc107);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            /* Sombra suave */
+            text-transform: uppercase;
+            /* Texto en mayúsculas */
+            letter-spacing: 1px;
+            font-size: 0.9em;
+        }
+
+        .btn-brand:hover {
+            background-color: transparent;
+            color: white;
+            /* Al hacer hover, el texto se vuelve blanco */
+            border-color: white;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            transform: translateY(-3px);
+            /* Efecto de elevación */
+        }
+
+        .brand-visual {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Círculo decorativo detrás del icono */
+        .brand-visual::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .icon-bg {
+            font-size: 220px;
+            color: white;
+            opacity: 0.8;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: rotate(-10deg);
+            transition: transform 0.5s ease;
+        }
+
+        /* Animación suave al pasar el mouse sobre la sección */
+        .brand-section:hover .icon-bg {
+            transform: rotate(0deg) scale(1.05);
+        }
+
+        /* 3. VERSIÓN MÓVIL (Aquí forzamos el centrado) */
+        @media (max-width: 768px) {
+            .brand-container {
+                flex-direction: column;
+                /* Apila uno sobre otro */
+                align-items: center !important;
+                /* Fuerza centrado de la caja */
+                text-align: center !important;
+                /* Fuerza centrado del texto */
+                gap: 20px;
+            }
+
+            .brand-content {
+                width: 100%;
+                /* Ocupa todo el ancho */
+                text-align: center !important;
+                /* REQUERIDO: Fuerza al texto a centrarse */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                /* Centra el botón y párrafos */
+            }
+
+            .brand-content h2 {
+                font-size: 2.2em;
+                text-align: center;
+                /* Asegura que el título se centre */
+            }
+
+            .brand-content p {
+                margin-left: auto;
+                /* Truco para centrar bloques de texto */
+                margin-right: auto;
+                text-align: center;
+            }
+
+            .brand-visual {
+                display: block;
+                /* Mostramos el icono también en móvil pero más pequeño */
+                margin-top: 20px;
+            }
+
+            .icon-bg {
+                font-size: 100px;
+                /* Icono más pequeño en móvil */
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loader-wrapper" class="loader-container">
+
+        <div class="loader-brand">
+            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
+                style="height: 60px;">
+            <div style="text-align: left;">
+                <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
+                    RouterShop</div>
+                <div
+                    style="color: #ffc107; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif; line-height: 0.8;">
+                    TX</div>
+            </div>
+        </div>
+
+        <div class="spinner"></div>
+    </div>
+
+    <div id="app-navbar"></div>
+
+    <header class="hero-section">
+        <div class="hero-content">
+            <h1>Conecta tu Mundo 📡</h1>
+            <p>Encuentra los mejores routers, antenas y equipos de red para tu hogar o negocio con envío a todo México.
+            </p>
+            <a href="#lista-productos" class="btn-hero">Ver Catálogo</a>
+        </div>
+    </header>
+
+    <div class="beneficios-container">
+        <div class="beneficio-card">
+            <span class="material-icons">local_shipping</span>
+            <h4>Envío Rápido</h4>
+            <p>A todo el país</p>
+        </div>
+        <div class="beneficio-card">
+            <span class="material-icons">verified_user</span>
+            <h4>Garantía Real</h4>
+            <p>En todos los equipos</p>
+        </div>
+        <div class="beneficio-card">
+            <span class="material-icons">headset_mic</span>
+            <h4>Soporte Técnico</h4>
+            <p>Asesoría experta</p>
+        </div>
+        <div class="beneficio-card">
+            <span class="material-icons">credit_card</span>
+            <h4>Pago Seguro</h4>
+            <p>Mercado Pago, Efectivo, Tarjetas de Crédito y Débito y Transferencias</p>
+        </div>
+    </div>
+
+    <div class="controles">
+        <div class="buscador-box">
+            <input type="text" id="buscador" placeholder="🔍 Buscar routers, antenas, cables..."
+                onkeyup="buscarProducto()">
+        </div>
+        <div id="contenedor-categorias" class="botones-categorias">
+            <button class="btn-cat activo">Cargando...</button>
+        </div>
+    </div>
+
+    <div id="lista-productos" class="grid">
+        <div style="grid-column: span 3; text-align: center; padding: 40px;">
+            <p style="color:#666; font-size:1.2em;">📡 Cargando inventario...</p>
+        </div>
+    </div>
+
+    <section class="brand-section">
+        <div class="brand-container">
+            <div class="brand-content">
+                <h2>Ingeniería detrás <br>de cada conexión.</h2>
+                <p>
+                    En <strong>RouterShop TX</strong> no somos una tienda genérica. Somos especialistas en redes
+                    apasionados por el rendimiento.
+                    <br><br>
+                    Entendemos que un equipo no es solo hardware; es la columna vertebral de tu negocio o la estabilidad
+                    de tu hogar.
+                    Seleccionamos nuestro catálogo basándonos en pruebas técnicas reales, no en tendencias.
+                </p>
+                <a href="#lista-productos" class="btn-brand">Explorar Catálogo Profesional</a>
+            </div>
+
+            <div class="brand-visual">
+                <span class="material-icons icon-bg">hub</span>
+            </div>
+        </div>
+    </section>
+
+    <div id="app-footer"></div>
+
+    <div id="notificacion-toast" class="notificacion-container">
+        <span id="notif-icono" class="material-icons">info</span><span id="notif-mensaje">Mensaje</span>
+    </div>
+
+    <div id="modal-carrito" class="modal-fondo">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" onclick="cerrarModal('modal-carrito')">&times;</span>
+            <h2
+                style="margin-top:0; color:#333; display:flex; align-items:center; gap:10px; justify-content: center !important;">
+                <span class="material-icons" style="color:#0056b3;">shopping_cart</span> Tu Carrito
+            </h2>
+            <div style="max-height: 50vh; overflow-y: auto; overflow-x: hidden;">
+                <table class="tabla-carrito">
+                    <tbody id="cuerpo-tabla-carrito"></tbody>
+                </table>
+            </div>
+            <div class="total-pagar" id="total-carrito">Total: $0.00</div>
+            <button id="btn-pagar-dinamico" class="btn-ir-pagar" onclick="procederAlPago()">Proceder al Pago
+                ➝</button>
+        </div>
+    </div>
+
+    <div id="modal-login" class="modal-fondo">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" onclick="cerrarModal('modal-login')">&times;</span>
+            <h2 id="titulo-login" style="text-align:center; margin-top:0;">Iniciar Sesión</h2>
+            <div class="form-grupo"><label>Correo</label><input type="email" id="email-input" class="input-login">
+            </div>
+            <div class="form-grupo"><label>Contraseña</label><input type="password" id="password-input"
+                    class="input-login">
+                <div style="text-align: right; margin-top: 5px;"><a href="#" onclick="recuperarContrasena()"
+                        style="color: #666; font-size: 0.85em; text-decoration: none;">¿Olvidaste tu contraseña?</a>
+                </div>
+            </div>
+            <button class="btn-full" onclick="manejarAuth()">Entrar</button>
+            <p id="error-login" style="color: red; text-align: center; margin-top: 15px; font-size:0.9em;"></p>
+            <span class="link-toggle" onclick="toggleModoLogin()">¿No tienes cuenta? Regístrate aquí</span>
+        </div>
+    </div>
+
+    <div id="modal-reset-password" class="modal-fondo">
+        <div class="modal-contenido" style="border-top-color: #ffc107;">
+            <h2 style="text-align:center; margin-top:0;">🔒 Nueva Contraseña</h2>
+            <div class="form-grupo"><input type="password" id="new-password-input" class="input-login"
+                    placeholder="Mínimo 6 caracteres"></div>
+            <button class="btn-full" onclick="guardarNuevaContrasena()"
+                style="background-color:#ffc107; color:#333;">Actualizar</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let categoriaActual = null;
+
+        // Al cargar la página
+        window.onload = function () {
+            // Verificar si hay hash para abrir modales (redirección desde perfil)
+            if (window.location.hash === '#abrir-carrito') { setTimeout(() => abrirCarrito(), 500); history.replaceState(null, null, 'index.html'); }
+            if (window.location.hash === '#abrir-login') { setTimeout(() => abrirLogin(), 500); history.replaceState(null, null, 'index.html'); }
+
+            // Cargar datos
+            cargarCategorias();
+            cargarProductos();
+        };
+
+        // Cargar Categorías
+        async function cargarCategorias() {
+            const { data } = await clienteSupabase.from('categorias').select('*').order('nombre');
+            if (data) {
+                const contenedor = document.getElementById('contenedor-categorias');
+                contenedor.innerHTML = '<button class="btn-cat activo" onclick="filtrarPorCategoria(null, this)">Todos</button>';
+                data.forEach(cat => {
+                    contenedor.innerHTML += `<button class="btn-cat" onclick="filtrarPorCategoria(${cat.id}, this)">${cat.nombre}</button>`;
+                });
+            }
+        }
+
+        // Cargar Productos
+        async function cargarProductos(busqueda = '') {
+            let consulta = clienteSupabase.from('productos').select('*');
+
+            if (categoriaActual !== null) consulta = consulta.eq('categoria_id', categoriaActual);
+            if (busqueda.length > 0) consulta = consulta.ilike('nombre', `%${busqueda}%`);
+
+            const { data, error } = await consulta;
+
+            if (error) {
+                console.error(error);
+                document.getElementById('lista-productos').innerHTML = '<p style="text-align:center; width:100%;">Error cargando productos.</p>';
+                return;
+            }
+
+            mostrarEnPantalla(data);
+        }
+
+        // Renderizar (Dibujar) productos
+        function mostrarEnPantalla(productos) {
+            const contenedor = document.getElementById('lista-productos');
+            contenedor.innerHTML = '';
+
+            if (!productos || productos.length === 0) {
+                contenedor.innerHTML = '<div style="grid-column:span 3; text-align:center; padding:20px; color:#777;">No se encontraron productos que coincidan.</div>';
+                return;
+            }
+
+            productos.forEach(prod => {
+                const img = prod.imagen_url || 'https://via.placeholder.com/150';
+                contenedor.innerHTML += `
+                    <div class="card">
+                        <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit; display:block;">
+                            <img src="${img}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/150'">
+                            <div>
+                                <h3>${prod.nombre}</h3>
+                                <p class="precio">$${prod.precio.toFixed(2)}</p>
+                            </div>
+                        </a>
+                        <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${prod.precio}, '${img}')">
+                            <span class="material-icons">add_shopping_cart</span> Agregar
+                        </button>
+                    </div>`;
+            });
+        }
+
+        // Filtros
+        function filtrarPorCategoria(id, btn) {
+            categoriaActual = id;
+            document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('activo'));
+            btn.classList.add('activo');
+            cargarProductos(document.getElementById('buscador').value);
+        }
+
+        function buscarProducto() {
+            cargarProductos(document.getElementById('buscador').value);
+        }
+    </script>
+</body>
+
+</html>
