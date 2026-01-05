@@ -343,9 +343,10 @@
                 // 4. INTENTAR ENVIAR CORREO (Sin bloquear el flujo)
                 // Usamos un bloque try/catch interno para que EmailJS nunca detenga la redirección
                 try {
+                    // Busca esta parte en tu función confirmarCompra
                     const parametrosEmail = {
                         to_name: textoNombre,
-                        to_email: usuarioActual.email || '', // Evita el error de 'empty address'
+                        to_email: usuarioActual ? usuarioActual.email : "correo_no_detectado@test.com", // <-- Cambio aquí
                         order_id: idVenta,
                         total: totalFinal.toFixed(2),
                         address: textoDireccion,
