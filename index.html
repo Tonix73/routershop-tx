@@ -56,13 +56,21 @@
             letter-spacing: -0.5px;
         }
 
+        .brand-content h1 {
+            font-size: 2.9em;
+            margin: 0 0 15px 0;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
         /* Subrayado decorativo opcional para el texto destacado */
         .brand-content h2 span::after {
             content: '';
             display: block;
             width: 100%;
             height: 8px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.568);
             position: absolute;
             bottom: 5px;
             left: 0;
@@ -72,7 +80,7 @@
             font-size: 1.15em;
             line-height: 1.8;
             opacity: 0.9;
-            margin-bottom: 35px;
+
             font-weight: 300;
             /* Letra más fina para el párrafo, se ve elegante */
             max-width: 90%;
@@ -189,6 +197,107 @@
                 opacity: 0.5;
             }
         }
+
+        /* Contenedor general de la sección */
+.contacto-profesional {
+    padding: 60px 20px;
+    background-color: #f9f9f9; /* Un fondo gris muy suave para separar del blanco */
+}
+
+.contenedor-principal {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;         /* Esto pone los elementos lado a lado */
+    flex-wrap: wrap;       /* Permite que bajen si no caben (móvil) */
+    background: white;
+    border-radius: 20px;   /* Bordes redondeados para toda la tarjeta */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* Sombra elegante */
+    overflow: hidden;      /* Para que nada se salga de los bordes redondeados */
+}
+
+/* Estilos de la Columna de Información */
+.info-box {
+    flex: 1 1 400px;       /* Crece, se encoge, base de 400px */
+    padding: 40px;
+    background-color: #fff;
+}
+
+.info-box h3 {
+    color: #003366; /* Azul oscuro (parecido al de tu header) */
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #FFC107; /* Línea amarilla decorativa */
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.desc-tienda {
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.dato-fila {
+    display: flex;
+    align-items: start;
+    margin-bottom: 20px;
+}
+
+.icono {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    background: #f0f4f8;
+    padding: 10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos del Botón */
+.btn-como-llegar {
+    display: inline-block;
+    background-color: #FFC107; /* El amarillo de tus botones */
+    color: #000;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.btn-como-llegar:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px); /* Efecto de elevación al pasar el mouse */
+}
+
+/* Estilos de la Columna del Mapa */
+.mapa-box {
+    flex: 1 1 400px;
+    min-height: 400px; /* Altura mínima para que se vea bien el mapa */
+    position: relative;
+}
+
+.mapa-box iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block; /* Elimina espacios extraños */
+}
+
+/* Ajuste para Móviles */
+@media (max-width: 768px) {
+    .contenedor-principal {
+        flex-direction: column-reverse; /* Pone el mapa arriba y la info abajo en móvil */
+    }
+    
+    .mapa-box {
+        min-height: 300px; /* Mapa un poco más pequeño en celular */
+    }
+}
     </style>
 </head>
 
@@ -263,6 +372,7 @@
     <section class="brand-section">
         <div class="brand-container">
             <div class="brand-content">
+                <h1>QUIENES SOMOS</h1>
                 <h2>Ingeniería detrás <br>de cada conexión.</h2>
                 <p>
                     En <strong>RouterShop TX</strong> no somos una tienda genérica. Somos especialistas en redes
@@ -280,6 +390,45 @@
             </div>
         </div>
     </section>
+
+<section class="contacto-profesional">
+    <div class="contenedor-principal">
+        
+        <div class="info-box">
+            <h3>📍 Visítanos en Tienda</h3>
+            <p class="desc-tienda">Ven a conocer nuestros equipos y recibe asesoría personalizada de expertos en redes.</p>
+            
+            <div class="dato-fila">
+                <span class="icono">🏢</span>
+                <p><strong>Dirección:</strong><br>31 de Julio 55, Naciones Unidas<br>72210 Heroica Puebla de Zaragoza, Pue.</p>
+            </div>
+
+            <div class="dato-fila">
+                <span class="icono">🕒</span>
+                <p><strong>Horario:</strong><br>Lunes a Viernes: 9:00 AM - 7:00 PM<br>Sábados: 10:00 AM - 3:00 PM</p>
+            </div>
+
+            <div class="dato-fila">
+                <span class="icono">📞</span>
+                <p><strong>Teléfono:</strong><br>+52 (221) 207-0703</p>
+            </div>
+
+            <a href="https://maps.google.com/?q=31+de+Julio+55,+Naciones+Unidas,+Puebla" target="_blank" class="btn-como-llegar">
+                Cómo llegar ➔
+            </a>
+        </div>
+
+        <div class="mapa-box">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13688.317205220354!2d-98.18038697724467!3d19.072223049076275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cfc10bc647a737%3A0x2d70a18fb351ee2e!2s31%20de%20Julio%2055%2C%20Naciones%20Unidas%2C%2072210%20Heroica%20Puebla%20de%20Zaragoza%2C%20Pue.!5e0!3m2!1ses!2smx!4v1767981110929!5m2!1ses!2smx"
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+
+    </div>
+</section>
 
     <div id="app-footer"></div>
 
