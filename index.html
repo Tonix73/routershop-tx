@@ -15,17 +15,13 @@
     <style>
         /* Estilo "Banner de Marca" MEJORADO */
         .brand-section {
-            /* Aseguramos un color de fondo por si las variables fallan */
             background-color: #003366;
             background: linear-gradient(135deg, var(--color-primario, #0a192f) 0%, #003366 100%);
             color: white;
             padding: 100px 20px;
-            /* Un poco más de aire arriba y abajo */
             margin-top: 60px;
             position: relative;
             overflow: hidden;
-
-            /* 2. APLICAMOS LA FUENTE AQUÍ */
             font-family: 'Poppins', sans-serif;
         }
 
@@ -34,7 +30,6 @@
             margin: 0 auto;
             display: flex;
             align-items: center;
-            /* Centrado vertical en escritorio */
             justify-content: space-between;
             gap: 40px;
         }
@@ -42,17 +37,14 @@
         .brand-content {
             flex: 1.5;
             text-align: left;
-            /* En escritorio va a la izquierda */
         }
 
-        /* TÍTULO (Ahora todo amarillo si borraste el span, o blanco y amarillo) */
         .brand-content h2 {
             font-size: 2.8em;
             margin-bottom: 15px;
             font-weight: 700;
             line-height: 1.1;
             color: #ffc107;
-            /* Hacemos TODO el texto amarillo como pediste */
             letter-spacing: -0.5px;
         }
 
@@ -64,7 +56,6 @@
             color: white;
         }
 
-        /* Subrayado decorativo opcional para el texto destacado */
         .brand-content h2 span::after {
             content: '';
             display: block;
@@ -80,11 +71,8 @@
             font-size: 1.15em;
             line-height: 1.8;
             opacity: 0.9;
-
             font-weight: 300;
-            /* Letra más fina para el párrafo, se ve elegante */
             max-width: 90%;
-            /* Evita que el texto sea demasiado ancho para leer */
         }
 
         .btn-brand {
@@ -98,9 +86,7 @@
             transition: 0.3s;
             border: 2px solid var(--color-secundario, #ffc107);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            /* Sombra suave */
             text-transform: uppercase;
-            /* Texto en mayúsculas */
             letter-spacing: 1px;
             font-size: 0.9em;
         }
@@ -108,11 +94,9 @@
         .btn-brand:hover {
             background-color: transparent;
             color: white;
-            /* Al hacer hover, el texto se vuelve blanco */
             border-color: white;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
             transform: translateY(-3px);
-            /* Efecto de elevación */
         }
 
         .brand-visual {
@@ -124,7 +108,6 @@
             position: relative;
         }
 
-        /* Círculo decorativo detrás del icono */
         .brand-visual::before {
             content: '';
             position: absolute;
@@ -144,166 +127,148 @@
             transition: transform 0.5s ease;
         }
 
-        /* Animación suave al pasar el mouse sobre la sección */
         .brand-section:hover .icon-bg {
             transform: rotate(0deg) scale(1.05);
         }
 
-        /* 3. VERSIÓN MÓVIL (Aquí forzamos el centrado) */
         @media (max-width: 768px) {
             .brand-container {
                 flex-direction: column;
-                /* Apila uno sobre otro */
                 align-items: center !important;
-                /* Fuerza centrado de la caja */
                 text-align: center !important;
-                /* Fuerza centrado del texto */
                 gap: 20px;
             }
 
             .brand-content {
                 width: 100%;
-                /* Ocupa todo el ancho */
                 text-align: center !important;
-                /* REQUERIDO: Fuerza al texto a centrarse */
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                /* Centra el botón y párrafos */
             }
 
             .brand-content h2 {
                 font-size: 2.2em;
                 text-align: center;
-                /* Asegura que el título se centre */
             }
 
             .brand-content p {
                 margin-left: auto;
-                /* Truco para centrar bloques de texto */
                 margin-right: auto;
                 text-align: center;
             }
 
             .brand-visual {
                 display: block;
-                /* Mostramos el icono también en móvil pero más pequeño */
                 margin-top: 20px;
             }
 
             .icon-bg {
                 font-size: 100px;
-                /* Icono más pequeño en móvil */
                 opacity: 0.5;
             }
         }
 
-        /* Contenedor general de la sección */
-.contacto-profesional {
-    padding: 60px 20px;
-    background-color: #f9f9f9; /* Un fondo gris muy suave para separar del blanco */
-}
+        .contacto-profesional {
+            padding: 60px 20px;
+            background-color: #f9f9f9;
+        }
 
-.contenedor-principal {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;         /* Esto pone los elementos lado a lado */
-    flex-wrap: wrap;       /* Permite que bajen si no caben (móvil) */
-    background: white;
-    border-radius: 20px;   /* Bordes redondeados para toda la tarjeta */
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* Sombra elegante */
-    overflow: hidden;      /* Para que nada se salga de los bordes redondeados */
-}
+        .contenedor-principal {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
 
-/* Estilos de la Columna de Información */
-.info-box {
-    flex: 1 1 400px;       /* Crece, se encoge, base de 400px */
-    padding: 40px;
-    background-color: #fff;
-}
+        .info-box {
+            flex: 1 1 400px;
+            padding: 40px;
+            background-color: #fff;
+        }
 
-.info-box h3 {
-    color: #003366; /* Azul oscuro (parecido al de tu header) */
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-    border-bottom: 3px solid #FFC107; /* Línea amarilla decorativa */
-    display: inline-block;
-    padding-bottom: 5px;
-}
+        .info-box h3 {
+            color: #003366;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #FFC107;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
 
-.desc-tienda {
-    color: #666;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
+        .desc-tienda {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
 
-.dato-fila {
-    display: flex;
-    align-items: start;
-    margin-bottom: 20px;
-}
+        .dato-fila {
+            display: flex;
+            align-items: start;
+            margin-bottom: 20px;
+        }
 
-.icono {
-    font-size: 1.5rem;
-    margin-right: 15px;
-    background: #f0f4f8;
-    padding: 10px;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .icono {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            background: #f0f4f8;
+            padding: 10px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-/* Estilos del Botón */
-.btn-como-llegar {
-    display: inline-block;
-    background-color: #FFC107; /* El amarillo de tus botones */
-    color: #000;
-    padding: 12px 30px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 20px;
-    transition: transform 0.2s, background 0.2s;
-}
+        .btn-como-llegar {
+            display: inline-block;
+            background-color: #FFC107;
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.2s, background 0.2s;
+        }
 
-.btn-como-llegar:hover {
-    background-color: #e0a800;
-    transform: translateY(-2px); /* Efecto de elevación al pasar el mouse */
-}
+        .btn-como-llegar:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+        }
 
-/* Estilos de la Columna del Mapa */
-.mapa-box {
-    flex: 1 1 400px;
-    min-height: 400px; /* Altura mínima para que se vea bien el mapa */
-    position: relative;
-}
+        .mapa-box {
+            flex: 1 1 400px;
+            min-height: 400px;
+            position: relative;
+        }
 
-.mapa-box iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    display: block; /* Elimina espacios extraños */
-}
+        .mapa-box iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
 
-/* Ajuste para Móviles */
-@media (max-width: 768px) {
-    .contenedor-principal {
-        flex-direction: column-reverse; /* Pone el mapa arriba y la info abajo en móvil */
-    }
-    
-    .mapa-box {
-        min-height: 300px; /* Mapa un poco más pequeño en celular */
-    }
-}
+        @media (max-width: 768px) {
+            .contenedor-principal {
+                flex-direction: column-reverse;
+            }
+
+            .mapa-box {
+                min-height: 300px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div id="loader-wrapper" class="loader-container">
-
         <div class="loader-brand">
             <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
                 style="height: 60px;">
@@ -315,7 +280,6 @@
                     TX</div>
             </div>
         </div>
-
         <div class="spinner"></div>
     </div>
 
@@ -349,15 +313,11 @@
         <div class="beneficio-card">
             <span class="material-icons">credit_card</span>
             <h4>Pago Seguro</h4>
-            <p>Mercado Pago, Efectivo, Tarjetas de Crédito y Débito y Transferencias</p>
+            <p>Tarjetas de Crédito, Débito y Transferencias</p>
         </div>
     </div>
 
     <div class="controles">
-        <div class="buscador-box">
-            <input type="text" id="buscador" placeholder="🔍 Buscar routers, antenas, cables..."
-                onkeyup="buscarProducto()">
-        </div>
         <div id="contenedor-categorias" class="botones-categorias">
             <button class="btn-cat activo">Cargando...</button>
         </div>
@@ -391,44 +351,44 @@
         </div>
     </section>
 
-<section class="contacto-profesional">
-    <div class="contenedor-principal">
-        
-        <div class="info-box">
-            <h3>📍 Visítanos en Tienda</h3>
-            <p class="desc-tienda">Ven a conocer nuestros equipos y recibe asesoría personalizada de expertos en redes.</p>
-            
-            <div class="dato-fila">
-                <span class="icono">🏢</span>
-                <p><strong>Dirección:</strong><br>31 de Julio 55, Naciones Unidas<br>72210 Heroica Puebla de Zaragoza, Pue.</p>
+    <section class="contacto-profesional">
+        <div class="contenedor-principal">
+
+            <div class="info-box">
+                <h3>📍 Visítanos en Tienda</h3>
+                <p class="desc-tienda">Ven a conocer nuestros equipos y recibe asesoría personalizada de expertos en
+                    redes.</p>
+
+                <div class="dato-fila">
+                    <span class="icono">🏢</span>
+                    <p><strong>Dirección:</strong><br>31 de Julio 55, Naciones Unidas<br>72210 Heroica Puebla de
+                        Zaragoza, Pue.</p>
+                </div>
+
+                <div class="dato-fila">
+                    <span class="icono">🕒</span>
+                    <p><strong>Horario:</strong><br>Lunes a Viernes: 9:00 AM - 7:00 PM<br>Sábados: 10:00 AM - 3:00 PM
+                    </p>
+                </div>
+
+                <div class="dato-fila">
+                    <span class="icono">📞</span>
+                    <p><strong>Teléfono:</strong><br>+52 (221) 207-0703</p>
+                </div>
+
+                <a href="https://maps.google.com/?q=31+de+Julio+55,+Naciones+Unidas,+Puebla" target="_blank" class="btn-como-llegar">
+                    Cómo llegar ➔
+                </a>
             </div>
 
-            <div class="dato-fila">
-                <span class="icono">🕒</span>
-                <p><strong>Horario:</strong><br>Lunes a Viernes: 9:00 AM - 7:00 PM<br>Sábados: 10:00 AM - 3:00 PM</p>
+            <div class="mapa-box">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13688.317205220354!2d-98.18038697724467!3d19.072223049076275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cfc10bc647a737%3A0x2d70a18fb351ee2e!2s31%20de%20Julio%2055%2C%20Naciones%20Unidas%2C%2072210%20Heroica%20Puebla%20de%20Zaragoza%2C%20Pue.!5e0!3m2!1ses!2smx!4v1767981110929!5m2!1ses!2smx" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
 
-            <div class="dato-fila">
-                <span class="icono">📞</span>
-                <p><strong>Teléfono:</strong><br>+52 (221) 207-0703</p>
-            </div>
-
-            <a href="https://maps.google.com/?q=31+de+Julio+55,+Naciones+Unidas,+Puebla" target="_blank" class="btn-como-llegar">
-                Cómo llegar ➔
-            </a>
         </div>
-
-        <div class="mapa-box">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13688.317205220354!2d-98.18038697724467!3d19.072223049076275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cfc10bc647a737%3A0x2d70a18fb351ee2e!2s31%20de%20Julio%2055%2C%20Naciones%20Unidas%2C%2072210%20Heroica%20Puebla%20de%20Zaragoza%2C%20Pue.!5e0!3m2!1ses!2smx!4v1767981110929!5m2!1ses!2smx"
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-        </div>
-
-    </div>
-</section>
+    </section>
 
     <div id="app-footer"></div>
 
@@ -438,25 +398,26 @@
 
     <div id="modal-carrito" class="modal-fondo">
         <div class="modal-contenido">
-            <span class="cerrar-modal" onclick="cerrarModal('modal-carrito')">&times;</span>
+            <span class="cerrar-modal" onclick="cerrarModal('modal-carrito')">×</span>
             <h2
                 style="margin-top:0; color:#333; display:flex; align-items:center; gap:10px; justify-content: center !important;">
                 <span class="material-icons" style="color:#0056b3;">shopping_cart</span> Tu Carrito
             </h2>
+
             <div style="max-height: 50vh; overflow-y: auto; overflow-x: hidden;">
                 <table class="tabla-carrito">
                     <tbody id="cuerpo-tabla-carrito"></tbody>
                 </table>
             </div>
+
             <div class="total-pagar" id="total-carrito">Total: $0.00</div>
-            <button id="btn-pagar-dinamico" class="btn-ir-pagar" onclick="procederAlPago()">Proceder al Pago
-                ➝</button>
+            <button id="btn-pagar-dinamico" class="btn-ir-pagar" onclick="procederAlPago()">Proceder al Pago ➝</button>
         </div>
     </div>
 
     <div id="modal-login" class="modal-fondo">
         <div class="modal-contenido">
-            <span class="cerrar-modal" onclick="cerrarModal('modal-login')">&times;</span>
+            <span class="cerrar-modal" onclick="cerrarModal('modal-login')">×</span>
             <h2 id="titulo-login" style="text-align:center; margin-top:0;">Iniciar Sesión</h2>
             <div class="form-grupo"><label>Correo</label><input type="email" id="email-input" class="input-login">
             </div>
@@ -562,11 +523,18 @@
             categoriaActual = id;
             document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('activo'));
             btn.classList.add('activo');
-            cargarProductos(document.getElementById('buscador').value);
+            
+            // Validamos que exista el buscador antes de pedir su valor
+            const inputBusqueda = document.getElementById('buscador');
+            const valorBusqueda = inputBusqueda ? inputBusqueda.value : '';
+            cargarProductos(valorBusqueda);
         }
 
+        // Esta función se llamará desde el header cuando pegues el código allá
         function buscarProducto() {
-            cargarProductos(document.getElementById('buscador').value);
+            const inputBusqueda = document.getElementById('buscador');
+            const valorBusqueda = inputBusqueda ? inputBusqueda.value : '';
+            cargarProductos(valorBusqueda);
         }
     </script>
 </body>

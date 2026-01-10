@@ -85,6 +85,7 @@ function abrirCarrito() {
     }
 }
 
+// --- FUNCIÓN MODIFICADA: Renderizado con botones +/- ---
 function renderizarCarrito() {
     const cuerpo = document.getElementById('cuerpo-tabla-carrito');
     const totalElem = document.getElementById('total-carrito');
@@ -105,11 +106,23 @@ function renderizarCarrito() {
     carrito.forEach(item => {
         const subtotal = item.precio * item.cantidad;
         total += subtotal;
+
+        // AQUÍ ESTÁ LA MEJORA: Botones en lugar de texto plano
         cuerpo.innerHTML += `
             <tr>
                 <td><img src="${item.imagen}" onerror="this.src='https://via.placeholder.com/50'"></td>
                 <td>${item.nombre}</td>
-                <td style="text-align:center;">x${item.cantidad}</td>
+                <td>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <button onclick="cambiarCantidad(${item.id}, -1)" 
+                            style="width: 24px; height: 24px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;">-</button>
+                        
+                        <span style="font-weight: bold; min-width: 20px; text-align: center;">${item.cantidad}</span>
+                        
+                        <button onclick="cambiarCantidad(${item.id}, 1)" 
+                            style="width: 24px; height: 24px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;">+</button>
+                    </div>
+                </td>
                 <td>$${subtotal.toFixed(2)}</td>
                 <td><button class="btn-eliminar" onclick="eliminarDelCarrito(${item.id})"><span class="material-icons" style="font-size:18px;">close</span></button></td>
             </tr>`;
@@ -117,6 +130,20 @@ function renderizarCarrito() {
 
     if (totalElem) totalElem.innerText = `Total: $${total.toFixed(2)}`;
     if (btnPagar) btnPagar.style.display = 'block';
+}
+
+// --- NUEVA FUNCIÓN: Lógica para sumar/restar ---
+function cambiarCantidad(id, cambio) {
+    const item = carrito.find(i => i.id === id);
+    if (item) {
+        item.cantidad += cambio;
+
+        // Evitar que la cantidad sea menor a 1
+        if (item.cantidad < 1) item.cantidad = 1;
+
+        guardarCarrito();
+        renderizarCarrito(); // Repintar la tabla para ver el cambio
+    }
 }
 
 function eliminarDelCarrito(id) {
@@ -257,4 +284,83 @@ function obtenerLinkRastreo(paqueteria, guia) {
     else if (pack.includes('fedex')) return `https://www.fedex.com/fedextrack/?trknbr=${guia}`;
     else if (pack.includes('estafeta')) return `https://www.estafeta.com/Herramientas/Rastreo?guia=${guia}`;
     else return `https://www.google.com/search?q=rastreo+${paqueteria}+${guia}`;
+}
+
+
+// ==========================================
+// 7. LÓGICA DEL BUSCADOR GLOBAL (MODAL)
+// ==========================================
+
+function toggleBuscador(e) {
+    if (e) e.preventDefault();
+    const modal = document.getElementById('modal-busqueda');
+    const input = document.getElementById('input-busqueda-global');
+
+    if (modal.style.display === 'block') {
+        modal.style.display = 'none';
+        input.value = ''; // Limpiar al cerrar
+        document.getElementById('resultados-busqueda-container').style.display = 'none';
+    } else {
+        modal.style.display = 'block';
+        input.focus(); // Poner el cursor automáticamente para escribir
+    }
+}
+
+// Cerrar si das click en el fondo oscuro
+window.addEventListener('click', function (e) {
+    const modal = document.getElementById('modal-busqueda');
+    if (e.target === modal) {
+        toggleBuscador();
+    }
+});
+
+let timeoutBusqueda = null;
+
+async function buscarEnTiempoReal(texto) {
+    const contenedor = document.getElementById('resultados-busqueda-container');
+
+    // Si borró todo, ocultamos la lista
+    if (texto.length === 0) {
+        contenedor.style.display = 'none';
+        return;
+    }
+
+    // Pequeño retraso para no saturar la base de datos mientras escribes rápido
+    clearTimeout(timeoutBusqueda);
+    timeoutBusqueda = setTimeout(async () => {
+
+        contenedor.style.display = 'block';
+        contenedor.innerHTML = '<div style="padding:15px; color:#666;">Buscando...</div>';
+
+        // Consulta a Supabase
+        const { data, error } = await clienteSupabase
+            .from('productos')
+            .select('id, nombre, precio, imagen_url')
+            .ilike('nombre', `%${texto}%`)
+            .limit(5); // Máximo 5 resultados
+
+        contenedor.innerHTML = ''; // Limpiar "Buscando..."
+
+        if (error || !data || data.length === 0) {
+            contenedor.innerHTML = '<div style="padding:15px; color:#666;">No se encontraron productos :(</div>';
+            return;
+        }
+
+        // Pintar resultados
+        data.forEach(prod => {
+            const img = prod.imagen_url || 'https://via.placeholder.com/50';
+
+            // Al dar click, vamos a producto.html?id=...
+            contenedor.innerHTML += `
+                <a href="producto.html?id=${prod.id}" class="item-resultado">
+                    <img src="${img}" alt="${prod.nombre}">
+                    <div class="item-info-res">
+                        <h4>${prod.nombre}</h4>
+                        <span>$${prod.precio.toFixed(2)}</span>
+                    </div>
+                </a>
+            `;
+        });
+
+    }, 300); // Espera 300ms después de que dejes de escribir
 }

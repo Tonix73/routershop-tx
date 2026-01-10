@@ -9,17 +9,15 @@
         --color-blanco: #ffffff;
     }
 
-    /* Ajuste Body para compensar barras fijas */
     body {
         background-color: var(--color-fondo) !important;
         color: var(--color-texto);
         font-family: 'Segoe UI', system-ui, sans-serif;
         margin: 0;
         padding-top: 105px !important;
-        /* 35px TopBar + 70px Navbar */
     }
 
-    /* --- TOP BAR (Avisos) --- */
+    /* --- TOP BAR --- */
     .top-bar {
         background-color: #000000;
         color: var(--color-blanco);
@@ -33,7 +31,6 @@
         justify-content: center;
         font-size: 0.85em;
         font-weight: 500;
-        letter-spacing: 0.5px;
     }
 
     /* --- NAVBAR --- */
@@ -41,11 +38,10 @@
         background-color: var(--color-oscuro);
         position: fixed;
         top: 35px;
-        /* Debajo de la Top Bar */
         width: 100%;
         z-index: 1000;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        padding: 0 15px;
+        padding: 0 20px;
         box-sizing: border-box;
         height: 70px;
         display: flex;
@@ -62,20 +58,16 @@
     }
 
     /* LOGO */
-    .brand {
-        color: var(--color-blanco);
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 1.4em;
+    .logo-brand {
         display: flex;
         align-items: center;
+        text-decoration: none;
         gap: 10px;
-        letter-spacing: 0.5px;
     }
-
-    .brand span {
-        color: var(--color-secundario);
+    .brand-text {
+        color: white; font-weight: 700; font-size: 1.4em;
     }
+    .brand-text span { color: var(--color-secundario); }
 
     /* GRUPO DERECHA */
     .nav-right-group {
@@ -84,25 +76,14 @@
         gap: 20px;
     }
 
-    .nav-links {
-        display: flex;
-        gap: 15px;
-    }
-
+    .nav-links { display: flex; gap: 15px; }
     .nav-links a {
-        color: rgba(255, 255, 255, 0.85);
+        color: rgba(255, 255, 255, 0.9);
         text-decoration: none;
-        font-size: 0.95em;
         font-weight: 500;
-        padding: 8px 12px;
-        border-radius: 4px;
-        transition: all 0.3s ease;
+        transition: 0.3s;
     }
-
-    .nav-links a:hover {
-        color: var(--color-oscuro);
-        background-color: var(--color-secundario);
-    }
+    .nav-links a:hover { color: var(--color-secundario); }
 
     /* ICONOS */
     .nav-icons {
@@ -110,182 +91,167 @@
         align-items: center;
         gap: 15px;
         border-left: 1px solid rgba(255, 255, 255, 0.2);
-        padding-left: 15px;
+        padding-left: 20px;
     }
 
     .icon-link {
-        color: var(--color-blanco);
+        color: white;
         text-decoration: none;
         position: relative;
-        transition: 0.3s;
         display: flex;
-        align-items: center;
+        transition: 0.3s;
+        cursor: pointer;
     }
-
-    .icon-link:hover {
-        color: var(--color-secundario);
-        transform: scale(1.1);
-    }
+    .icon-link:hover { color: var(--color-secundario); transform: scale(1.1); }
 
     .cart-badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background-color: #dc3545;
-        color: white;
-        border-radius: 50%;
-        padding: 2px 5px;
-        min-width: 15px;
-        text-align: center;
-        font-size: 10px;
-        font-weight: bold;
+        position: absolute; top: -8px; right: -8px;
+        background-color: #dc3545; color: white;
+        border-radius: 50%; padding: 2px 5px;
+        font-size: 10px; font-weight: bold;
         display: none;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    .menu-toggle {
-        display: none;
-        color: var(--color-blanco);
-        font-size: 30px;
-        cursor: pointer;
-        margin-left: 15px;
-    }
+    .menu-toggle { display: none; color: white; font-size: 28px; cursor: pointer; }
 
-    /* --- BOTÓN WHATSAPP --- */
-    .btn-whatsapp-float {
+    /* --- ESTILOS DEL NUEVO MODAL DE BÚSQUEDA --- */
+    .modal-busqueda-overlay {
+        display: none; /* Oculto por defecto */
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #25d366;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.85); /* Fondo oscuro elegante */
+        z-index: 2000;
+        backdrop-filter: blur(5px); /* Efecto borroso de fondo */
+        animation: fadeIn 0.3s;
+    }
+
+    .modal-busqueda-content {
+        position: absolute;
+        top: 100px; /* Un poco separado de arriba */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 600px;
+        background: transparent;
+        text-align: center;
+    }
+
+    .input-busqueda-grande {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 1.5em;
+        border: none;
+        border-bottom: 2px solid var(--color-secundario);
+        background: transparent;
         color: white;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
+        outline: none;
+        text-align: center;
+    }
+
+    .input-busqueda-grande::placeholder { color: rgba(255,255,255,0.5); }
+
+    .btn-cerrar-busqueda {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 40px;
+        cursor: pointer;
+        z-index: 2001;
+    }
+
+    /* Lista de resultados flotante */
+    .resultados-busqueda {
+        margin-top: 20px;
+        background: white;
+        border-radius: 8px;
+        max-height: 400px;
+        overflow-y: auto;
+        text-align: left;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .item-resultado {
         display: flex;
         align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-        z-index: 2000;
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee;
         text-decoration: none;
-        transition: transform 0.3s;
-        overflow: hidden;
-        /* Asegura que la imagen no se salga */
+        color: #333;
+        transition: background 0.2s;
     }
 
-    .btn-whatsapp-float:hover {
-        transform: scale(1.1);
-        background-color: #128c7e;
-    }
+    .item-resultado:hover { background-color: #f8f9fa; }
+    .item-resultado img { width: 50px; height: 50px; object-fit: cover; margin-right: 15px; border-radius: 4px; }
+    .item-info-res h4 { margin: 0; font-size: 1em; color: #003366; }
+    .item-info-res span { font-size: 0.9em; color: #28a745; font-weight: bold; }
 
-    /* AJUSTE IMAGEN LOGO */
-    .btn-whatsapp-float img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    /* --- RESPONSIVE --- */
+    /* RESPONSIVE */
     @media (max-width: 768px) {
-        .menu-toggle {
-            display: block;
-        }
-
-        .nav-links {
-            display: none;
-            position: absolute;
-            top: 70px;
-            left: 0;
-            width: 100%;
-            background-color: var(--color-oscuro);
-            flex-direction: column;
-            gap: 0;
-            padding: 10px 0;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
-            border-top: 2px solid var(--color-secundario);
-        }
-
-        .nav-links.active {
-            display: flex;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .nav-links a {
-            display: block;
-            width: 100%;
-            text-align: center;
-            padding: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .nav-icons {
-            border-left: none;
-        }
-
-        .nav-right-group {
-            gap: 5px;
-        }
-
-        .top-bar {
-            font-size: 0.75em;
-            padding: 0 10px;
-            text-align: center;
-        }
+        .nav-links { display: none; } /* Lógica simple para ocultar menú en movil */
+        .menu-toggle { display: block; }
+        .nav-icons { border: none; padding-left: 0; }
+        .brand-text { font-size: 1.1em; }
     }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>
 
 <div class="top-bar">
-    🚚 Envíos GRATIS a todo México en compras > $1,500 | 💳 3 MSI con Tarjeta
+    🚚 Envíos GRATIS > $1,500 | 💳 3 MSI
 </div>
 
 <nav class="navbar">
     <div class="nav-container">
         <a href="index.html" class="logo-brand">
-            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" alt="Logo" class="logo-img">
-
-            <div class="logo-text-container">
-                <span class="txt-main">RouterShop</span>
-                <span class="txt-accent">TX</span>
-            </div>
+            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" style="height: 45px;">
+            <div class="brand-text">RouterShop <span>TX</span></div>
         </a>
 
         <div class="nav-right-group">
             <div class="nav-links" id="nav-links">
-                <a href="index.html" id="link-inicio">Inicio</a>
-                <a href="admin.html" id="link-admin" style="display:none; color:var(--color-secundario);">Panel
-                    Admin</a>
+                <a href="index.html">Inicio</a>
+                <a href="admin.html" id="link-admin" style="display:none; color:var(--color-secundario);">Admin</a>
+                <a href="catalogo.html">Productos</a>
+                <a href="nosotros.html">Nosotros</a>
             </div>
 
             <div class="nav-icons">
+                <a href="#" class="icon-link" onclick="toggleBuscador(event)">
+                    <span class="material-icons">search</span>
+                </a>
+
                 <a href="#" class="icon-link" id="btn-carrito" onclick="abrirCarritoGlobal(event)">
                     <span class="material-icons">shopping_cart</span>
                     <span id="contador-carrito-global" class="cart-badge">0</span>
                 </a>
+                
                 <a href="#" id="btn-login-nav" class="icon-link" onclick="abrirLoginGlobal(event)">
                     <span class="material-icons">login</span>
                 </a>
+                
                 <a href="perfil.html" id="user-display" class="icon-link" style="display:none;">
-                    <span class="material-icons">account_circle</span>Mi Cuenta
+                    <span class="material-icons">account_circle</span>
                 </a>
             </div>
-
+            
             <span class="material-icons menu-toggle" onclick="toggleMenu()">menu</span>
         </div>
     </div>
 </nav>
 
-<a href="https://wa.me/5212212070703?text=Hola,%20tengo%20una%20duda%20sobre%20un%20producto" class="btn-whatsapp-float"
-    target="_blank">
+<div id="modal-busqueda" class="modal-busqueda-overlay">
+    <span class="btn-cerrar-busqueda" onclick="toggleBuscador(event)">&times;</span>
+    
+    <div class="modal-busqueda-content">
+        <input type="text" id="input-busqueda-global" class="input-busqueda-grande" 
+               placeholder="Escribe el producto..." onkeyup="buscarEnTiempoReal(this.value)">
+        
+        <div id="resultados-busqueda-container" class="resultados-busqueda" style="display: none;">
+            </div>
+    </div>
+</div>
+
+<a href="https://wa.me/5212212070703?text=Hola,%20tengo%20una%20duda%20sobre%20un%20producto" class="btn-whatsapp-float" target="_blank">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
 </a>
