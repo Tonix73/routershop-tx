@@ -12,45 +12,28 @@
 
     <link rel="stylesheet" href="css/estilos.css">
 
-    <style>
-       
-    </style>
 </head>
 
 <body>
+    
     <div id="app-navbar"></div>
 
-    <header class="hero-section">
-        <div class="hero-content">
-            <h1>Conecta tu Mundo 📡</h1>
-            <p>Encuentra los mejores routers, antenas y equipos de red para tu hogar o negocio con envío a todo México.
-            </p>
-            <a href="catalogo.html" class="btn-hero">Ver Catálogo</a>
+    <div class="controles">
+        <div class="buscador-header">
+            <input type="text" id="buscador" placeholder="🔍 Buscar..."
+                onkeyup="if(window.buscarProducto) window.buscarProducto()">
         </div>
-    </header>
-
-    <div class="beneficios-container">
-        <div class="beneficio-card">
-            <span class="material-icons">local_shipping</span>
-            <h4>Envío Rápido</h4>
-            <p>A todo el país</p>
-        </div>
-        <div class="beneficio-card">
-            <span class="material-icons">verified_user</span>
-            <h4>Garantía Real</h4>
-            <p>En todos los equipos</p>
-        </div>
-        <div class="beneficio-card">
-            <span class="material-icons">headset_mic</span>
-            <h4>Soporte Técnico</h4>
-            <p>Asesoría experta</p>
-        </div>
-        <div class="beneficio-card">
-            <span class="material-icons">credit_card</span>
-            <h4>Pago Seguro</h4>
-            <p>Tarjetas de Crédito, Débito y Transferencias</p>
+        <div id="contenedor-categorias" class="botones-categorias">
+            <button class="btn-cat activo">Cargando...</button>
         </div>
     </div>
+
+    <div id="lista-productos" class="grid">
+        <div style="grid-column: span 3; text-align: center; padding: 40px;">
+            <p style="color:#666; font-size:1.2em;">📡 Cargando inventario...</p>
+        </div>
+    </div>
+
 
     <div id="app-footer"></div>
 
@@ -185,7 +168,7 @@
             categoriaActual = id;
             document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('activo'));
             btn.classList.add('activo');
-            
+
             // Validamos que exista el buscador antes de pedir su valor
             const inputBusqueda = document.getElementById('buscador');
             const valorBusqueda = inputBusqueda ? inputBusqueda.value : '';
