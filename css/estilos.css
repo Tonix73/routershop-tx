@@ -876,6 +876,50 @@ button.add-cart:hover {
     z-index: 6001;
 }
 
+/* =========================================
+   5. ESTILOS TABLA DE ESPECIFICACIONES
+   ========================================= */
+.tabla-specs-container {
+    overflow-x: auto; /* Para móviles */
+}
+
+.tabla-specs {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95em;
+    color: #333;
+}
+
+.tabla-specs tr {
+    border-bottom: 1px solid #eee;
+}
+
+/* Efecto cebra (una fila gris, una blanca) */
+.tabla-specs tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla-specs tr:hover {
+    background-color: #f1f1f1;
+}
+
+.tabla-specs td {
+    padding: 12px 15px;
+}
+
+/* Primera columna (Las claves: Marca, Modelo, etc) */
+.tabla-specs td:first-child {
+    font-weight: 700;
+    color: #555;
+    width: 30%; /* Ancho fijo para las etiquetas */
+    border-right: 1px solid #eee;
+}
+
+/* Segunda columna (Los valores) */
+.tabla-specs td:last-child {
+    color: #000;
+}
+
 
 /* ==========================================================================
    5. ESTILOS PÁGINA: PERFIL

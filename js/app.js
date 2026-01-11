@@ -364,3 +364,6 @@ async function buscarEnTiempoReal(texto) {
 
     }, 300); // Espera 300ms después de que dejes de escribir
 }
+
+
+

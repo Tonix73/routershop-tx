@@ -188,13 +188,38 @@
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-        .nav-links { display: none; } /* Lógica simple para ocultar menú en movil */
-        .menu-toggle { display: block; }
+        .menu-toggle { 
+            display: block; 
+        }
+        
+        /* 1. Oculto por defecto en móvil */
+        .nav-links { 
+            display: none; 
+            width: 100%;
+            position: absolute;
+            top: 70px; /* Altura del navbar */
+            left: 0;
+            background-color: var(--color-oscuro);
+            flex-direction: column;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* 2. ESTA ES LA CLAVE: Cuando JS agrega 'active', lo mostramos */
+        .nav-links.active {
+            display: flex; /* Se vuelve visible */
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
         .nav-icons { border: none; padding-left: 0; }
         .brand-text { font-size: 1.1em; }
     }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>
 
 <div class="top-bar">

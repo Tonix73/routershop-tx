@@ -614,97 +614,34 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/loader.js"></script>
     <script src="js/app.js"></script>
+
     <script>
-        let categoriaActual = null;
+        // LÓGICA ESPECÍFICA PARA PÁGINAS INFORMATIVAS (Nosotros, Contacto, etc.)
 
-        // Al cargar la página
         window.onload = function () {
-            // Verificar si hay hash para abrir modales (redirección desde perfil)
-            if (window.location.hash === '#abrir-carrito') { setTimeout(() => abrirCarrito(), 500); history.replaceState(null, null, 'index.html'); }
-            if (window.location.hash === '#abrir-login') { setTimeout(() => abrirLogin(), 500); history.replaceState(null, null, 'index.html'); }
+            // 1. MANEJO DE MODALES (Carrito / Login)
+            // Esto es necesario porque el Header (loader.js) puede redirigirte aquí con una orden
+            if (window.location.hash === '#abrir-carrito') {
+                setTimeout(() => {
+                    if (typeof abrirCarrito === 'function') abrirCarrito();
+                }, 500);
+                history.replaceState(null, null, window.location.pathname);
+            }
 
-            // Cargar datos
-            cargarCategorias();
-            cargarProductos();
+            if (window.location.hash === '#abrir-login') {
+                setTimeout(() => {
+                    if (typeof abrirLogin === 'function') abrirLogin();
+                }, 500);
+                history.replaceState(null, null, window.location.pathname);
+            }
         };
 
-        // Cargar Categorías
-        async function cargarCategorias() {
-            const { data } = await clienteSupabase.from('categorias').select('*').order('nombre');
-            if (data) {
-                const contenedor = document.getElementById('contenedor-categorias');
-                contenedor.innerHTML = '<button class="btn-cat activo" onclick="filtrarPorCategoria(null, this)">Todos</button>';
-                data.forEach(cat => {
-                    contenedor.innerHTML += `<button class="btn-cat" onclick="filtrarPorCategoria(${cat.id}, this)">${cat.nombre}</button>`;
-                });
-            }
-        }
-
-        // Cargar Productos
-        async function cargarProductos(busqueda = '') {
-            let consulta = clienteSupabase.from('productos').select('*');
-
-            if (categoriaActual !== null) consulta = consulta.eq('categoria_id', categoriaActual);
-            if (busqueda.length > 0) consulta = consulta.ilike('nombre', `%${busqueda}%`);
-
-            const { data, error } = await consulta;
-
-            if (error) {
-                console.error(error);
-                document.getElementById('lista-productos').innerHTML = '<p style="text-align:center; width:100%;">Error cargando productos.</p>';
-                return;
-            }
-
-            mostrarEnPantalla(data);
-        }
-
-        // Renderizar (Dibujar) productos
-        function mostrarEnPantalla(productos) {
-            const contenedor = document.getElementById('lista-productos');
-            contenedor.innerHTML = '';
-
-            if (!productos || productos.length === 0) {
-                contenedor.innerHTML = '<div style="grid-column:span 3; text-align:center; padding:20px; color:#777;">No se encontraron productos que coincidan.</div>';
-                return;
-            }
-
-            productos.forEach(prod => {
-                const img = prod.imagen_url || 'https://via.placeholder.com/150';
-                contenedor.innerHTML += `
-                    <div class="card">
-                        <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit; display:block;">
-                            <img src="${img}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/150'">
-                            <div>
-                                <h3>${prod.nombre}</h3>
-                                <p class="precio">$${prod.precio.toFixed(2)}</p>
-                            </div>
-                        </a>
-                        <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${prod.precio}, '${img}')">
-                            <span class="material-icons">add_shopping_cart</span> Agregar
-                        </button>
-                    </div>`;
-            });
-        }
-
-        // Filtros
-        function filtrarPorCategoria(id, btn) {
-            categoriaActual = id;
-            document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('activo'));
-            btn.classList.add('activo');
-
-            // Validamos que exista el buscador antes de pedir su valor
-            const inputBusqueda = document.getElementById('buscador');
-            const valorBusqueda = inputBusqueda ? inputBusqueda.value : '';
-            cargarProductos(valorBusqueda);
-        }
-
-        // Esta función se llamará desde el header cuando pegues el código allá
-        function buscarProducto() {
-            const inputBusqueda = document.getElementById('buscador');
-            const valorBusqueda = inputBusqueda ? inputBusqueda.value : '';
-            cargarProductos(valorBusqueda);
-        }
+        // NOTA: Hemos borrado cargarCategorias() y cargarProductos() 
+        // porque esta página NO tiene catálogo.
     </script>
+</body>
+
+</html>
 </body>
 
 </html>

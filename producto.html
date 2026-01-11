@@ -14,28 +14,26 @@
 </head>
 
 <body>
-    <div id="loader-wrapper" class="loader-container">
-        <div class="loader-brand">
-            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" style="height: 60px;">
-
-            <div style="text-align: left;">
-                <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
-                    RouterShop</div>
-                <div
-                    style="color: #ffc107; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif; line-height: 0.8;">
-                    TX</div>
-            </div>
-        </div>
-        <div class="spinner"></div>
-    </div>
 
     <div id="app-navbar"></div>
     <div id="notificacion-toast" class="notificacion-container"><span id="notif-icono"
             class="material-icons">info</span><span id="notif-mensaje">Mensaje</span></div>
 
-    <div class="container-producto" id="contenido-principal">
-        <div style="grid-column: span 2; text-align: center; padding: 50px;">
-            <p style="font-size: 1.5em; color: #666;">⏳ Cargando...</p>
+    <div id="detalle-producto" class="contenedor-detalle">
+        <p>Cargando...</p>
+    </div>
+
+    <div class="seccion-extra" id="seccion-ficha-tecnica" style="display: none;">
+        <h3 style="border-bottom: 2px solid #f4f4f4; padding-bottom: 15px; margin-bottom: 20px;">
+            <span class="material-icons" style="vertical-align: sub; color: #0056b3;">settings</span>
+            Especificaciones Técnicas
+        </h3>
+
+        <div class="tabla-specs-container">
+            <table class="tabla-specs">
+                <tbody id="cuerpo-tabla-specs">
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -147,6 +145,7 @@
 
             productoActual = data;
             renderizarProducto();
+            renderizarEspecificaciones();
             cargarResenas(id);
             cargarRecomendados(data.categoria_id, id);
             verificarSesion();
@@ -159,28 +158,79 @@
         };
 
         function renderizarProducto() {
-            const cont = document.getElementById('contenido-principal');
-            cont.innerHTML = `
-                <div class="img-wrapper" onmouseenter="activarZoom()" onmouseleave="desactivarZoom()">
-                    <img id="myimage" src="${productoActual.imagen_url}" class="img-producto" onclick="abrirLightbox('${productoActual.imagen_url}')">
-                    <div id="lens" class="img-zoom-lens"></div>
-                    <div id="result" class="img-zoom-result"></div>
-                    <div style="position:absolute; bottom:10px; right:10px; background:rgba(0,0,0,0.5); color:white; padding:5px 10px; border-radius:20px; font-size:0.8em; pointer-events:none;">
-                        <span class="material-icons" style="font-size:14px; vertical-align:middle;">zoom_in</span> Zoom
-                    </div>
-                </div>
+            // 1. Obtenemos el contenedor y FORZAMOS la clase de tu CSS
+            const cont = document.getElementById('detalle-producto');
+            cont.className = 'container-producto'; // <--- ESTO RECUPERA TU GRID Y SOMBRA
+
+            // 2. Lógica del Precio (Normal vs Oferta)
+            let htmlPrecio = `<div class="precio-grande">$${productoActual.precio.toFixed(2)}</div>`;
+
+            if (productoActual.descuento > 0) {
+                const precioConDescuento = productoActual.precio * (1 - productoActual.descuento / 100);
+
+                // Usamos tus clases pero añadimos estilos inline mínimos para la oferta
+                htmlPrecio = `
+            <div style="display: flex; align-items: center; gap: 15px; margin: 15px 0;">
+                <span style="text-decoration: line-through; color: #999; font-size: 1.3em;">
+                    $${productoActual.precio.toFixed(2)}
+                </span>
                 
-                <div class="info-producto">
-                    <div style="font-size:0.9em; color:#888; margin-bottom:10px;"><a href="index.html" style="color:#0056b3;">Inicio</a> > <span>${productoActual.nombre}</span></div>
-                    <h1>${productoActual.nombre}</h1>
-                    <div class="stock-tag">UNIDADES DISPONIBLES: ${productoActual.stock_actual || 10}</div>
-                    <div class="precio-grande">$${productoActual.precio.toFixed(2)}</div>
-                    <div class="descripcion-box"><h3>Detalles:</h3><p>${productoActual.descripcion || "Descripción pendiente."}</p></div>
-                    <button class="btn-agregar-grande" onclick="agregarEsteProducto()">
-                        <span class="material-icons">shopping_cart</span> Agregar al Carrito
-                    </button>
-                </div>`;
-            document.title = productoActual.nombre;
+                <span class="precio-grande" style="color: #dc3545; margin: 0;">
+                    $${precioConDescuento.toFixed(2)}
+                </span>
+                
+                <span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 0.8em;">
+                    -${productoActual.descuento}%
+                </span>
+            </div>
+        `;
+            }
+
+            // 3. Renderizamos el HTML respetando tu estructura CSS exacta
+            cont.innerHTML = `
+        <div class="img-wrapper" onmouseenter="activarZoom()" onmouseleave="desactivarZoom()">
+            <img id="myimage" src="${productoActual.imagen_url}" class="img-producto" onclick="abrirLightbox('${productoActual.imagen_url}')">
+            
+            <div id="lens" class="img-zoom-lens"></div>
+            <div id="result" class="img-zoom-result"></div>
+            
+            <div style="position:absolute; bottom:15px; right:15px; background:rgba(255,255,255,0.9); color:#333; padding:5px 12px; border-radius:20px; font-size:0.8em; font-weight:bold; pointer-events:none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <span class="material-icons" style="font-size:16px; vertical-align:middle;">zoom_in</span> Zoom
+            </div>
+        </div>
+        
+        <div class="info-producto">
+            <div style="font-size:0.9em; color:#888; margin-bottom:10px;">
+                <a href="index.html" style="color:#0056b3; text-decoration:none;">Inicio</a> / 
+                <span>${productoActual.nombre}</span>
+            </div>
+            
+            <h1>${productoActual.nombre}</h1>
+            
+            <div class="stock-tag">
+                <span class="material-icons" style="font-size:14px; vertical-align:text-bottom;">inventory_2</span> 
+                DISPONIBLES: ${productoActual.stock_actual || 10}
+            </div>
+            
+            ${htmlPrecio}
+
+            <div class="descripcion-box">
+                <h3 style="margin-top:0; color:#333;">Detalles del Producto</h3>
+                <p>${productoActual.descripcion || "Sin descripción detallada."}</p>
+            </div>
+            
+            <button class="btn-agregar-grande" onclick="agregarEsteProducto()">
+                <span class="material-icons">shopping_cart</span> Agregar al Carrito
+            </button>
+            
+            <div style="margin-top: 20px; font-size: 0.85em; color: #777; display: flex; gap: 15px;">
+                <span style="display:flex; align-items:center; gap:5px;"><span class="material-icons" style="font-size:16px;">verified</span> Garantía directa</span>
+                <span style="display:flex; align-items:center; gap:5px;"><span class="material-icons" style="font-size:16px;">local_shipping</span> Envío seguro</span>
+            </div>
+        </div>
+    `;
+
+            document.title = productoActual.nombre + " - RouterShop TX";
         }
 
         // --- ZOOM AMAZON ---
@@ -235,13 +285,39 @@
 
         function agregarEsteProducto() {
             if (!productoActual) return;
-            const item = carrito.find(i => i.id === productoActual.id);
-            if (item) item.cantidad++; else carrito.push({ id: productoActual.id, nombre: productoActual.nombre, precio: productoActual.precio, imagen: productoActual.imagen_url, cantidad: 1 });
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            if (window.actualizarContadorGlobal) window.actualizarContadorGlobal();
-            mostrarNotificacion("¡Agregado!", "success");
-        }
 
+            // 1. CALCULAR PRECIO REAL PARA EL CARRITO
+            let precioFinal = productoActual.precio;
+
+            if (productoActual.descuento > 0) {
+                // Aplicar la fórmula matemática
+                precioFinal = productoActual.precio * (1 - productoActual.descuento / 100);
+            }
+
+            // 2. BUSCAR SI YA EXISTE EN EL CARRITO
+            const item = carrito.find(i => i.id === productoActual.id);
+
+            if (item) {
+                item.cantidad++;
+                // Opcional: Actualizar el precio si cambió en la base de datos mientras navegaba
+                item.precio = precioFinal;
+            } else {
+                carrito.push({
+                    id: productoActual.id,
+                    nombre: productoActual.nombre,
+                    precio: precioFinal, // <--- AQUÍ GUARDAMOS EL PRECIO CON DESCUENTO
+                    imagen: productoActual.imagen_url,
+                    cantidad: 1
+                });
+            }
+
+            // 3. GUARDAR Y NOTIFICAR
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+
+            if (window.actualizarContadorGlobal) window.actualizarContadorGlobal();
+
+            mostrarNotificacion(`¡Agregado por $${precioFinal.toFixed(2)}!`, "success");
+        }
         async function verificarSesion() { const { data: { session } } = await clienteSupabase.auth.getSession(); if (session) { document.getElementById('box-form-resena').style.display = 'block'; document.getElementById('msg-login-resena').style.display = 'none'; } else { document.getElementById('box-form-resena').style.display = 'none'; document.getElementById('msg-login-resena').style.display = 'block'; } }
 
         async function cargarResenas(id) {
@@ -268,6 +344,30 @@
         async function enviarResena() { const { data: { session } } = await clienteSupabase.auth.getSession(); if (!session) return mostrarNotificacion("Inicia sesión", "error"); const s = document.getElementById('sel-estrellas').value; const c = document.getElementById('txt-comentario').value; await clienteSupabase.from('resenas').insert([{ producto_id: productoActual.id, usuario_id: session.user.id, email_usuario: session.user.email, estrellas: parseInt(s), comentario: c }]); mostrarNotificacion("Enviada", "success"); setTimeout(() => window.location.reload(), 1000); }
         async function cargarRecomendados(c, i) { const { data } = await clienteSupabase.from('productos').select('*').eq('categoria_id', c).neq('id', i).limit(4); const g = document.getElementById('grid-recomendados'); if (data) data.forEach(p => g.innerHTML += `<a href="producto.html?id=${p.id}" class="card-rec"><img src="${p.imagen_url}"><p style="font-size:0.9em; margin-top:5px;">${p.nombre}</p></a>`); }
 
+        function renderizarEspecificaciones() {
+            const seccionSpecs = document.getElementById('seccion-ficha-tecnica');
+            const cuerpoTabla = document.getElementById('cuerpo-tabla-specs');
+
+            // 1. Verificamos si hay datos en la columna 'especificaciones'
+            if (!productoActual.especificaciones || Object.keys(productoActual.especificaciones).length === 0) {
+                seccionSpecs.style.display = 'none'; // Si está vacío, ocultamos la sección
+                return;
+            }
+
+            // 2. Si hay datos, mostramos la sección
+            seccionSpecs.style.display = 'block';
+            cuerpoTabla.innerHTML = ''; // Limpiamos tabla anterior
+
+            // 3. Recorremos el objeto JSON (Clave -> Valor)
+            for (const [clave, valor] of Object.entries(productoActual.especificaciones)) {
+                cuerpoTabla.innerHTML += `
+            <tr>
+                <td>${clave}</td>
+                <td>${valor}</td>
+            </tr>
+        `;
+            }
+        }
     </script>
 </body>
 

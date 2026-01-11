@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    
+
     <div id="app-navbar"></div>
 
     <div class="controles">
@@ -147,22 +147,51 @@
 
             productos.forEach(prod => {
                 const img = prod.imagen_url || 'https://via.placeholder.com/150';
+
+                // 1. LÓGICA DE PRECIO Y DESCUENTO
+                let precioFinal = prod.precio; // Precio base
+                let htmlPrecio = `<p class="precio">$${prod.precio.toFixed(2)}</p>`; // HTML normal
+                let htmlBadge = ''; // Sin etiqueta por defecto
+
+                // Si tiene descuento, recalculamos todo
+                if (prod.descuento > 0) {
+                    precioFinal = prod.precio * (1 - prod.descuento / 100);
+
+                    // Creamos la etiqueta de % OFF
+                    htmlBadge = `<span style="position: absolute; top: 10px; left: 10px; background-color: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8em; z-index: 5;">-${prod.descuento}%</span>`;
+
+                    // Creamos el HTML del precio (Tachado + Nuevo)
+                    htmlPrecio = `
+                <div class="precio" style="display: flex; gap: 8px; align-items: center; justify-content: flex-start; margin-top: 5px;">
+                    <span style="text-decoration: line-through; color: #999; font-size: 0.9em;">
+                        $${prod.precio.toFixed(2)}
+                    </span>
+                    <span style="color: #dc3545; font-weight: bold;">
+                        $${precioFinal.toFixed(2)}
+                    </span>
+                </div>`;
+                }
+
+                // 2. GENERAR LA TARJETA (Nota el style="position: relative" en el div card)
                 contenedor.innerHTML += `
-                    <div class="card">
-                        <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit; display:block;">
-                            <img src="${img}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/150'">
-                            <div>
-                                <h3>${prod.nombre}</h3>
-                                <p class="precio">$${prod.precio.toFixed(2)}</p>
-                            </div>
-                        </a>
-                        <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${prod.precio}, '${img}')">
-                            <span class="material-icons">add_shopping_cart</span> Agregar
-                        </button>
-                    </div>`;
+            <div class="card" style="position: relative;">
+                ${htmlBadge}
+                
+                <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit; display:block;">
+                    <img src="${img}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/150'">
+                    <div>
+                        <h3>${prod.nombre}</h3>
+                        ${htmlPrecio}
+                    </div>
+                </a>
+                
+                <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${precioFinal}, '${img}')">
+                    <span class="material-icons">add_shopping_cart</span> Agregar
+                </button>
+            </div>`;
             });
         }
-
+        
         // Filtros
         function filtrarPorCategoria(id, btn) {
             categoriaActual = id;

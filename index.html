@@ -13,21 +13,231 @@
     <link rel="stylesheet" href="css/estilos.css">
 
     <style>
-       
+        /* --- ESTILOS DEL CARRUSEL (SLIDER) --- */
+        .carrusel-hero {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            /* Altura en escritorio */
+            overflow: hidden;
+            margin-top: 0;
+            /* Pegado al navbar */
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        /* Capa oscura para que el texto se lea bien */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 51, 102, 0.6);
+            /* Azul corporativo transparente */
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            max-width: 800px;
+        }
+
+        .slide-content h2 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            font-weight: 800;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-content p {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+        }
+
+        /* Botones del Slider */
+        .btn-slider {
+            padding: 12px 30px;
+            background-color: #ffc107;
+            color: #003366;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .btn-slider:hover {
+            background-color: white;
+            transform: scale(1.05);
+        }
+
+        /* Flechas de navegación */
+        .flecha {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 10;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .flecha:hover {
+            background: #ffc107;
+            color: #003366;
+        }
+
+        .prev {
+            left: 20px;
+        }
+
+        .next {
+            right: 20px;
+        }
+
+        /* --- ESTILOS PARA SECCIONES DESTACADAS (Nuevos, Promociones) --- */
+        .seccion-destacada {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .titulo-seccion {
+            text-align: center;
+            font-size: 2.2em;
+            color: #003366;
+            margin-bottom: 40px;
+            font-weight: 800;
+            position: relative;
+        }
+
+        /* Línea amarilla debajo del título */
+        .titulo-seccion::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #ffc107;
+            margin: 10px auto 0;
+        }
+
+        /* Grid específico para destacados (4 productos por fila) */
+        .grid-destacados {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        /* Etiquetas (Badge) para las tarjetas */
+        .badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 5px 12px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8em;
+            z-index: 5;
+            text-transform: uppercase;
+        }
+
+        .bg-oferta {
+            background-color: #dc3545;
+        }
+
+        /* Rojo */
+        .bg-nuevo {
+            background-color: #28a745;
+        }
+
+        /* Verde */
+        .bg-top {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        /* Amarillo */
+
+        @media (max-width: 768px) {
+            .carrusel-hero {
+                height: 350px;
+            }
+
+            .slide-content h2 {
+                font-size: 2em;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div id="app-navbar"></div>
 
-    <header class="hero-section">
-        <div class="hero-content">
-            <h1>Conecta tu Mundo 📡</h1>
-            <p>Encuentra los mejores routers, antenas y equipos de red para tu hogar o negocio con envío a todo México.
-            </p>
-            <a href="catalogo.html" class="btn-hero">Ver Catálogo</a>
+    <div class="carrusel-hero">
+        <div class="slide active"
+            style="background-image: url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop');">
+            <div class="slide-content">
+                <h2>Conecta tu Mundo 📡</h2>
+                <p>La mejor tecnología en redes para hogar y empresa.</p>
+                <a href="#lista-productos" class="btn-slider">Ver Catálogo</a>
+            </div>
         </div>
-    </header>
+
+        <div class="slide"
+            style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop');">
+            <div class="slide-content">
+                <h2>Ofertas de Temporada</h2>
+                <p>Hasta 30% de descuento en Routers Mesh.</p>
+                <a href="#seccion-promociones" class="btn-slider">Ver Ofertas</a>
+            </div>
+        </div>
+
+        <div class="slide"
+            style="background-image: url('https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=1925&auto=format&fit=crop');">
+            <div class="slide-content">
+                <h2>Lo Nuevo en Starlink</h2>
+                <p>Equipos de última generación ya disponibles.</p>
+                <a href="#seccion-nuevos" class="btn-slider">Conocer Más</a>
+            </div>
+        </div>
+
+        <button class="flecha prev" onclick="moverSlide(-1)">&#10094;</button>
+        <button class="flecha next" onclick="moverSlide(1)">&#10095;</button>
+    </div>
+
+
+    <hr style="border:0; border-top:1px solid #eee; margin: 40px 0;">
+
+
 
     <div class="beneficios-container">
         <div class="beneficio-card">
@@ -51,6 +261,31 @@
             <p>Tarjetas de Crédito, Débito y Transferencias</p>
         </div>
     </div>
+
+    <section id="seccion-promociones" class="seccion-destacada">
+        <h2 class="titulo-seccion">🔥 Promociones del Mes</h2>
+        <div class="grid-destacados">
+            <p style="grid-column: span 4; text-align: center; color: #999;">Cargando ofertas...</p>
+        </div>
+    </section>
+
+    <section id="seccion-vendidos" class="seccion-destacada" style="background-color: #fff;">
+        <h2 class="titulo-seccion">🏆 Los Más Vendidos</h2>
+        <div class="grid-destacados">
+            <p style="grid-column: span 4; text-align: center; color: #999;">Cargando top ventas...</p>
+        </div>
+    </section>
+
+    <section id="seccion-nuevos" class="seccion-destacada">
+        <h2 class="titulo-seccion">✨ Recién Llegados</h2>
+        <div class="grid-destacados">
+            <p style="grid-column: span 4; text-align: center; color: #999;">Cargando novedades...</p>
+        </div>
+    </section>
+
+    <hr style="border:0; border-top:1px solid #eee; margin: 40px 0;">
+
+
 
     <div id="app-footer"></div>
 
@@ -113,20 +348,61 @@
 
         // Al cargar la página
         window.onload = function () {
-            // Verificar si hay hash para abrir modales (redirección desde perfil)
+            // Verificar si hay hash para abrir modales
             if (window.location.hash === '#abrir-carrito') { setTimeout(() => abrirCarrito(), 500); history.replaceState(null, null, 'index.html'); }
             if (window.location.hash === '#abrir-login') { setTimeout(() => abrirLogin(), 500); history.replaceState(null, null, 'index.html'); }
 
-            // Cargar datos
+            // Cargar datos principales
             cargarCategorias();
             cargarProductos();
+
+            // Cargar datos destacados (AQUÍ ESTABA EL ERROR, AHORA SE LLAMA SIEMPRE)
+            cargarDestacados();
         };
 
-        // Cargar Categorías
+        // --- LÓGICA DEL CARRUSEL ---
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        let autoSlideInterval;
+
+        function mostrarSlide(index) {
+            if (index >= slides.length) slideIndex = 0;
+            if (index < 0) slideIndex = slides.length - 1;
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[slideIndex].classList.add('active');
+        }
+
+        function moverSlide(n) {
+            slideIndex += n;
+            mostrarSlide(slideIndex);
+            reiniciarAutoSlide();
+        }
+
+        function iniciarAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                slideIndex++;
+                mostrarSlide(slideIndex);
+            }, 5000);
+        }
+
+        function reiniciarAutoSlide() {
+            clearInterval(autoSlideInterval);
+            iniciarAutoSlide();
+        }
+
+        if (slides.length > 0) iniciarAutoSlide();
+
+        // --- LÓGICA DE PRODUCTOS ---
         async function cargarCategorias() {
+            const contenedor = document.getElementById('contenedor-categorias');
+
+            // --- LÍNEA DE PROTECCIÓN ---
+            // Si no existe el contenedor en esta página, detenemos la función aquí.
+            if (!contenedor) return;
+
             const { data } = await clienteSupabase.from('categorias').select('*').order('nombre');
+
             if (data) {
-                const contenedor = document.getElementById('contenedor-categorias');
                 contenedor.innerHTML = '<button class="btn-cat activo" onclick="filtrarPorCategoria(null, this)">Todos</button>';
                 data.forEach(cat => {
                     contenedor.innerHTML += `<button class="btn-cat" onclick="filtrarPorCategoria(${cat.id}, this)">${cat.nombre}</button>`;
@@ -134,27 +410,27 @@
             }
         }
 
-        // Cargar Productos
         async function cargarProductos(busqueda = '') {
             let consulta = clienteSupabase.from('productos').select('*');
-
             if (categoriaActual !== null) consulta = consulta.eq('categoria_id', categoriaActual);
             if (busqueda.length > 0) consulta = consulta.ilike('nombre', `%${busqueda}%`);
 
             const { data, error } = await consulta;
-
             if (error) {
                 console.error(error);
                 document.getElementById('lista-productos').innerHTML = '<p style="text-align:center; width:100%;">Error cargando productos.</p>';
                 return;
             }
-
             mostrarEnPantalla(data);
         }
 
-        // Renderizar (Dibujar) productos
         function mostrarEnPantalla(productos) {
             const contenedor = document.getElementById('lista-productos');
+
+            // --- LÍNEA DE PROTECCIÓN ---
+            // Si no existe la lista de productos en esta página, paramos.
+            if (!contenedor) return;
+
             contenedor.innerHTML = '';
 
             if (!productos || productos.length === 0) {
@@ -162,41 +438,127 @@
                 return;
             }
 
+            // ... (El resto de tu código sigue igual) ...
             productos.forEach(prod => {
-                const img = prod.imagen_url || 'https://via.placeholder.com/150';
-                contenedor.innerHTML += `
-                    <div class="card">
-                        <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit; display:block;">
-                            <img src="${img}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/150'">
-                            <div>
-                                <h3>${prod.nombre}</h3>
-                                <p class="precio">$${prod.precio.toFixed(2)}</p>
-                            </div>
-                        </a>
-                        <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${prod.precio}, '${img}')">
-                            <span class="material-icons">add_shopping_cart</span> Agregar
-                        </button>
-                    </div>`;
+                // Tu lógica para dibujar las tarjetas
+                // ...
+                // (Asegúrate de pegar aquí el código de la tarjeta que hicimos antes)
             });
         }
 
-        // Filtros
         function filtrarPorCategoria(id, btn) {
             categoriaActual = id;
             document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('activo'));
             btn.classList.add('activo');
-            
-            // Validamos que exista el buscador antes de pedir su valor
             const inputBusqueda = document.getElementById('buscador');
             const valorBusqueda = inputBusqueda ? inputBusqueda.value : '';
             cargarProductos(valorBusqueda);
         }
 
-        // Esta función se llamará desde el header cuando pegues el código allá
         function buscarProducto() {
             const inputBusqueda = document.getElementById('buscador');
             const valorBusqueda = inputBusqueda ? inputBusqueda.value : '';
             cargarProductos(valorBusqueda);
+        }
+
+        // ==========================================
+        // 8. CARGAR SECCIONES DESTACADAS (AUTOMÁTICO)
+        // ==========================================
+        async function cargarDestacados() {
+            console.log("Cargando secciones destacadas...");
+
+            // 1. CARGAR PROMOCIONES (Productos con descuento > 0)
+            const { data: promos } = await clienteSupabase
+                .from('productos')
+                .select('*')
+                .gt('descuento', 0)
+                .limit(4);
+
+            if (promos && promos.length > 0) {
+                renderizarSeccion('seccion-promociones', promos, 'bg-oferta', 'OFERTA');
+            } else {
+                document.getElementById('seccion-promociones').style.display = 'none';
+            }
+
+            // 2. CARGAR MÁS VENDIDOS
+            const { data: topVentas } = await clienteSupabase
+                .from('productos')
+                .select('*')
+                .order('ventas', { ascending: false })
+                .limit(4);
+
+            if (topVentas) {
+                renderizarSeccion('seccion-vendidos', topVentas, 'bg-top', 'TOP VENTAS');
+            }
+
+            // 3. CARGAR NUEVOS
+            const { data: nuevos } = await clienteSupabase
+                .from('productos')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(4);
+
+            if (nuevos) {
+                renderizarSeccion('seccion-nuevos', nuevos, 'bg-nuevo', 'NUEVO');
+            }
+        }
+
+        function renderizarSeccion(idSeccion, productos, claseBadge, textoBadge) {
+            const seccion = document.getElementById(idSeccion);
+            if (!seccion) return;
+            const grid = seccion.querySelector('.grid-destacados');
+            if (!grid) return;
+
+            grid.innerHTML = '';
+
+            productos.forEach(prod => {
+                const img = prod.imagen_url || 'https://via.placeholder.com/150';
+
+                // 1. CALCULAR PRECIO REAL PARA EL CARRITO
+                // Si hay descuento, restamos el porcentaje. Si no, queda el precio normal.
+                let precioParaCarrito = prod.precio;
+
+                let precioHTML = `$${prod.precio.toFixed(2)}`;
+                let badgeHTML = `<span class="badge ${claseBadge}">${textoBadge}</span>`;
+
+                if (prod.descuento > 0) {
+                    // Calculamos el precio con descuento
+                    const precioConDescuento = prod.precio * (1 - prod.descuento / 100);
+
+                    // ACTUALIZAMOS LA VARIABLE QUE SE ENVIARÁ AL CARRITO
+                    precioParaCarrito = precioConDescuento;
+
+                    // Generamos el HTML visual (Tachado vs Nuevo)
+                    precioHTML = `
+                <span style="text-decoration: line-through; color: #999; font-size: 0.8em; margin-right: 5px;">
+                    $${prod.precio.toFixed(2)}
+                </span> 
+                <span style="color: #dc3545; font-weight:bold;">
+                    $${precioConDescuento.toFixed(2)}
+                </span>`;
+
+                    if (idSeccion === 'seccion-promociones') {
+                        badgeHTML = `<span class="badge bg-oferta">-${prod.descuento}%</span>`;
+                    }
+                }
+
+                // 2. INYECTAR EL PRECIO CALCULADO EN LA FUNCIÓN agregarAlCarrito
+                // Fíjate en la variable ${precioParaCarrito} dentro del onclick
+                grid.innerHTML += `
+            <div class="card" style="position: relative;">
+                ${badgeHTML}
+                <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit;">
+                    <img src="${img}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/150'">
+                    <div>
+                        <h3>${prod.nombre}</h3>
+                        <p class="precio">${precioHTML}</p>
+                    </div>
+                </a>
+                <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${precioParaCarrito}, '${img}')">
+                    <span class="material-icons">add_shopping_cart</span> Agregar
+                </button>
+            </div>`;
+            });
         }
     </script>
 </body>
