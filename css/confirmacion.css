@@ -1,0 +1,153 @@
+
+/* =======================================================
+   CONFIRMACION DE LA COMPRA PAGADO/PENDIENTE (RouterShop TX)
+   ======================================================= */
+
+.container-confirmacion {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.icon-status {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin: 10px 0;
+    font-size: 2em;
+}
+
+.p {
+    font-size: 1.1em;
+    color: #d1d1d1;
+    line-height: 1.6;
+}
+
+.order-id-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1.4em;
+    letter-spacing: 2px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    color: #333;
+}
+
+.btn-box {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #ddd;
+}
+
+/* --- ESTILOS DINÁMICOS --- */
+
+/* ESTILO: PAGADO (Verde) */
+.tipo-pagado {
+    border-top: 6px solid #28a745;
+}
+
+.tipo-pagado .icon-status {
+    color: #28a745;
+}
+
+.tipo-pagado h1 {
+    color: #28a745;
+}
+
+/* ESTILO: PENDIENTE (Amarillo) */
+.tipo-pendiente {
+    border-top: 6px solid #ffc107;
+}
+
+.tipo-pendiente .icon-status {
+    color: #ffc107;
+}
+
+.tipo-pendiente h1 {
+    color: #d39e00;
+}
+
+/* Un amarillo más oscuro para leerse bien */
+
+/* Instrucciones de pago (Solo visible en pendiente) */
+.instrucciones-pago {
+    text-align: left;
+    background-color: #fff3cd;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 0.95em;
+    border: 1px solid #ffeeba;
+    display: none;
+    /* Oculto por defecto */
+}
+
+/* --- RESPONSIVO PARA CELULARES --- */
+@media (max-width: 600px) {
+    .container-confirmacion {
+        margin: 20px 15px;
+        /* Menos margen arriba/lados */
+        padding: 25px 15px;
+        /* Menos relleno interno */
+        width: auto;
+        /* Que ocupe el ancho disponible */
+    }
+
+    .icon-status {
+        font-size: 60px;
+        /* Ícono un poco más chico */
+    }
+
+    h1 {
+        font-size: 1.6em;
+    }
+
+    /* Título más chico */
+
+    .btn-box {
+        flex-direction: column;
+        /* Botones uno debajo del otro */
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        /* Botones de ancho completo */
+        box-sizing: border-box;
+    }
+}

@@ -11,17 +11,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/index.css">
+
 
     <style>
-        /* --- ESTILOS DEL CARRUSEL (SLIDER) --- */
+        /* --- AJUSTES PARA EL CARRUSEL (RESPONSIVO) --- */
         .carrusel-hero {
             position: relative;
             width: 100%;
             height: 500px;
-            /* Altura en escritorio */
+            /* Altura ideal en PC */
             overflow: hidden;
-            margin-top: 0;
-            /* Pegado al navbar */
         }
 
         .slide {
@@ -187,13 +187,46 @@
 
         /* Amarillo */
 
+
+        /* Ajuste para pantallas pequeñas (Móvil) */
         @media (max-width: 768px) {
+            .carrusel-hero {
+                height: 400px;
+                /* Altura más adecuada para móvil, evita que se comprima */
+            }
+
+            .slide-content h2 {
+                font-size: 1.8em !important;
+                /* Texto más pequeño para que no se amontone */
+                line-height: 1.2;
+            }
+
+            .slide-content p {
+                font-size: 1em !important;
+                margin-bottom: 15px;
+                padding: 0 10px;
+            }
+
+            .btn-slider {
+                padding: 10px 20px !important;
+                font-size: 0.9em !important;
+            }
+
+            /* Flechas más pequeñas en móvil para no estorbar el contenido */
+            .flecha {
+                padding: 10px !important;
+                font-size: 18px !important;
+            }
+        }
+
+        /* Ajuste para móviles muy pequeños */
+        @media (max-width: 480px) {
             .carrusel-hero {
                 height: 350px;
             }
 
             .slide-content h2 {
-                font-size: 2em;
+                font-size: 1.5em !important;
             }
         }
     </style>

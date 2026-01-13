@@ -1,0 +1,222 @@
+
+/* ==========================================================================
+   5. ESTILOS PÁGINA: PERFIL
+   ========================================================================== */
+.container-perfil {
+    max-width: 1200px;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 25px;
+    padding: 0 20px;
+    min-height: 60vh;
+    align-items: start;
+}
+
+.card-usuario {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-top: 5px solid #0056b3;
+    position: sticky;
+    top: 100px;
+}
+
+.avatar-circle {
+    width: 70px;
+    height: 70px;
+    background-color: #e9ecef;
+    color: #0056b3;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px auto;
+    font-size: 32px;
+}
+
+.user-email {
+    font-weight: bold;
+    font-size: 1em;
+    color: #333;
+    word-break: break-all;
+    margin-bottom: 5px;
+}
+
+.user-tag {
+    background: #e9ecef;
+    color: #666;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.btn-cerrar {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.2s;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-cerrar:hover {
+    background-color: #5a6268;
+}
+
+.danger-zone {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.btn-eliminar-cuenta {
+    background-color: white;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    padding: 8px 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.2s;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.btn-eliminar-cuenta:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.card-pedidos {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.container-tabla-historial {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 5px;
+}
+
+.tabla-historial {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.tabla-historial th {
+    text-align: left;
+    padding: 15px 10px;
+    color: #666;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    border-bottom: 2px solid #eee;
+    background-color: #fcfcfc;
+    white-space: nowrap;
+}
+
+.tabla-historial td {
+    padding: 15px 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95em;
+    vertical-align: middle;
+}
+
+.tabla-historial tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Badges Pedidos */
+.badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.bg-pagado {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.bg-pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.btn-accion {
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.btn-azul {
+    background: #007bff;
+    color: white;
+}
+
+.btn-rastrear {
+    background: #28a745;
+    color: white;
+}
+
+.btn-disabled {
+    background: #e9ecef;
+    color: #999;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-copy {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #666;
+    padding: 2px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.info-guia {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85em;
+    color: #555;
+    gap: 3px;
+    min-width: 140px;
+}
+

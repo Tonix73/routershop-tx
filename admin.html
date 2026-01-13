@@ -1,396 +1,190 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administracion - RouterShop TX</title>
-    <link rel="icon" type="image/png"
-        href="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png">
+    <title>Panel Admin - RouterShop TX</title>
+    <link rel="icon" type="image/png" href="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png">
+    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        (function () {
-            emailjs.init("S6x887RD35YnO33Eg"); // ¡PON TU PUBLIC KEY DE EMAILJS!
-        })();
-    </script>
+    <script> (function () { emailjs.init("S6x887RD35YnO33Eg"); })(); </script>
+    
+    <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="css/estilos.css">
-    <style>
-        .btn-ver-detalles {
-            background-color: #17a2b8;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9em;
-        }
-
-        .btn-ver-detalles:hover {
-            background-color: #138496;
-        }
-
-        .detalle-grupo {
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        .detalle-grupo h4 {
-            margin: 0 0 5px 0;
-            color: #0056b3;
-        }
-
-        .lista-items-admin {
-            list-style: none;
-            padding: 0;
-        }
-
-        .lista-items-admin li {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-        }
-    </style>
-</head>
+    </head>
 
 <body>
 
     <div id="loader-wrapper" class="loader-container">
-        <div class="loader-brand">
-            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
-                style="height: 60px;">
-
-            <div style="text-align: left;">
-                <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
-                    RouterShop</div>
-                <div
-                    style="color: #ffc107; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif; line-height: 0.8;">
-                    TX</div>
-            </div>
-        </div>
-        <div class="spinner"></div>
+        <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" class="loader-logo">
     </div>
+
+    <div id="notificacion-toast" class="notificacion-container"><span id="notif-icono" class="material-icons">info</span><span id="notif-mensaje">Mensaje</span></div>
 
     <div id="app-navbar"></div>
 
-    <div id="notificacion-toast" class="notificacion-container">
-        <span id="notif-icono" class="material-icons">info</span><span id="notif-mensaje">Mensaje</span>
-    </div>
-
-    <div class="container admin-container">
-        <h1 style="display:flex; align-items:center; gap:10px; justify-content: center !important;">
-            <span class="material-icons" style="vertical-align: middle; color:#333; ">admin_panel_settings</span>
-            Panel de Control
-        </h1>
-
-        <div class="panel">
-            <h2 style="color:#0056b3; display:flex; align-items:center; gap:10px; justify-content: center !important;">
-                <span class="material-icons">inventory</span> Gestión de Pedidos
-            </h2>
-            <p style="font-size:0.9em; color:#666; margin-bottom:15px; text-align: center;">
-                <span class="material-icons" style="font-size:16px; vertical-align:middle;">swipe</span>
-                Desliza la tabla para ver más columnas.
-            </p>
-
-            <div class="tabla-admin-scroll">
-                <table class="tabla-admin">
-                    <thead>
-                        <tr>
-                            <th>ID Venta</th>
-                            <th>Fecha</th>
-                            <th>Info</th>
-                            <th>Total</th>
-                            <th style="text-align:center;">Estado Pago</th>
-                            <th>Paquetería</th>
-                            <th>Guía Rastreo</th>
-                            <th style="text-align:center;">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-ventas">
-                        <tr>
-                            <td colspan="8" style="text-align:center; padding:40px;">Cargando ventas...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="panel">
-            <h2 style="color:#28a745; display:flex; align-items:center; gap:10px; justify-content: center !important;">
-                <span class="material-icons">add_circle</span> Agregar Producto
-            </h2>
-            <div class="form-grid">
-                <div class="input-group"><label>Nombre del Producto</label><input type="text" id="p-nombre"
-                        placeholder="Ej: Router Mikrotik..."></div>
-                <div class="input-group"><label>Precio ($)</label><input type="number" id="p-precio" placeholder="0.00">
+    <div class="admin-wrapper">
+        
+        <aside class="sidebar">
+            <div class="sidebar-profile">
+                <div class="avatar-circle">
+                    <span class="material-icons">admin_panel_settings</span>
                 </div>
-                <div class="input-group">
-                    <label>Categoría</label>
-                    <select id="p-cat">
-                        <option value="1">Routers</option>
-                        <option value="2">Antenas</option>
-                        <option value="3">Accesorios</option>
-                    </select>
+                <div class="admin-label">ADMINISTRACIÓN</div>
+            </div>
+
+            <ul class="menu-list">
+                <li class="menu-item active" onclick="nav('vista-ventas', this)">
+                    <span class="material-icons">shopping_bag</span><span>Pedidos</span>
+                </li>
+                <li class="menu-item" onclick="nav('vista-mis-productos', this)">
+                    <span class="material-icons">grid_view</span><span>Mis Productos</span>
+                </li>
+                <li class="menu-item" onclick="nav('vista-inventario', this)">
+                    <span class="material-icons">trending_up</span><span>Rentabilidad</span>
+                </li>
+                <li class="menu-item" onclick="nav('vista-agregar', this); limpiarFormulario();">
+                    <span class="material-icons">add_circle</span><span>Nuevo Producto</span>
+                </li>
+                <li class="menu-item" onclick="nav('vista-categorias', this)">
+                    <span class="material-icons">category</span><span>Categorías</span>
+                </li>
+                <li class="menu-item" onclick="nav('vista-cupones', this)">
+                    <span class="material-icons">local_offer</span><span>Cupones</span>
+                </li>
+                
+                <li class="menu-divider"></li>
+
+                <li class="menu-item" onclick="window.location.href='index.html'" style="color:#0056b3;">
+                    <span class="material-icons">storefront</span><span>Ir a Tienda</span>
+                </li>
+                <li class="menu-item" onclick="cerrarSesionAdmin()" style="color:#dc3545;">
+                    <span class="material-icons">logout</span><span>Cerrar Sesión</span>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+
+            <div id="vista-ventas" class="card-panel active-view">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 style="margin:0; color:#003366;">📦 Gestión de Pedidos</h2>
+                    <button class="btn-txt-icon btn-secondary" onclick="cargarVentas()"><span class="material-icons">refresh</span> ACTUALIZAR</button>
                 </div>
-                <div class="input-group"><label>Imagen</label><input type="file" id="p-img-file" accept="image/*"></div>
-                <button id="btn-subir-prod" class="btn-subir" onclick="subirProducto()">Guardar Producto</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-detalles" class="modal-fondo">
-        <div class="modal-contenido" style="max-width: 600px;">
-            <span class="cerrar-modal"
-                onclick="document.getElementById('modal-detalles').style.display='none'">&times;</span>
-            <h2 style="margin-top:0;">📋 Detalles del Pedido #<span id="d-id"></span></h2>
-
-            <div class="detalle-grupo">
-                <h4>👤 Cliente y Contacto</h4>
-                <p id="d-contacto" style="font-size:0.9em; line-height:1.4;">Cargando...</p>
+                <div class="tabla-scroll">
+                    <table class="tabla-admin">
+                        <thead><tr><th>ID</th><th>Fecha</th><th>Total</th><th>Estado</th><th>Guía</th><th>Acciones</th></tr></thead>
+                        <tbody id="tabla-ventas"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="detalle-grupo">
-                <h4>📍 Dirección de Envío</h4>
-                <p id="d-direccion" style="font-weight:bold; color:#555;">Cargando...</p>
+            <div id="vista-mis-productos" class="card-panel">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 style="margin:0; color:#003366;">🛒 Mis Productos</h2>
+                    <button class="btn-txt-icon btn-secondary" onclick="cargarProductosLista()"><span class="material-icons">refresh</span> REFRESCAR</button>
+                </div>
+                <div class="tabla-scroll">
+                    <table class="tabla-admin">
+                        <thead><tr><th>Img</th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Administrar</th></tr></thead>
+                        <tbody id="tabla-lista-productos"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="detalle-grupo">
-                <h4>📦 Productos</h4>
-                <ul id="d-productos" class="lista-items-admin"></ul>
+            <div id="vista-inventario" class="card-panel">
+                <h2 style="color:#28a745; margin-top:0;">📈 Rentabilidad</h2>
+                <div class="tabla-scroll">
+                    <table class="tabla-admin">
+                        <thead><tr><th>Img</th><th>Producto</th><th>Costo</th><th>P. Venta</th><th>Desc%</th><th>P. Final</th><th>Stock</th><th>Ganancia/U</th><th>Total</th><th>Acción</th></tr></thead>
+                        <tbody id="tabla-rentabilidad"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <div style="text-align:right; font-size:1.2em; font-weight:bold; color:#28a745;">
-                Total: <span id="d-total"></span>
+            <div id="vista-agregar" class="card-panel">
+                <h2 id="titulo-form" style="margin:0 0 20px 0; color:#333; border-bottom:1px solid #eee; padding-bottom:10px;">➕ Nuevo Producto</h2>
+                <input type="hidden" id="p-id-edicion">
+                
+                <div class="form-grid" style="grid-template-columns: 2fr 1fr;">
+                    <div>
+                        <div class="input-group"><label>Nombre del Producto *</label><input id="p-nombre" class="input-std"></div>
+                        <div class="form-grid" style="margin-top:15px;">
+                            <div class="input-group"><label>SKU</label><input id="p-sku" class="input-std"></div>
+                            <div class="input-group"><label>Categoría</label><select id="p-cat" class="input-std"></select></div>
+                            <div class="input-group"><label>Marca</label><input id="p-marca" class="input-std"></div>
+                            <div class="input-group"><label>Modelo</label><input id="p-modelo" class="input-std"></div>
+                        </div>
+                        <h4 style="color:#28a745; margin-top:20px;">Finanzas</h4>
+                        <div class="form-grid" style="background:#f9f9f9; padding:15px; border-radius:8px;">
+                            <div class="input-group"><label>Precio Venta ($)</label><input type="number" id="p-precio" class="input-std"></div>
+                            <div class="input-group"><label>Costo Compra ($)</label><input type="number" id="p-compra" class="input-std"></div>
+                            <div class="input-group"><label>Descuento (%)</label><input type="number" id="p-descuento" class="input-std" value="0"></div>
+                            <div class="input-group"><label>Stock</label><input type="number" id="p-stock" class="input-std" value="1"></div>
+                        </div>
+                        <div class="input-group" style="margin-top:15px;"><label>Descripción</label><textarea id="p-desc" class="input-std" rows="3"></textarea></div>
+                    </div>
+                    <div>
+                        <div class="input-group"><label>Imagen</label>
+                            <div class="img-preview-box" onclick="document.getElementById('p-img-file').click()">
+                                <img id="img-preview" src="https://via.placeholder.com/300?text=Subir+Foto">
+                                <p style="font-size:0.8em; color:#888; margin-top:5px;">Click para cambiar</p>
+                            </div>
+                            <input type="file" id="p-img-file" style="display:none;" onchange="previewImg(event)">
+                        </div>
+                        <div class="input-group" style="margin-top:15px;">
+                            <label>Ficha Técnica</label>
+                            <div id="contenedor-specs" style="border:1px solid #eee; padding:10px; border-radius:5px; background:#fafafa;"></div>
+                            <button class="btn-txt-icon btn-secondary" onclick="agregarSpec()" style="width:100%; justify-content:center;">+ Característica</button>
+                        </div>
+                        <div style="margin-top:20px;"><label style="display:flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="p-activo" checked> Producto Visible</label></div>
+                        <button id="btn-submit" onclick="procesarProducto()" class="btn-txt-icon btn-primary" style="width:100%; margin-top:15px; justify-content:center; padding:12px; font-size:1em;">GUARDAR</button>
+                        <button id="btn-cancel" onclick="limpiarFormulario()" class="btn-txt-icon btn-secondary" style="width:100%; margin-top:10px; justify-content:center; display:none;">Cancelar</button>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            <div id="vista-categorias" class="card-panel">
+                <h3>📂 Categorías</h3>
+                <div style="display:flex; gap:10px; margin:20px 0;">
+                    <input id="cat-nom" class="input-std" placeholder="Nombre Categoría" style="max-width:300px;">
+                    <button onclick="crearCat()" class="btn-txt-icon btn-success">CREAR</button>
+                </div>
+                <table class="tabla-admin"><thead><tr><th>ID</th><th>Nombre</th><th>Acción</th></tr></thead><tbody id="tabla-cat"></tbody></table>
+            </div>
+
+            <div id="vista-cupones" class="card-panel">
+                <h3>🎟️ Cupones</h3>
+                <div style="display:flex; gap:10px; margin:20px 0;">
+                    <input id="cup-code" class="input-std" placeholder="CÓDIGO" style="max-width:200px; text-transform:uppercase;">
+                    <input id="cup-val" class="input-std" type="number" placeholder="%" style="width:80px;">
+                    <button onclick="crearCup()" class="btn-txt-icon btn-success">CREAR</button>
+                </div>
+                <table class="tabla-admin"><thead><tr><th>Código</th><th>%</th><th>Acción</th></tr></thead><tbody id="tabla-cup"></tbody></table>
+            </div>
+
+        </main>
     </div>
 
     <div id="app-footer"></div>
 
+    <div id="modal-detalles" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+        <div style="background:white; padding:25px; width:90%; max-width:600px; border-radius:10px; max-height:80vh; overflow-y:auto;">
+            <div style="display:flex; justify-content:space-between;"><h2>Pedido #<span id="d-id"></span></h2><button onclick="document.getElementById('modal-detalles').style.display='none'" style="background:none; border:none; font-size:24px;">&times;</button></div>
+            <p><strong>Cliente:</strong> <span id="d-contacto"></span></p>
+            <p><strong>Dirección:</strong> <span id="d-direccion"></span></p>
+            <ul id="d-productos" style="background:#f9f9f9; padding:15px; border-radius:5px; list-style:none;"></ul>
+            <h3 style="text-align:right; color:#28a745;">Total: <span id="d-total"></span></h3>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/loader.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/app.js"></script> 
+    <script src="js/admin.js"></script> 
 
-    <script>
-        window.onload = async function () {
-            const { data: { session } } = await clienteSupabase.auth.getSession();
-            // RECUERDA CAMBIAR ESTO POR TU EMAIL
-            if (!session || session.user.email !== 'ivantonix@gmail.com') {
-                alert("⛔ Acceso denegado.");
-                window.location.href = "index.html";
-                return;
-            }
-            cargarVentas();
-        };
-
-        let ventasCache = []; // AGREGADO: Variable para guardar los datos y usarlos en el modal
-
-        async function cargarVentas() {
-            const { data } = await clienteSupabase.from('ventas').select('*').order('fecha_compra', { ascending: false }).order('id', { ascending: false });
-            const tbody = document.getElementById('tabla-ventas');
-            tbody.innerHTML = '';
-
-            if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px;">Sin ventas recientes</td></tr>'; return; }
-
-            ventasCache = data; // Guardamos los datos recibidos
-
-            data.forEach(v => {
-                const fecha = new Date(v.fecha_compra).toLocaleDateString();
-                const esPagado = v.estado === 'pagado';
-                const tieneGuia = v.numero_guia_envio && v.numero_guia_envio !== 'PENDIENTE';
-
-                const claseBloqueo = tieneGuia ? 'bloqueado' : (esPagado ? 'estado-pagado' : 'estado-pendiente');
-                const atributoDisabled = tieneGuia ? 'disabled' : '';
-
-                // Usamos clases CSS nuevas para inputs
-                const selectEstado = `
-                    <select onchange="cambiarEstado(${v.id}, this)" class="select-estado ${claseBloqueo}" ${atributoDisabled}>
-                        <option value="pendiente_pago" ${!esPagado ? 'selected' : ''}>⏳ Pendiente</option>
-                        <option value="pagado" ${esPagado ? 'selected' : ''}>✅ Pagado</option>
-                    </select>`;
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td><strong>#${v.id}</strong></td>
-                        <td>${fecha}</td>
-                        <td>
-                            <button class="btn-ver-detalles" onclick="abrirDetalles(${v.id})">
-                                <span class="material-icons" style="font-size:16px;">visibility</span> Ver
-                            </button>
-                        </td>
-                        <td style="font-weight:bold; color:#0056b3;">$${v.total.toFixed(2)}</td>
-                        <td>${selectEstado}</td>
-                        <td><input type="text" class="input-tech" value="${v.paqueteria || ''}" placeholder="Paquetería" id="paq-${v.id}" style="min-width:100px;"></td>
-                        <td><input type="text" class="input-tech" id="guia-${v.id}" value="${v.numero_guia_envio !== 'PENDIENTE' ? v.numero_guia_envio : ''}" placeholder="No. Guía" style="min-width:120px;"></td>
-                        <td style="text-align:center;">
-                            <button class="btn-guardar" onclick="guardarDatosEnvio(${v.id})">
-                                <span class="material-icons" style="font-size:16px;">save</span> Guardar
-                            </button>
-                        </td>
-                    </tr>`;
-            });
-        }
-
-        // AGREGADO: Función para abrir el modal con los datos
-        function abrirDetalles(idVenta) {
-            const venta = ventasCache.find(v => v.id === idVenta);
-            if (!venta) return;
-
-            document.getElementById('d-id').innerText = venta.id;
-            document.getElementById('d-contacto').innerText = venta.detalles_contacto || "Sin datos de contacto";
-            document.getElementById('d-direccion').innerText = venta.direccion_envio || "Recoger en tienda / Sin dirección";
-            document.getElementById('d-total').innerText = `$${venta.total.toFixed(2)}`;
-
-            const lista = document.getElementById('d-productos');
-            lista.innerHTML = '';
-
-            // Verificamos si hay productos guardados en el JSON
-            if (venta.productos_json && Array.isArray(venta.productos_json)) {
-                venta.productos_json.forEach(prod => {
-                    lista.innerHTML += `
-                        <li>
-                            <span>${prod.cantidad}x ${prod.nombre}</span>
-                            <span>$${(prod.precio * prod.cantidad).toFixed(2)}</span>
-                        </li>`;
-                });
-            } else {
-                lista.innerHTML = '<li>Sin información de productos.</li>';
-            }
-
-            document.getElementById('modal-detalles').style.display = 'block';
-        }
-        // --- FUNCIÓN PARA CAMBIAR ESTADO DE PAGO ---
-        async function cambiarEstado(id, selectElement) {
-            const nuevoEstado = selectElement.value;
-
-            const { error } = await clienteSupabase.from('ventas').update({ estado: nuevoEstado }).eq('id', id);
-            if (error) { mostrarNotificacion("Error: " + error.message, "error"); return; }
-
-            selectElement.className = 'select-estado ' + (nuevoEstado === 'pagado' ? 'estado-pagado' : 'estado-pendiente');
-            mostrarNotificacion("Estado actualizado", "success");
-
-            // Lógica de Correo si pasa a PAGADO
-            if (nuevoEstado === 'pagado') {
-                const venta = ventasCache.find(v => v.id === id);
-                if (venta) {
-                    const emailCliente = obtenerEmailDeVenta(venta);
-                    const nombreCliente = venta.direccion_envio.split('-')[0].trim();
-
-                    if (emailCliente) {
-                        mostrarNotificacion("Enviando confirmación de pago...", "info");
-
-                        const params = {
-                            to_email: emailCliente,
-                            to_name: nombreCliente,
-                            order_id: id,
-                            total: venta.total.toFixed(2),
-                            message: "Tu pago ha sido confirmado. Estamos preparando tu paquete.",
-                            address: venta.direccion_envio,
-                            products: "Pago recibido satisfactoriamente."
-                        };
-
-                        // Código para cambiarEstado y guardarDatosEnvio
-                        emailjs.send("service_i1yzl9c", "template_o6nl56z", params)
-                            .then((res) => {
-                                console.log("✅ Enviado:", res.status);
-                                mostrarNotificacion("Correo enviado con éxito", "success");
-                            })
-                            .catch((error) => {
-                                console.error("❌ Error detallado de EmailJS:", error);
-                                // Esto evita el 'Uncaught' y te muestra el error real en la notificación
-                                mostrarNotificacion("EmailJS: " + (error.text || "ID de servicio inválido"), "error");
-                            });
-                    }
-                }
-            }
-        }
-
-        // --- FUNCIÓN PARA GUARDAR GUÍA Y ENVIAR CORREO ---
-        async function guardarDatosEnvio(id) {
-            const guia = document.getElementById(`guia-${id}`).value;
-            const paq = document.getElementById(`paq-${id}`).value;
-
-            if (!guia || !paq) return mostrarNotificacion("Llena paquetería y guía", "error");
-
-            const { error } = await clienteSupabase.from('ventas').update({
-                numero_guia_envio: guia,
-                paqueteria: paq
-            }).eq('id', id);
-
-            if (error) {
-                mostrarNotificacion("Error al guardar", "error");
-            } else {
-                mostrarNotificacion("Datos guardados en sistema", "success");
-
-                const venta = ventasCache.find(v => v.id === id);
-                if (venta) {
-                    const emailCliente = obtenerEmailDeVenta(venta);
-                    const nombreCliente = venta.direccion_envio.split('-')[0].trim();
-
-                    if (emailCliente) {
-                        mostrarNotificacion("Enviando guía al cliente...", "info");
-
-                        const params = {
-                            to_email: emailCliente,
-                            to_name: nombreCliente,
-                            order_id: id,
-                            total: venta.total.toFixed(2),
-                            message: `¡Tu pedido ha sido enviado! Paquetería: ${paq}. Tu número de guía es: ${guia}`,
-                            address: venta.direccion_envio,
-                            products: `Envío en tránsito vía ${paq}`
-                        };
-
-                        // Código para cambiarEstado y guardarDatosEnvio
-                        emailjs.send("service_i1yzl9c", "template_o6nl56z", params)
-                            .then((res) => {
-                                console.log("✅ Enviado:", res.status);
-                                mostrarNotificacion("Correo enviado con éxito", "success");
-                            })
-                            .catch((error) => {
-                                console.error("❌ Error detallado de EmailJS:", error);
-                                // Esto evita el 'Uncaught' y te muestra el error real en la notificación
-                                mostrarNotificacion("EmailJS: " + (error.text || "ID de servicio inválido"), "error");
-                            });
-                    }
-                }
-            }
-        }
-
-        async function registrarHistorialCorreo(ventaId, destinatario, asunto, tipo) {
-            try {
-                const { error } = await clienteSupabase.from('historial_correos').insert([{
-                    venta_id: ventaId,
-                    destinatario: destinatario,
-                    asunto: asunto,
-                    tipo_correo: tipo,
-                    // Ajustamos nombres comunes que suelen causar el error 400
-                    proveedor_id: 1, // Verifica si en tu BD es 'provedor_id' o 'proveedor_id'
-                    estado: 'enviado',
-                    fecha_envio: new Date().toISOString() // Formato ISO correcto para timestamptz
-                }]);
-
-                if (error) {
-                    console.warn("⚠️ No se pudo guardar el historial, pero el correo sí se envió:", error.message);
-                    // Si el error persiste, intenta comentar la línea de 'proveedor_id' o 'fecha_envio'
-                    // para identificar cuál columna es la que no existe.
-                }
-            } catch (err) {
-                console.error("Error técnico en historial:", err);
-            }
-        }
-
-        // Función auxiliar para sacar el email del string "Usuario: correo@..."
-        function obtenerEmailDeVenta(venta) {
-            if (!venta.detalles_contacto) return null;
-            // Asumiendo que guardaste: "Usuario: correo@gmail.com"
-            return venta.detalles_contacto.replace('Usuario: ', '').trim();
-        }
-    </script>
 </body>
-
 </html>
