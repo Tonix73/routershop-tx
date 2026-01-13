@@ -5,12 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // PANTALLA DE CARGA (LOADER)
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     const loader = document.getElementById('loader-wrapper');
-    if(loader) {
+    if (loader) {
         setTimeout(() => {
             loader.classList.add('loader-hidden');
-        }, 500); 
+        }, 500);
     }
 });
 
@@ -49,7 +49,7 @@ window.abrirCarritoGlobal = function (event) {
 
 // --- MENÚ HAMBURGUESA (GLOBAL) ---
 // IMPORTANTE: Usamos 'window.' para asegurar que el HTML dinámico lo encuentre
-window.toggleMenu = function() {
+window.toggleMenu = function () {
     const links = document.getElementById('nav-links');
     if (!links) {
         console.error("No se encontró el elemento con id 'nav-links'");
@@ -80,7 +80,7 @@ async function cargarComponentes() {
             const btnMenu = document.querySelector('.menu-icon') || document.getElementById('menu-toggle');
             if (btnMenu) {
                 // Le asignamos el clic manualmente por si el onclick del HTML falla
-                btnMenu.onclick = window.toggleMenu; 
+                btnMenu.onclick = window.toggleMenu;
             }
         }
 
@@ -160,7 +160,7 @@ window.abrirLoginGlobal = function (event) {
 window.navegarProtegido = async function (url, event) {
     if (event) event.preventDefault();
     if (typeof clienteSupabase === 'undefined') {
-        window.location.href = url; 
+        window.location.href = url;
         return;
     }
     const { data: { session } } = await clienteSupabase.auth.getSession();
