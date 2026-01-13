@@ -1,4 +1,3 @@
-
 /* ==========================================================================
    3. ESTILOS PÁGINA: INDEX (Inicio)
    ========================================================================== */
@@ -247,3 +246,217 @@ button.add-cart:hover {
     }
 }
 
+/* --- AJUSTES PARA EL CARRUSEL (RESPONSIVO) --- */
+.carrusel-hero {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    /* Altura ideal en PC */
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Capa oscura para que el texto se lea bien */
+.slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 51, 102, 0.6);
+    /* Azul corporativo transparente */
+}
+
+.slide-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    max-width: 800px;
+}
+
+.slide-content h2 {
+    font-size: 3.5em;
+    margin-bottom: 10px;
+    font-weight: 800;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.slide-content p {
+    font-size: 1.2em;
+    margin-bottom: 25px;
+}
+
+/* Botones del Slider */
+.btn-slider {
+    padding: 12px 30px;
+    background-color: #ffc107;
+    color: #003366;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 50px;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.btn-slider:hover {
+    background-color: white;
+    transform: scale(1.05);
+}
+
+/* Flechas de navegación */
+.flecha {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 10;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.flecha:hover {
+    background: #ffc107;
+    color: #003366;
+}
+
+.prev {
+    left: 20px;
+}
+
+.next {
+    right: 20px;
+}
+
+/* --- ESTILOS PARA SECCIONES DESTACADAS (Nuevos, Promociones) --- */
+.seccion-destacada {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.titulo-seccion {
+    text-align: center;
+    font-size: 2.2em;
+    color: #003366;
+    margin-bottom: 40px;
+    font-weight: 800;
+    position: relative;
+}
+
+/* Línea amarilla debajo del título */
+.titulo-seccion::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #ffc107;
+    margin: 10px auto 0;
+}
+
+/* Grid específico para destacados (4 productos por fila) */
+.grid-destacados {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+/* Etiquetas (Badge) para las tarjetas */
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8em;
+    z-index: 5;
+    text-transform: uppercase;
+}
+
+.bg-oferta {
+    background-color: #dc3545;
+}
+
+/* Rojo */
+.bg-nuevo {
+    background-color: #28a745;
+}
+
+/* Verde */
+.bg-top {
+    background-color: #ffc107;
+    color: #333;
+}
+
+/* Amarillo */
+
+
+/* Ajuste para pantallas pequeñas (Móvil) */
+@media (max-width: 768px) {
+    .carrusel-hero {
+        height: 400px;
+        /* Altura más adecuada para móvil, evita que se comprima */
+    }
+
+    .slide-content h2 {
+        font-size: 1.8em !important;
+        /* Texto más pequeño para que no se amontone */
+        line-height: 1.2;
+    }
+
+    .slide-content p {
+        font-size: 1em !important;
+        margin-bottom: 15px;
+        padding: 0 10px;
+    }
+
+    .btn-slider {
+        padding: 10px 20px !important;
+        font-size: 0.9em !important;
+    }
+
+    /* Flechas más pequeñas en móvil para no estorbar el contenido */
+    .flecha {
+        padding: 10px !important;
+        font-size: 18px !important;
+    }
+}
+
+/* Ajuste para móviles muy pequeños */
+@media (max-width: 480px) {
+    .carrusel-hero {
+        height: 350px;
+    }
+
+    .slide-content h2 {
+        font-size: 1.5em !important;
+    }
+}

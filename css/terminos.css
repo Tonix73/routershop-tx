@@ -1,0 +1,101 @@
+/* AISLAMIENTO ESTRUCTURAL PARA EVITAR APLASTAMIENTO */
+        html,
+        body {
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-color: #f4f6f9 !important;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ESPACIADOR DINÁMICO: Corrige el error de "pegado" al header */
+        .layout-offset {
+            display: block;
+            width: 100%;
+            height: 120px;
+            flex-shrink: 0;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            padding: 20px !important;
+            box-sizing: border-box;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .container-legal {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            color: #003366;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .subtitulo-legal {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 0.9em;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #003366;
+            margin-top: 35px;
+            font-size: 1.3em;
+            border-left: 5px solid #ffc107;
+            padding-left: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+            text-align: justify;
+            font-size: 0.95em;
+        }
+
+        ul {
+            margin-bottom: 15px;
+            color: #555;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+
+        .fecha-actualizacion {
+            text-align: center;
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 50px;
+            font-style: italic;
+        }
+
+        @media (max-width: 850px) {
+            .layout-offset {
+                height: 140px !important;
+            }
+
+            .container-legal {
+                padding: 30px 20px;
+            }
+
+            .main-wrapper {
+                padding: 10px !important;
+            }
+        }
+    

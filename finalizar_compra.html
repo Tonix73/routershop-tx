@@ -19,129 +19,7 @@
 
     <link rel="stylesheet" href="css/estilos.css">
     <link rel="stylesheet" href="css/finalizar_compra.css">
-    <style>
-        /* --- ESTILOS TARJETA (GRID) --- */
-        .form-grid-tarjeta {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            background-color: #fff;
-            padding: 20px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
 
-        .campo-full {
-            grid-column: 1 / -1;
-        }
-
-        .input-estilo-envio {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 15px;
-            color: #495057;
-            outline: none;
-            box-sizing: border-box;
-            height: 45px;
-        }
-
-        .input-estilo-envio:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
-        }
-
-        .btn-guardar-azul {
-            width: 100%;
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            height: 45px;
-            transition: background-color 0.15s ease-in-out;
-        }
-
-        .btn-guardar-azul:hover {
-            background-color: #0b5ed7;
-        }
-
-        /* --- ESTILOS RESUMEN TARJETA --- */
-        .resumen-tarjeta-container {
-            background-color: #f0fff4;
-            border: 1px solid #c3e6cb;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-editar-tarjeta {
-            background: transparent;
-            border: 1px solid #ccc;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85em;
-            color: #555;
-        }
-
-        .btn-editar-tarjeta:hover {
-            background: #e2e6ea;
-            color: #333;
-        }
-
-        /* --- EFECTO HOVER PARA LA TARJETA --- */
-        .opcion-radio {
-            transition: all 0.2s ease;
-        }
-
-        /* 1. Estado inicial del icono (Gris apagado) */
-        .icon-animado {
-            color: #adb5bd;
-            transition: color 0.3s ease;
-        }
-
-        /* 2. Cuando pasas el mouse por encima de la opción (Hover) */
-        .opcion-radio:hover .icon-animado {
-            color: #28a745;
-        }
-
-        /* 3. Cuando la opción está seleccionada (Activa) */
-        .opcion-radio input:checked~div .icon-animado {
-            color: #003366;
-        }
-
-        /* --- ESTILO PARA LOGOS DE PAGO (B/N a Color) --- */
-        .logo-pago {
-            filter: grayscale(100%);
-            /* Blanco y negro por defecto */
-            opacity: 0.6;
-            /* Un poco opaco para indicar "inactivo" */
-            transition: all 0.3s ease;
-            /* Transición suave */
-        }
-
-        /* 1. Al pasar el mouse por la tarjeta, el logo toma color */
-        .opcion-radio:hover .logo-pago {
-            filter: grayscale(0%);
-            opacity: 1;
-        }
-
-        /* 2. Cuando la opción está SELECCIONADA, el logo se queda a color */
-        .opcion-radio input:checked~div .logo-pago {
-            filter: grayscale(0%);
-            opacity: 1;
-        }
-    </style>
 </head>
 
 <body>
@@ -149,6 +27,7 @@
         <div class="loader-brand">
             <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
                 style="height: 60px;">
+
             <div style="text-align: left;">
                 <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
                     RouterShop</div>
@@ -161,6 +40,8 @@
     </div>
 
     <div id="app-navbar"></div>
+
+    <div class="layout-offset" style="height: 110px;"></div>
 
     <div id="notificacion-toast" class="notificacion-container">
         <span id="notif-icono" class="material-icons">info</span><span id="notif-mensaje">Mensaje</span>

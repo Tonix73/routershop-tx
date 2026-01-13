@@ -1,33 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin - RouterShop TX</title>
-    <link rel="icon" type="image/png" href="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png">
-    
+    <link rel="icon" type="image/png"
+        href="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png">
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script> (function () { emailjs.init("S6x887RD35YnO33Eg"); })(); </script>
-    
+
     <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="css/estilos.css">
-    </head>
+</head>
 
 <body>
-
     <div id="loader-wrapper" class="loader-container">
-        <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" class="loader-logo">
+        <div class="loader-brand">
+            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
+                style="height: 60px;">
+
+            <div style="text-align: left;">
+                <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
+                    RouterShop</div>
+                <div
+                    style="color: #ffc107; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif; line-height: 0.8;">
+                    TX</div>
+            </div>
+        </div>
+        <div class="spinner"></div>
     </div>
 
-    <div id="notificacion-toast" class="notificacion-container"><span id="notif-icono" class="material-icons">info</span><span id="notif-mensaje">Mensaje</span></div>
+    <div id="notificacion-toast" class="notificacion-container"><span id="notif-icono"
+            class="material-icons">info</span><span id="notif-mensaje">Mensaje</span></div>
 
     <div id="app-navbar"></div>
 
     <div class="admin-wrapper">
-        
+
         <aside class="sidebar">
             <div class="sidebar-profile">
                 <div class="avatar-circle">
@@ -55,7 +70,7 @@
                 <li class="menu-item" onclick="nav('vista-cupones', this)">
                     <span class="material-icons">local_offer</span><span>Cupones</span>
                 </li>
-                
+
                 <li class="menu-divider"></li>
 
                 <li class="menu-item" onclick="window.location.href='index.html'" style="color:#0056b3;">
@@ -72,11 +87,21 @@
             <div id="vista-ventas" class="card-panel active-view">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <h2 style="margin:0; color:#003366;">📦 Gestión de Pedidos</h2>
-                    <button class="btn-txt-icon btn-secondary" onclick="cargarVentas()"><span class="material-icons">refresh</span> ACTUALIZAR</button>
+                    <button class="btn-txt-icon btn-secondary" onclick="cargarVentas()"><span
+                            class="material-icons">refresh</span> ACTUALIZAR</button>
                 </div>
                 <div class="tabla-scroll">
                     <table class="tabla-admin">
-                        <thead><tr><th>ID</th><th>Fecha</th><th>Total</th><th>Estado</th><th>Guía</th><th>Acciones</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Guía</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
                         <tbody id="tabla-ventas"></tbody>
                     </table>
                 </div>
@@ -85,11 +110,20 @@
             <div id="vista-mis-productos" class="card-panel">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <h2 style="margin:0; color:#003366;">🛒 Mis Productos</h2>
-                    <button class="btn-txt-icon btn-secondary" onclick="cargarProductosLista()"><span class="material-icons">refresh</span> REFRESCAR</button>
+                    <button class="btn-txt-icon btn-secondary" onclick="cargarProductosLista()"><span
+                            class="material-icons">refresh</span> REFRESCAR</button>
                 </div>
                 <div class="tabla-scroll">
                     <table class="tabla-admin">
-                        <thead><tr><th>Img</th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Administrar</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>Img</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Administrar</th>
+                            </tr>
+                        </thead>
                         <tbody id="tabla-lista-productos"></tbody>
                     </table>
                 </div>
@@ -99,33 +133,55 @@
                 <h2 style="color:#28a745; margin-top:0;">📈 Rentabilidad</h2>
                 <div class="tabla-scroll">
                     <table class="tabla-admin">
-                        <thead><tr><th>Img</th><th>Producto</th><th>Costo</th><th>P. Venta</th><th>Desc%</th><th>P. Final</th><th>Stock</th><th>Ganancia/U</th><th>Total</th><th>Acción</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>Img</th>
+                                <th>Producto</th>
+                                <th>Costo</th>
+                                <th>P. Venta</th>
+                                <th>Desc%</th>
+                                <th>P. Final</th>
+                                <th>Stock</th>
+                                <th>Ganancia/U</th>
+                                <th>Total</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
                         <tbody id="tabla-rentabilidad"></tbody>
                     </table>
                 </div>
             </div>
 
             <div id="vista-agregar" class="card-panel">
-                <h2 id="titulo-form" style="margin:0 0 20px 0; color:#333; border-bottom:1px solid #eee; padding-bottom:10px;">➕ Nuevo Producto</h2>
+                <h2 id="titulo-form"
+                    style="margin:0 0 20px 0; color:#333; border-bottom:1px solid #eee; padding-bottom:10px;">➕ Nuevo
+                    Producto</h2>
                 <input type="hidden" id="p-id-edicion">
-                
+
                 <div class="form-grid" style="grid-template-columns: 2fr 1fr;">
                     <div>
-                        <div class="input-group"><label>Nombre del Producto *</label><input id="p-nombre" class="input-std"></div>
+                        <div class="input-group"><label>Nombre del Producto *</label><input id="p-nombre"
+                                class="input-std"></div>
                         <div class="form-grid" style="margin-top:15px;">
                             <div class="input-group"><label>SKU</label><input id="p-sku" class="input-std"></div>
-                            <div class="input-group"><label>Categoría</label><select id="p-cat" class="input-std"></select></div>
+                            <div class="input-group"><label>Categoría</label><select id="p-cat"
+                                    class="input-std"></select></div>
                             <div class="input-group"><label>Marca</label><input id="p-marca" class="input-std"></div>
                             <div class="input-group"><label>Modelo</label><input id="p-modelo" class="input-std"></div>
                         </div>
                         <h4 style="color:#28a745; margin-top:20px;">Finanzas</h4>
                         <div class="form-grid" style="background:#f9f9f9; padding:15px; border-radius:8px;">
-                            <div class="input-group"><label>Precio Venta ($)</label><input type="number" id="p-precio" class="input-std"></div>
-                            <div class="input-group"><label>Costo Compra ($)</label><input type="number" id="p-compra" class="input-std"></div>
-                            <div class="input-group"><label>Descuento (%)</label><input type="number" id="p-descuento" class="input-std" value="0"></div>
-                            <div class="input-group"><label>Stock</label><input type="number" id="p-stock" class="input-std" value="1"></div>
+                            <div class="input-group"><label>Precio Venta ($)</label><input type="number" id="p-precio"
+                                    class="input-std"></div>
+                            <div class="input-group"><label>Costo Compra ($)</label><input type="number" id="p-compra"
+                                    class="input-std"></div>
+                            <div class="input-group"><label>Descuento (%)</label><input type="number" id="p-descuento"
+                                    class="input-std" value="0"></div>
+                            <div class="input-group"><label>Stock</label><input type="number" id="p-stock"
+                                    class="input-std" value="1"></div>
                         </div>
-                        <div class="input-group" style="margin-top:15px;"><label>Descripción</label><textarea id="p-desc" class="input-std" rows="3"></textarea></div>
+                        <div class="input-group" style="margin-top:15px;"><label>Descripción</label><textarea
+                                id="p-desc" class="input-std" rows="3"></textarea></div>
                     </div>
                     <div>
                         <div class="input-group"><label>Imagen</label>
@@ -137,12 +193,19 @@
                         </div>
                         <div class="input-group" style="margin-top:15px;">
                             <label>Ficha Técnica</label>
-                            <div id="contenedor-specs" style="border:1px solid #eee; padding:10px; border-radius:5px; background:#fafafa;"></div>
-                            <button class="btn-txt-icon btn-secondary" onclick="agregarSpec()" style="width:100%; justify-content:center;">+ Característica</button>
+                            <div id="contenedor-specs"
+                                style="border:1px solid #eee; padding:10px; border-radius:5px; background:#fafafa;">
+                            </div>
+                            <button class="btn-txt-icon btn-secondary" onclick="agregarSpec()"
+                                style="width:100%; justify-content:center;">+ Característica</button>
                         </div>
-                        <div style="margin-top:20px;"><label style="display:flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="p-activo" checked> Producto Visible</label></div>
-                        <button id="btn-submit" onclick="procesarProducto()" class="btn-txt-icon btn-primary" style="width:100%; margin-top:15px; justify-content:center; padding:12px; font-size:1em;">GUARDAR</button>
-                        <button id="btn-cancel" onclick="limpiarFormulario()" class="btn-txt-icon btn-secondary" style="width:100%; margin-top:10px; justify-content:center; display:none;">Cancelar</button>
+                        <div style="margin-top:20px;"><label
+                                style="display:flex; align-items:center; gap:5px; cursor:pointer;"><input
+                                    type="checkbox" id="p-activo" checked> Producto Visible</label></div>
+                        <button id="btn-submit" onclick="procesarProducto()" class="btn-txt-icon btn-primary"
+                            style="width:100%; margin-top:15px; justify-content:center; padding:12px; font-size:1em;">GUARDAR</button>
+                        <button id="btn-cancel" onclick="limpiarFormulario()" class="btn-txt-icon btn-secondary"
+                            style="width:100%; margin-top:10px; justify-content:center; display:none;">Cancelar</button>
                     </div>
                 </div>
             </div>
@@ -153,17 +216,36 @@
                     <input id="cat-nom" class="input-std" placeholder="Nombre Categoría" style="max-width:300px;">
                     <button onclick="crearCat()" class="btn-txt-icon btn-success">CREAR</button>
                 </div>
-                <table class="tabla-admin"><thead><tr><th>ID</th><th>Nombre</th><th>Acción</th></tr></thead><tbody id="tabla-cat"></tbody></table>
+                <table class="tabla-admin">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-cat"></tbody>
+                </table>
             </div>
 
             <div id="vista-cupones" class="card-panel">
                 <h3>🎟️ Cupones</h3>
                 <div style="display:flex; gap:10px; margin:20px 0;">
-                    <input id="cup-code" class="input-std" placeholder="CÓDIGO" style="max-width:200px; text-transform:uppercase;">
+                    <input id="cup-code" class="input-std" placeholder="CÓDIGO"
+                        style="max-width:200px; text-transform:uppercase;">
                     <input id="cup-val" class="input-std" type="number" placeholder="%" style="width:80px;">
                     <button onclick="crearCup()" class="btn-txt-icon btn-success">CREAR</button>
                 </div>
-                <table class="tabla-admin"><thead><tr><th>Código</th><th>%</th><th>Acción</th></tr></thead><tbody id="tabla-cup"></tbody></table>
+                <table class="tabla-admin">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>%</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-cup"></tbody>
+                </table>
             </div>
 
         </main>
@@ -171,9 +253,15 @@
 
     <div id="app-footer"></div>
 
-    <div id="modal-detalles" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
-        <div style="background:white; padding:25px; width:90%; max-width:600px; border-radius:10px; max-height:80vh; overflow-y:auto;">
-            <div style="display:flex; justify-content:space-between;"><h2>Pedido #<span id="d-id"></span></h2><button onclick="document.getElementById('modal-detalles').style.display='none'" style="background:none; border:none; font-size:24px;">&times;</button></div>
+    <div id="modal-detalles"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+        <div
+            style="background:white; padding:25px; width:90%; max-width:600px; border-radius:10px; max-height:80vh; overflow-y:auto;">
+            <div style="display:flex; justify-content:space-between;">
+                <h2>Pedido #<span id="d-id"></span></h2><button
+                    onclick="document.getElementById('modal-detalles').style.display='none'"
+                    style="background:none; border:none; font-size:24px;">&times;</button>
+            </div>
             <p><strong>Cliente:</strong> <span id="d-contacto"></span></p>
             <p><strong>Dirección:</strong> <span id="d-direccion"></span></p>
             <ul id="d-productos" style="background:#f9f9f9; padding:15px; border-radius:5px; list-style:none;"></ul>
@@ -183,8 +271,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/loader.js"></script>
-    <script src="js/app.js"></script> 
-    <script src="js/admin.js"></script> 
+    <script src="js/app.js"></script>
+    <script src="js/admin.js"></script>
 
 </body>
+
 </html>
