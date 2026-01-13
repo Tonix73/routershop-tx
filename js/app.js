@@ -87,49 +87,81 @@ function abrirCarrito() {
 
 // --- FUNCIÓN MODIFICADA: Renderizado con botones +/- ---
 function renderizarCarrito() {
-    const cuerpo = document.getElementById('cuerpo-tabla-carrito');
-    const totalElem = document.getElementById('total-carrito');
+    const cuerpoTabla = document.getElementById('cuerpo-tabla-carrito');
+    const totalElemento = document.getElementById('total-carrito');
     const btnPagar = document.getElementById('btn-pagar-dinamico');
 
-    if (!cuerpo) return; // Si no existe el elemento, salir
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-    cuerpo.innerHTML = '';
-    let total = 0;
+    cuerpoTabla.innerHTML = '';
+    let totalGlobal = 0;
 
+    // --- 1. CARRITO VACÍO (SOLUCIÓN RESPONSIVE) ---
     if (carrito.length === 0) {
-        cuerpo.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:#777;">Tu carrito está vacío 🛒</td></tr>';
-        if (totalElem) totalElem.innerText = 'Total: $0.00';
+        // TRUCO: Usamos display: flex en el TR para romper la estructura de tabla rígida
+        // y que ocupe el 100% del ancho centrado.
+        cuerpoTabla.innerHTML = `
+            <tr style="display: flex; justify-content: center; width: 100%; border: none;">
+                <td style="display: block; width: 100%; text-align: center; padding: 50px 20px; color: #777; border: none;">
+                    
+                    <span class="material-icons" style="font-size: 60px; color: #e0e0e0; display: block; margin: 0 auto 15px auto;">
+                        remove_shopping_cart
+                    </span>
+                    
+                    <p style="margin: 0; font-size: 1.2em; font-weight: 500;">Tu carrito está vacío.</p>
+                    
+                    <a href="catalogo.html" onclick="cerrarModal('modal-carrito')" 
+                       style="display: inline-block; margin-top: 15px; color: #0056b3; text-decoration: none; font-weight: bold; border: 1px solid #0056b3; padding: 8px 15px; border-radius: 20px;">
+                        Ir al Catálogo
+                    </a>
+
+                </td>
+            </tr>`;
+
+        if (totalElemento) totalElemento.style.display = 'none';
         if (btnPagar) btnPagar.style.display = 'none';
+
+        if (window.actualizarContadorGlobal) window.actualizarContadorGlobal();
         return;
     }
 
-    carrito.forEach(item => {
-        const subtotal = item.precio * item.cantidad;
-        total += subtotal;
+    // --- 2. SI HAY PRODUCTOS ---
+    if (totalElemento) totalElemento.style.display = 'block';
+    if (btnPagar) btnPagar.style.display = 'block';
 
-        // AQUÍ ESTÁ LA MEJORA: Botones en lugar de texto plano
-        cuerpo.innerHTML += `
-            <tr>
-                <td><img src="${item.imagen}" onerror="this.src='https://via.placeholder.com/50'"></td>
-                <td>${item.nombre}</td>
-                <td>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <button onclick="cambiarCantidad(${item.id}, -1)" 
-                            style="width: 24px; height: 24px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;">-</button>
-                        
-                        <span style="font-weight: bold; min-width: 20px; text-align: center;">${item.cantidad}</span>
-                        
-                        <button onclick="cambiarCantidad(${item.id}, 1)" 
-                            style="width: 24px; height: 24px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;">+</button>
+    carrito.forEach((prod) => {
+        const subtotal = prod.precio * prod.cantidad;
+        totalGlobal += subtotal;
+
+        cuerpoTabla.innerHTML += `
+            <tr class="fila-carrito">
+                <td class="col-img">
+                    <img src="${prod.imagen}" alt="${prod.nombre}">
+                </td>
+                <td class="col-nombre">
+                    <div class="nombre-producto">${prod.nombre}</div>
+                </td>
+                <td class="col-cantidad">
+                    <div class="qty-control">
+                        <button onclick="cambiarCantidad(${prod.id}, -1)">-</button>
+                        <span>${prod.cantidad}</span>
+                        <button onclick="cambiarCantidad(${prod.id}, 1)">+</button>
                     </div>
                 </td>
-                <td>$${subtotal.toFixed(2)}</td>
-                <td><button class="btn-eliminar" onclick="eliminarDelCarrito(${item.id})"><span class="material-icons" style="font-size:18px;">close</span></button></td>
-            </tr>`;
+                <td class="col-precio">
+                    $${subtotal.toFixed(2)}
+                </td>
+                <td class="col-borrar">
+                    <button onclick="eliminarDelCarrito(${prod.id})" class="btn-trash">
+                        <span class="material-icons">close</span>
+                    </button>
+                </td>
+            </tr>
+        `;
     });
 
-    if (totalElem) totalElem.innerText = `Total: $${total.toFixed(2)}`;
-    if (btnPagar) btnPagar.style.display = 'block';
+    if (totalElemento) totalElemento.innerText = `Total: $${totalGlobal.toFixed(2)}`;
+    if (window.actualizarContadorGlobal) window.actualizarContadorGlobal();
 }
 
 // --- NUEVA FUNCIÓN: Lógica para sumar/restar ---
@@ -162,11 +194,26 @@ async function procederAlPago() {
     const { data: { session } } = await clienteSupabase.auth.getSession();
 
     if (session) {
+        // 1. Si ya está logueado, pasa directo
         window.location.href = "finalizar_compra.html";
     } else {
+        // 2. Si NO está logueado:
+
+        // A) Guardamos la "nota mental" de a dónde quería ir
+        localStorage.setItem('redireccion_pendiente', 'finalizar_compra.html');
+
+        // B) Cerramos carrito y mostramos login
         cerrarModal('modal-carrito');
-        mostrarNotificacion("🔒 Inicia sesión para comprar", "error");
-        setTimeout(() => abrirLogin(), 800);
+        mostrarNotificacion("🔒 Inicia sesión para finalizar tu compra", "info");
+
+        // Usamos la función global si existe, o la local
+        setTimeout(() => {
+            if (window.abrirLoginGlobal) {
+                window.abrirLoginGlobal();
+            } else {
+                abrirLogin();
+            }
+        }, 500);
     }
 }
 

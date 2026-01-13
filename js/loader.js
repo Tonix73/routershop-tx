@@ -102,8 +102,24 @@ async function iniciarLogicaNavbar() {
         const { data: { session } } = await clienteSupabase.auth.getSession();
         aplicarPermisosVisuales(session);
 
+        // ESCUCHAMOS EL EVENTO DE LOGIN
         clienteSupabase.auth.onAuthStateChange((event, session) => {
             aplicarPermisosVisuales(session);
+
+            // --- LÓGICA NUEVA: REDIRECCIÓN AUTOMÁTICA ---
+            if (event === 'SIGNED_IN') {
+                // Preguntamos: ¿Había alguna redirección pendiente?
+                const destino = localStorage.getItem('redireccion_pendiente');
+
+                if (destino) {
+                    // 1. Borramos la nota para que no pase siempre
+                    localStorage.removeItem('redireccion_pendiente');
+
+                    // 2. Redirigimos al usuario a donde quería ir
+                    console.log("Redirigiendo a:", destino); // Para depurar
+                    window.location.href = destino;
+                }
+            }
         });
     }
 }

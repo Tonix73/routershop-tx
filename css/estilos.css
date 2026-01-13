@@ -312,68 +312,123 @@ body {
     text-align: center;
 }
 
-/* --- ESTILOS DEL CARRITO (TABLA INTERNA) --- */
+/* =========================================
+   ESTILOS CARRITO RESPONSIVO (FINAL)
+   ========================================= */
+
+/* --- 1. ESTILOS BASE (ESCRITORIO) --- */
 .tabla-carrito {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 10px;
+    border-collapse: collapse;
     margin-top: 10px;
 }
 
-.tabla-carrito td {
-    padding: 10px;
+.fila-carrito {
     border-bottom: 1px solid #eee;
-    font-size: 0.95em;
-    color: #444;
+}
+
+.tabla-carrito td {
+    padding: 15px;
     vertical-align: middle;
 }
 
-.tabla-carrito img {
-    width: 50px;
-    height: 50px;
+/* Imagen */
+.col-img img {
+    width: 60px;
+    height: 60px;
     object-fit: contain;
-    border: 1px solid #e9ecef;
+    border: 1px solid #eee;
     border-radius: 6px;
-    padding: 2px;
     background: white;
 }
 
-.btn-eliminar {
-    color: #dc3545;
-    cursor: pointer;
-    background: rgba(220, 53, 69, 0.1);
+/* Nombre */
+.nombre-producto {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.3;
+}
+
+/* Control Cantidad */
+.qty-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: fit-content;
+    background: #fff;
+}
+
+.qty-control button {
+    background: none;
     border: none;
     width: 30px;
     height: 30px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+}
+
+.qty-control button:hover {
+    background: #f0f0f0;
+}
+
+.qty-control span {
+    padding: 0 10px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+/* Precio */
+.col-precio {
+    color: #0056b3;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Botón Borrar */
+.btn-trash {
+    background: #fff5f5;
+    color: #dc3545;
+    border: none;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: 0.2s;
 }
 
-.btn-eliminar:hover {
+.btn-trash:hover {
     background: #dc3545;
     color: white;
 }
 
+
 .total-pagar {
     text-align: right;
     font-size: 1.6em;
+    /* Texto grande */
     font-weight: 800;
-    margin-top: 25px;
-    color: #0056b3;
+    margin-top: 20px;
+    color: #003366;
+    /* Azul corporativo */
     border-top: 2px solid #f4f4f4;
-    padding-top: 15px;
+    padding-top: 20px;
 }
 
 .btn-ir-pagar {
     background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    /* Degradado Verde */
     color: white;
     display: block;
     text-align: center;
-    padding: 16px;
+    padding: 15px;
     border-radius: 50px;
+    /* Bordes redondos */
     font-weight: bold;
     margin-top: 20px;
     font-size: 1.1em;
@@ -381,14 +436,156 @@ body {
     border: none;
     width: 100%;
     box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    transition: 0.3s;
+    /* Sombra verde */
+    transition: all 0.3s ease;
 }
 
 .btn-ir-pagar:hover {
     transform: translateY(-2px);
+    /* Efecto de elevación */
     box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
 }
 
+/* =========================================
+   ARREGLO FINAL: ANCHO DEL CARRITO
+   ========================================= */
+
+/* Hacemos que SOLO la ventana del carrito sea más ancha en PC */
+#modal-carrito .modal-contenido {
+    max-width: 500px;
+    /* Antes era 450px y por eso se cortaba */
+    width: 95%;
+    /* Ocupa casi toda la pantalla en tablets pequeñas */
+}
+
+/* Ajuste de columnas para que se vean elegantes */
+/* 1. Imagen pequeña y fija */
+.col-img {
+    width: 80px;
+    text-align: center;
+}
+
+/* 2. El nombre toma todo el espacio sobrante */
+.col-nombre {
+    width: auto;
+}
+
+/* 3. Cantidad y Precio ocupan solo lo necesario */
+.col-cantidad,
+.col-precio {
+    width: 1%;
+    /* Truco CSS: "ocupa el mínimo posible sin aplastarte" */
+    white-space: nowrap;
+    padding: 0 20px;
+    /* Aire a los lados */
+}
+
+/* 4. Botón borrar fijo a la derecha */
+.col-borrar {
+    width: 50px;
+    text-align: right;
+}
+
+/* MANTENER EL LOGIN PEQUEÑO */
+/* Esto asegura que el login no se vea gigante por accidente */
+#modal-login .modal-contenido {
+    max-width: 450px;
+}
+
+/* --- 2. VERSIÓN MÓVIL / TABLET (Aquí arreglamos el encimado) --- */
+@media (max-width: 768px) {
+
+    /* Convertimos la tabla en bloques flexibles */
+    .tabla-carrito,
+    .tabla-carrito tbody,
+    .fila-carrito,
+    .tabla-carrito td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .fila-carrito {
+        position: relative;
+        /* Para posicionar la X absoluta */
+        padding: 15px;
+        padding-right: 40px;
+        /* Dejamos espacio para la X a la derecha */
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        display: grid;
+        grid-template-columns: 70px 1fr;
+        /* Columna imagen | Columna info */
+        grid-template-rows: auto auto;
+        gap: 10px;
+    }
+
+    /* Imagen a la izquierda */
+    .col-img {
+        grid-row: 1 / 3;
+        /* Ocupa 2 filas de alto */
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* Nombre arriba */
+    .col-nombre {
+        padding: 0 !important;
+        border: none !important;
+        align-self: start;
+    }
+
+    .nombre-producto {
+        font-size: 1em;
+        margin-bottom: 5px;
+    }
+
+    /* Cantidad y Precio abajo */
+    .col-cantidad,
+    .col-precio {
+        padding: 0 !important;
+        border: none !important;
+        display: inline-block;
+        width: auto;
+    }
+
+    /* Movemos el precio y cantidad a la misma linea visualmente */
+    .col-cantidad {
+        grid-column: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* El precio lo ponemos grande y a la derecha de la cantidad */
+    .col-precio {
+        margin-left: 15px;
+        font-size: 1.1em;
+    }
+
+    /* --- BOTÓN BORRAR FLOTANTE --- */
+    /* Lo sacamos del flujo y lo pegamos en la esquina superior derecha */
+    .col-borrar {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: auto !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* AGREGA ESTO AL FINAL DE LA MEDIA QUERY PARA REFORZAR */
+    #modal-carrito .modal-contenido {
+        max-width: 95% !important;
+        /* En celular usamos todo el ancho disponible */
+        padding: 20px 15px;
+        /* Menos relleno para ganar espacio */
+    }
+
+}
 
 /* ==========================================================================
    3. ESTILOS PÁGINA: INDEX (Inicio)
@@ -880,7 +1077,8 @@ button.add-cart:hover {
    5. ESTILOS TABLA DE ESPECIFICACIONES
    ========================================= */
 .tabla-specs-container {
-    overflow-x: auto; /* Para móviles */
+    overflow-x: auto;
+    /* Para móviles */
 }
 
 .tabla-specs {
@@ -911,7 +1109,8 @@ button.add-cart:hover {
 .tabla-specs td:first-child {
     font-weight: 700;
     color: #555;
-    width: 30%; /* Ancho fijo para las etiquetas */
+    width: 30%;
+    /* Ancho fijo para las etiquetas */
     border-right: 1px solid #eee;
 }
 

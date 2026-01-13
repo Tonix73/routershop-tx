@@ -71,10 +71,9 @@
             background-color: #0b5ed7;
         }
 
-        /* --- ESTILOS RESUMEN TARJETA (Faltaban estos) --- */
+        /* --- ESTILOS RESUMEN TARJETA --- */
         .resumen-tarjeta-container {
             background-color: #f0fff4;
-            /* Verde claro */
             border: 1px solid #c3e6cb;
             border-radius: 8px;
             padding: 15px;
@@ -100,46 +99,46 @@
         }
 
         /* --- EFECTO HOVER PARA LA TARJETA --- */
-        #label-tarjeta {
+        .opcion-radio {
             transition: all 0.2s ease;
-            /* Suaviza el cambio de color */
-        }
-
-        #label-tarjeta:hover {
-            border-color: #007bff;
-            /* Color del borde al pasar el mouse (Azul) */
-            background-color: #f0f8ff;
-            /* Fondo azul muy clarito */
-            cursor: pointer;
-            /* Manita de click */
-        }
-
-        /* Opcional: Para asegurar que se vea azul fijo cuando está seleccionada */
-        #label-tarjeta:has(input:checked) {
-            border-color: #007bff;
-            background-color: #e7f1ff;
-            /* Mantenemos el borde inferior sutil para que se una al formulario */
-            border-bottom: 1px solid #f0f0f0;
         }
 
         /* 1. Estado inicial del icono (Gris apagado) */
         .icon-animado {
             color: #adb5bd;
-            /* Gris similar al de "Transferencia" inactivo */
             transition: color 0.3s ease;
-            /* Transición suave */
         }
 
         /* 2. Cuando pasas el mouse por encima de la opción (Hover) */
         .opcion-radio:hover .icon-animado {
             color: #28a745;
-            /* Verde brillante (o pon #003366 para azul) */
         }
 
         /* 3. Cuando la opción está seleccionada (Activa) */
         .opcion-radio input:checked~div .icon-animado {
             color: #003366;
-            /* Se queda en azul corporativo al seleccionarlo */
+        }
+
+        /* --- ESTILO PARA LOGOS DE PAGO (B/N a Color) --- */
+        .logo-pago {
+            filter: grayscale(100%);
+            /* Blanco y negro por defecto */
+            opacity: 0.6;
+            /* Un poco opaco para indicar "inactivo" */
+            transition: all 0.3s ease;
+            /* Transición suave */
+        }
+
+        /* 1. Al pasar el mouse por la tarjeta, el logo toma color */
+        .opcion-radio:hover .logo-pago {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        /* 2. Cuando la opción está SELECCIONADA, el logo se queda a color */
+        .opcion-radio input:checked~div .logo-pago {
+            filter: grayscale(0%);
+            opacity: 1;
         }
     </style>
 </head>
@@ -149,7 +148,6 @@
         <div class="loader-brand">
             <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
                 style="height: 60px;">
-
             <div style="text-align: left;">
                 <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
                     RouterShop</div>
@@ -180,12 +178,9 @@
                 </p>
                 <div id="form-direccion" class="form-direccion">
                     <input type="text" id="in-nombre" class="full-width" placeholder="Nombre completo">
-
                     <input type="text" id="in-calle" class="full-width" placeholder="Calle">
-
                     <input type="text" id="in-num-ext" placeholder="Número Exterior">
                     <input type="text" id="in-num-int" placeholder="Número Interior (Opcional)">
-
                     <input type="text" id="in-colonia" placeholder="Colonia">
                     <input type="text" id="in-cp" placeholder="CP">
                     <input type="text" id="in-ciudad" placeholder="Ciudad">
@@ -202,22 +197,22 @@
                     <input type="radio" name="envio" value="DHL" data-costo="250" onchange="recalcular()" checked>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/DHL_Logo.svg/320px-DHL_Logo.svg.png"
                         alt="DHL" class="logo-opcion">
-                    <div class="opcion-texto"><strong>DHL Express</strong><br><small>Día siguiente</small></div><span
-                        class="precio-extra">$250</span>
+                    <div class="opcion-texto"><strong>DHL Express</strong><br><small>Día siguiente</small></div>
+                    <span class="precio-extra">$250</span>
                 </label>
                 <label class="opcion-radio">
                     <input type="radio" name="envio" value="FedEx" data-costo="180" onchange="recalcular()">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/FedEx_Express.svg/320px-FedEx_Express.svg.png"
                         alt="FedEx" class="logo-opcion">
-                    <div class="opcion-texto"><strong>FedEx Estándar</strong><br><small>3-5 días</small></div><span
-                        class="precio-extra">$180</span>
+                    <div class="opcion-texto"><strong>FedEx Estándar</strong><br><small>3-5 días</small></div>
+                    <span class="precio-extra">$180</span>
                 </label>
                 <label class="opcion-radio">
                     <input type="radio" name="envio" value="Estafeta" data-costo="150" onchange="recalcular()">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/7/7f/Logo_de_Estafeta.svg" alt="Estafeta"
                         class="logo-opcion">
-                    <div class="opcion-texto"><strong>Estafeta Económico</strong><br><small>5-7 días</small></div><span
-                        class="precio-extra">$150</span>
+                    <div class="opcion-texto"><strong>Estafeta Económico</strong><br><small>5-7 días</small></div>
+                    <span class="precio-extra">$150</span>
                 </label>
             </div>
 
@@ -241,23 +236,19 @@
                 </label>
 
                 <div id="contenedor-formulario-tarjeta" style="display: none;">
-
                     <div id="form-tarjeta-inputs" class="form-grid-tarjeta">
                         <div class="campo-full">
                             <input type="text" id="card-number" class="input-estilo-envio"
                                 placeholder="Número de tarjeta" maxlength="19" onkeyup="formatCardNumber(this)">
                         </div>
-
                         <div class="campo-full">
                             <input type="text" id="card-name" class="input-estilo-envio"
                                 placeholder="NOMBRE DEL TITULAR" style="text-transform: uppercase;">
                         </div>
-
                         <div>
                             <input type="text" id="card-expiry" class="input-estilo-envio" placeholder="MM/AA"
                                 maxlength="5" onkeyup="formatExpiry(this)">
                         </div>
-
                         <div style="position: relative;">
                             <input type="password" id="card-cvc" class="input-estilo-envio" placeholder="CVC"
                                 maxlength="4">
@@ -265,13 +256,9 @@
                                 style="position: absolute; right: 10px; top: 12px; color: #ccc; font-size: 18px; cursor: help;"
                                 title="3 dígitos al reverso">help</span>
                         </div>
-
                         <div class="campo-full">
-                            <button class="btn-guardar-azul" onclick="guardarTarjetaLocal()">
-                                Guardar Tarjeta
-                            </button>
+                            <button class="btn-guardar-azul" onclick="guardarTarjetaLocal()">Guardar Tarjeta</button>
                         </div>
-
                         <div class="campo-full"
                             style="text-align: center; font-size: 12px; color: #888; margin-top: 5px;">
                             <span class="material-icons" style="font-size: 12px; vertical-align: middle;">lock</span>
@@ -290,13 +277,29 @@
                         </div>
                         <button class="btn-editar-tarjeta" onclick="editarTarjeta()">Cambiar</button>
                     </div>
-
                 </div>
 
                 <label class="opcion-radio" style="margin-top: 10px;">
+                    <input type="radio" name="pago" value="paypal" onclick="toggleInfoPago()">
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"
+                                class="logo-pago" style="height: 24px;">
+
+                            <div class="opcion-texto">
+                                <strong style="color: #003087;">PayPal</strong><br>
+                                <small>Pago rápido y seguro</small>
+                            </div>
+                        </div>
+                    </div>
+                </label>
+
+                <label class="opcion-radio" style="margin-top: 10px;">
                     <input type="radio" name="pago" value="transferencia" onclick="toggleInfoPago()">
-                    <span class="material-icons icon-opcion-big logo-opcion">account_balance</span>
-                    <div class="opcion-texto"><strong>Transferencia SPEI</strong><br><small>BBVA</small></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span class="material-icons icon-opcion-big logo-opcion">account_balance</span>
+                        <div class="opcion-texto"><strong>Transferencia SPEI</strong><br><small>BBVA</small></div>
+                    </div>
                 </label>
 
                 <div id="info-transferencia"
@@ -305,6 +308,7 @@
                     Banco: BBVA - CLABE: 012 345 678901234567<br>
                     <small>Envía comprobante a contacto@routershop.com o WhatsApp</small>
                 </div>
+
             </div>
         </div>
 
@@ -320,7 +324,6 @@
 
                 <div class="totales">
                     <div class="fila-total"><span>Subtotal:</span><span id="txt-subtotal">$0.00</span></div>
-
                     <div class="fila-total"><span>Envío:</span><span id="txt-envio">$0.00</span></div>
                     <div class="fila-total" id="fila-descuento" style="display:none;"><span
                             class="descuento-texto">Descuento:</span><span id="txt-descuento"
@@ -334,11 +337,8 @@
                 <p
                     style="font-size: 0.85em; color: #777; margin-top: 15px; display: flex;justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap;">
                     <span class="material-icons" style="font-size: 1.2em; color: #28a745;">lock</span>
-
                     <span>*Precios incluyen impuestos.</span>
-
                     <span style="color:#ccc;">|</span>
-
                     <img src="https://cdn-icons-png.flaticon.com/512/2438/2438078.png" alt="Pago Seguro SSL"
                         style="height: 22px; width: auto; opacity: 0.8;">
                     <span style="font-weight: 600; font-size: 0.9em;">Pagos 100% Seguros</span>
@@ -383,19 +383,70 @@
             recalcular();
         }
 
-        // --- CÁLCULO CON IVA (16%) ---
         function recalcular() {
+            // 1. Calcular Subtotal de productos
             const subtotalProductos = carrito.reduce((sum, i) => sum + (i.precio * i.cantidad), 0);
 
-            const costoEnvio = parseFloat(document.querySelector('input[name="envio"]:checked').getAttribute('data-costo'));
+            // 2. ¿Aplica Envío Gratis? (Mayor a $2000)
+            const esEnvioGratis = subtotalProductos > 2000;
+
+            // 3. ACTUALIZAR VISUALMENTE LAS TARJETAS DE PAQUETERÍA
+            // Buscamos todas las opciones de radio button de envío
+            const opcionesEnvio = document.querySelectorAll('input[name="envio"]');
+
+            opcionesEnvio.forEach(opcion => {
+                // Buscamos la etiqueta del precio que está al lado (el span .precio-extra)
+                const labelPadre = opcion.closest('label');
+                const spanPrecio = labelPadre.querySelector('.precio-extra');
+                const costoOriginal = opcion.getAttribute('data-costo');
+
+                if (esEnvioGratis) {
+                    // Si es gratis, cambiamos el texto a verde y ponemos "Gratis"
+                    spanPrecio.innerText = "¡Gratis!";
+                    spanPrecio.style.color = "#28a745"; // Verde
+                    spanPrecio.style.fontWeight = "bold";
+                    // Opcional: Tachamos un poco el precio original si quisieras, 
+                    // pero "¡Gratis!" se ve mejor limpio.
+                } else {
+                    // Si NO es gratis, restauramos el precio original
+                    spanPrecio.innerText = `$${costoOriginal}`;
+                    spanPrecio.style.color = "#666"; // Color gris original
+                    spanPrecio.style.fontWeight = "normal";
+                }
+            });
+
+            // 4. Determinar costo de envío para la suma final
+            let costoEnvio = 0;
+
+            if (esEnvioGratis) {
+                costoEnvio = 0;
+            } else {
+                // Si no es gratis, tomamos el costo del radio button seleccionado
+                costoEnvio = parseFloat(document.querySelector('input[name="envio"]:checked').getAttribute('data-costo'));
+            }
+
+            // 5. Calcular Descuentos
             const montoDescuento = subtotalProductos * (descuentoPorcentaje / 100);
 
+            // 6. TOTAL FINAL
             totalFinal = subtotalProductos + costoEnvio - montoDescuento;
 
+            // --- ACTUALIZAR RESUMEN (Derecha) ---
             document.getElementById('txt-subtotal').innerText = `$${subtotalProductos.toFixed(2)}`;
 
-            document.getElementById('txt-envio').innerText = `$${costoEnvio.toFixed(2)}`;
+            // Actualizar texto de envío en el resumen
+            const txtEnvioResumen = document.getElementById('txt-envio');
+            if (esEnvioGratis) {
+                txtEnvioResumen.innerText = "Gratis";
+                txtEnvioResumen.style.color = "#28a745";
+                txtEnvioResumen.style.fontWeight = "bold";
+            } else {
+                txtEnvioResumen.innerText = `$${costoEnvio.toFixed(2)}`;
+                txtEnvioResumen.style.color = "#333";
+                txtEnvioResumen.style.fontWeight = "normal";
+            }
 
+            // Mostrar fila de descuento si existe
             if (montoDescuento > 0) {
                 document.getElementById('fila-descuento').style.display = 'flex';
                 document.getElementById('txt-descuento').innerText = `-$${montoDescuento.toFixed(2)}`;
@@ -422,12 +473,9 @@
                 document.getElementById('card-direccion-guardada').style.display = 'block';
                 document.getElementById('form-direccion').style.display = 'none';
                 document.getElementById('dir-nombre').innerText = data[0].nombre_receptor;
-
-                // CAMBIO: Mostrar los números en el resumen de dirección
                 const numExt = data[0].numero_exterior || '';
                 const numInt = data[0].numero_interior ? `Int. ${data[0].numero_interior}` : '';
                 document.getElementById('dir-calle').innerText = `${data[0].calle} #${numExt} ${numInt}, ${data[0].colonia}`;
-
                 document.getElementById('dir-detalles').innerText = `${data[0].ciudad}, CP: ${data[0].codigo_postal}`;
                 document.getElementById('msg-sin-direccion').style.display = 'none';
             } else {
@@ -447,14 +495,11 @@
             const nombre = document.getElementById('in-nombre').value;
             const calle = document.getElementById('in-calle').value;
             const cp = document.getElementById('in-cp').value;
-
-            // CAMBIO: Capturar los nuevos campos
             const numExt = document.getElementById('in-num-ext').value;
             const numInt = document.getElementById('in-num-int').value;
 
             if (!calle || !nombre || !numExt) return mostrarNotificacion("Faltan datos (Nombre, Calle, Num. Exterior)", "error");
 
-            // CAMBIO: Guardar usando los valores de los inputs
             const { error } = await clienteSupabase.from('direcciones').insert([{
                 usuario_id: usuarioActual.id,
                 nombre_receptor: nombre,
@@ -476,20 +521,27 @@
         let tarjetaEnMemoria = null;
 
         function toggleInfoPago() {
-            // Verificar si el elemento existe antes de pedir su valor
             const opcionRadio = document.querySelector('input[name="pago"]:checked');
-            if (!opcionRadio) return; // Si no hay nada seleccionado, no hacer nada
+            if (!opcionRadio) return;
 
             const opcion = opcionRadio.value;
             const contenedorTarjeta = document.getElementById('contenedor-formulario-tarjeta');
             const infoTransferencia = document.getElementById('info-transferencia');
 
+            // 1. Si es Tarjeta
             if (opcion === 'tarjeta') {
                 contenedorTarjeta.style.display = 'block';
                 infoTransferencia.style.display = 'none';
-            } else if (opcion === 'transferencia') {
+            }
+            // 2. Si es Transferencia
+            else if (opcion === 'transferencia') {
                 contenedorTarjeta.style.display = 'none';
                 infoTransferencia.style.display = 'block';
+            }
+            // 3. Si es PayPal (u otros futuros)
+            else {
+                contenedorTarjeta.style.display = 'none';
+                infoTransferencia.style.display = 'none';
             }
         }
 
@@ -523,18 +575,10 @@
                 return;
             }
 
-            tarjetaEnMemoria = {
-                numero: num,
-                nombre: nombre,
-                exp: exp,
-                cvc: cvc
-            };
-
-            // OCULTAR FORM Y MOSTRAR RESUMEN
+            tarjetaEnMemoria = { numero: num, nombre: nombre, exp: exp, cvc: cvc };
             document.getElementById('form-tarjeta-inputs').style.display = 'none';
             document.getElementById('card-resumen').style.display = 'flex';
             document.getElementById('lbl-last4').innerText = num.slice(-4);
-
             mostrarNotificacion("Tarjeta guardada temporalmente", "success");
         }
 
@@ -547,16 +591,25 @@
         async function confirmarCompra() {
             if (!direccionID) return mostrarNotificacion("Selecciona dirección", "error");
 
-            const pago = document.querySelector('input[name="pago"]:checked').value;
+            const pagoInput = document.querySelector('input[name="pago"]:checked');
+            if (!pagoInput) return mostrarNotificacion("Selecciona un método de pago", "error");
 
-            // VALIDACIÓN CRÍTICA: Si eligió tarjeta, debe haber guardado los datos
+            const pago = pagoInput.value;
+
+            // VALIDACIÓN: Si eligió tarjeta manual, debe haber guardado los datos
             if (pago === 'tarjeta' && !tarjetaEnMemoria) {
                 return mostrarNotificacion("Guarda los datos de tu tarjeta primero", "error");
             }
 
             const btn = document.getElementById('btn-finalizar');
             const envio = document.querySelector('input[name="envio"]:checked').value;
-            const estadoInicial = (pago === 'transferencia') ? 'pendiente_pago' : 'pagado';
+
+            // --- LÓGICA DE ESTADO SEGÚN MÉTODO DE PAGO ---
+            let estadoInicial = 'pendiente_pago'; // Por defecto para transferencia
+
+            if (pago === 'tarjeta' || pago === 'paypal') {
+                estadoInicial = 'pagado';
+            }
 
             btn.innerText = "Procesando...";
             btn.disabled = true;
@@ -564,19 +617,19 @@
             let idVenta = null;
 
             try {
-                // 1. OBTENER DATOS DEL DOM
+                // OBTENER DATOS DEL DOM
                 const elemNombre = document.getElementById('dir-nombre');
                 const elemCalle = document.getElementById('dir-calle');
                 const elemDetalles = document.getElementById('dir-detalles');
                 const textoNombre = elemNombre ? elemNombre.innerText : "Cliente";
                 const textoDireccion = (elemCalle && elemDetalles) ? `${elemCalle.innerText} ${elemDetalles.innerText}` : "Dirección no especificada";
 
-                // 2. CREAR VENTA EN SUPABASE
+                // CREAR VENTA EN SUPABASE
                 const { data: venta, error: errorVenta } = await clienteSupabase.from('ventas').insert([{
                     usuario_id: usuarioActual.id,
                     direccion_envio_id: direccionID,
                     total: totalFinal,
-                    estado: estadoInicial,
+                    estado: estadoInicial, // <--- Aquí usamos la lógica del estado
                     fecha_compra: new Date(),
                     paqueteria: envio,
                     numero_guia_envio: 'PENDIENTE',
@@ -588,7 +641,7 @@
                 if (errorVenta) throw errorVenta;
                 idVenta = venta[0].id;
 
-                // 3. GUARDAR DETALLES DE PRODUCTOS
+                // GUARDAR DETALLES
                 const detalles = carrito.map(i => ({
                     venta_id: idVenta,
                     producto_id: i.id,
@@ -599,11 +652,10 @@
                 const { error: errorDetalle } = await clienteSupabase.from('detalle_ventas').insert(detalles);
                 if (errorDetalle) throw errorDetalle;
 
-                // 4. ENVÍO DE CORREO
+                // ENVÍO DE CORREO
                 try {
                     const { data: { session } } = await clienteSupabase.auth.getSession();
                     const emailDestino = session ? session.user.email : null;
-
                     if (emailDestino) {
                         const parametrosEmail = {
                             to_name: textoNombre,
@@ -617,7 +669,7 @@
                     }
                 } catch (errorMail) { console.error(errorMail); }
 
-                // 5. FINALIZACIÓN
+                // FINALIZACIÓN
                 mostrarNotificacion("¡Compra realizada con éxito!", "success");
                 localStorage.removeItem('carrito');
                 setTimeout(() => {
@@ -630,19 +682,6 @@
                 btn.disabled = false;
                 btn.innerText = "PAGAR AHORA";
             }
-        }
-
-        async function registrarHistorialCorreo(ventaId, destinatario, asunto, tipo, estado) {
-            const { error } = await clienteSupabase.from('historial_correos').insert([{
-                venta_id: ventaId,
-                destinatario: destinatario,
-                asunto: asunto,
-                tipo_correo: tipo,
-                provedor_id: 1,
-                estado: estado,
-                fecha_envio: new Date()
-            }]);
-            if (error) console.error("Error guardando historial correo:", error);
         }
     </script>
 </body>
