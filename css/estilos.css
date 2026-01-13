@@ -3,11 +3,32 @@
    ========================================================================== */
 body {
     font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f6f9;
-    margin: 0;
+    background-color: #f4f6f9 !important;
+    overflow-x: hidden;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
     padding-top: 90px;
     /* Espacio para el Navbar fijo */
     color: #333;
+}
+
+
+/* Este es el espaciador mágico que mencionaste */
+.layout-offset {
+    height: 90px !important;
+    /* Ajusta a la altura de tu Navbar */
+    flex-shrink: 0 !important;
+}
+
+/* Contenedor universal para todas las páginas (Catálogo, Perfil, etc.) */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 10px 20px 20px 20px !important;
+    /* El margen 'Premium' que te gustó */
+    box-sizing: border-box;
 }
 
 /* ==========================================
@@ -312,68 +333,123 @@ body {
     text-align: center;
 }
 
-/* --- ESTILOS DEL CARRITO (TABLA INTERNA) --- */
+/* =========================================
+   ESTILOS CARRITO RESPONSIVO (FINAL)
+   ========================================= */
+
+/* --- 1. ESTILOS BASE (ESCRITORIO) --- */
 .tabla-carrito {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 10px;
+    border-collapse: collapse;
     margin-top: 10px;
 }
 
-.tabla-carrito td {
-    padding: 10px;
+.fila-carrito {
     border-bottom: 1px solid #eee;
-    font-size: 0.95em;
-    color: #444;
+}
+
+.tabla-carrito td {
+    padding: 15px;
     vertical-align: middle;
 }
 
-.tabla-carrito img {
-    width: 50px;
-    height: 50px;
+/* Imagen */
+.col-img img {
+    width: 60px;
+    height: 60px;
     object-fit: contain;
-    border: 1px solid #e9ecef;
+    border: 1px solid #eee;
     border-radius: 6px;
-    padding: 2px;
     background: white;
 }
 
-.btn-eliminar {
-    color: #dc3545;
-    cursor: pointer;
-    background: rgba(220, 53, 69, 0.1);
+/* Nombre */
+.nombre-producto {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.3;
+}
+
+/* Control Cantidad */
+.qty-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: fit-content;
+    background: #fff;
+}
+
+.qty-control button {
+    background: none;
     border: none;
     width: 30px;
     height: 30px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+}
+
+.qty-control button:hover {
+    background: #f0f0f0;
+}
+
+.qty-control span {
+    padding: 0 10px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+/* Precio */
+.col-precio {
+    color: #0056b3;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Botón Borrar */
+.btn-trash {
+    background: #fff5f5;
+    color: #dc3545;
+    border: none;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: 0.2s;
 }
 
-.btn-eliminar:hover {
+.btn-trash:hover {
     background: #dc3545;
     color: white;
 }
 
+
 .total-pagar {
     text-align: right;
     font-size: 1.6em;
+    /* Texto grande */
     font-weight: 800;
-    margin-top: 25px;
-    color: #0056b3;
+    margin-top: 20px;
+    color: #003366;
+    /* Azul corporativo */
     border-top: 2px solid #f4f4f4;
-    padding-top: 15px;
+    padding-top: 20px;
 }
 
 .btn-ir-pagar {
     background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    /* Degradado Verde */
     color: white;
     display: block;
     text-align: center;
-    padding: 16px;
+    padding: 15px;
     border-radius: 50px;
+    /* Bordes redondos */
     font-weight: bold;
     margin-top: 20px;
     font-size: 1.1em;
@@ -381,1543 +457,153 @@ body {
     border: none;
     width: 100%;
     box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    transition: 0.3s;
+    /* Sombra verde */
+    transition: all 0.3s ease;
 }
 
 .btn-ir-pagar:hover {
     transform: translateY(-2px);
+    /* Efecto de elevación */
     box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
 }
 
+/* =========================================
+   ARREGLO FINAL: ANCHO DEL CARRITO
+   ========================================= */
 
-/* ==========================================================================
-   3. ESTILOS PÁGINA: INDEX (Inicio)
-   ========================================================================== */
-.controles {
+/* Hacemos que SOLO la ventana del carrito sea más ancha en PC */
+#modal-carrito .modal-contenido {
+    max-width: 500px;
+    /* Antes era 450px y por eso se cortaba */
+    width: 95%;
+    /* Ocupa casi toda la pantalla en tablets pequeñas */
+}
+
+/* Ajuste de columnas para que se vean elegantes */
+/* 1. Imagen pequeña y fija */
+.col-img {
+    width: 80px;
     text-align: center;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
-.buscador-box {
-    margin-bottom: 20px;
-}
-
-input[type="text"]#buscador {
-    padding: 12px;
-    width: 100%;
-    max-width: 400px;
-    border: 2px solid #ddd;
-    border-radius: 30px;
-    outline: none;
-    text-align: center;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-input[type="text"]#buscador:focus {
-    border-color: #0056b3;
-    box-shadow: 0 0 8px rgba(0, 86, 179, 0.2);
-}
-
-.botones-categorias {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-}
-
-.btn-cat {
-    background: white;
-    border: 1px solid #ddd;
-    padding: 8px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-weight: 500;
-    color: #555;
-}
-
-.btn-cat:hover,
-.btn-cat.activo {
-    background: #0056b3;
-    color: white;
-    border-color: #0056b3;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 25px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid transparent;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    border-color: #ffc107;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.card img {
-    max-width: 100%;
-    height: 180px;
-    object-fit: contain;
-    margin-bottom: 15px;
-}
-
-.card h3 {
-    font-size: 1.1em;
-    margin: 0 0 10px 0;
-    height: 45px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-.precio {
-    color: #28a745;
-    font-weight: 800;
-    font-size: 1.5em;
-    margin: 10px 0;
-}
-
-button.add-cart {
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    font-weight: bold;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-button.add-cart:hover {
-    background-color: #004494;
-    transform: scale(1.02);
-}
-
-/* ==========================================================================
-   EXTRAS INDEX: HERO Y BENEFICIOS
-   ========================================================================== */
-
-/* --- 1. HERO BANNER (PORTADA) --- */
-.hero-section {
-    background: linear-gradient(rgba(0, 86, 179, 0.8), rgba(0, 40, 85, 0.9)), url('https://images.unsplash.com/photo-1544197150-b99a580bbcbf?q=80&w=1471&auto=format&fit=crop');
-    /* Imagen de fondo de tecnología (puedes cambiar la URL) */
-    background-size: cover;
-    background-position: center;
-    color: white;
-    text-align: center;
-    padding: 80px 20px;
-    margin-bottom: 30px;
-    border-radius: 0 0 20px 20px;
-    /* Bordes redondeados abajo */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.hero-content h1 {
-    font-size: 3em;
-    margin: 0 0 15px 0;
-    font-weight: 800;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.hero-content p {
-    font-size: 1.2em;
-    margin-bottom: 30px;
-    opacity: 0.9;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.btn-hero {
-    background-color: #ffc107;
-    /* Amarillo llamativo */
-    color: #333;
-    padding: 15px 40px;
-    font-size: 1.1em;
-    font-weight: bold;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btn-hero:hover {
-    background-color: #e0a800;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
-}
-
-/* --- 2. BARRA DE BENEFICIOS --- */
-.beneficios-container {
-    max-width: 1200px;
-    margin: 0 auto 40px auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 0 20px;
-}
-
-.beneficio-card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-    border: 1px solid #eee;
-    transition: 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.beneficio-card:hover {
-    transform: translateY(-5px);
-    border-color: #0056b3;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-}
-
-.beneficio-card .material-icons {
-    font-size: 40px;
-    color: #0056b3;
-}
-
-.beneficio-card h4 {
-    margin: 0;
-    font-size: 1.1em;
-    color: #333;
-}
-
-.beneficio-card p {
-    margin: 0;
-    font-size: 0.9em;
-    color: #777;
-}
-
-/* Ajuste Móvil */
-@media (max-width: 768px) {
-    .hero-content h1 {
-        font-size: 2em;
-    }
-
-    .hero-section {
-        padding: 50px 20px;
-    }
-}
-
-
-/* ==========================================================================
-   4. ESTILOS PÁGINA: PRODUCTO (Detalles)
-   ========================================================================== */
-.container-producto {
-    max-width: 1100px;
-    margin: 30px auto;
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    position: relative;
-}
-
-/* Imagen y Zoom */
-.img-wrapper {
-    position: relative;
-    text-align: center;
-    border: 1px solid #eee;
-    border-radius: 12px;
-    padding: 10px;
-    background: #fafafa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 350px;
-}
-
-.img-producto {
-    max-width: 100%;
-    height: auto;
-    max-height: 400px;
-    object-fit: contain;
-    cursor: crosshair;
-}
-
-.img-zoom-lens {
-    position: absolute;
-    border: 1px solid #888;
-    width: 100px;
-    height: 100px;
-    background-color: rgba(255, 255, 255, 0.4);
-    cursor: crosshair;
-    display: none;
-    z-index: 10;
-}
-
-.img-zoom-result {
-    border: 2px solid #ddd;
-    width: 450px;
-    height: 450px;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    left: 105%;
-    z-index: 1000;
-    background-color: white;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-    display: none;
-    border-radius: 12px;
-}
-
-/* Info Producto */
-.info-producto {
-    display: flex;
-    flex-direction: column;
-    z-index: 1;
-}
-
-.info-producto h1 {
-    margin: 0 0 10px 0;
-    font-size: 2.2em;
-    color: #212529;
-}
-
-.precio-grande {
-    font-size: 2.5em;
-    color: #28a745;
-    font-weight: 800;
-    margin: 15px 0;
-}
-
-.stock-tag {
-    display: inline-block;
-    background: #e9ecef;
-    color: #555;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.9em;
-    font-weight: 600;
-    width: fit-content;
-}
-
-.descripcion-box {
-    line-height: 1.6;
-    color: #555;
-    margin-bottom: 30px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-}
-
-.btn-agregar-grande {
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    padding: 18px 30px;
-    font-size: 1.2em;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
-}
-
-.btn-agregar-grande:hover {
-    background-color: #004494;
-    transform: translateY(-2px);
-}
-
-/* Reseñas y Extras */
-.seccion-extra {
-    max-width: 1100px;
-    margin: 30px auto;
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.header-resenas {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #f4f4f4;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-}
-
-.rating-number {
-    font-size: 3em;
-    font-weight: 800;
-    color: #ffc107;
-    line-height: 1;
-}
-
-.comentario-item {
-    padding: 20px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.comentario-user {
-    font-weight: bold;
-    color: #333;
-    font-size: 1.05em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.form-resena {
-    background: #f8f9fa;
-    padding: 25px;
-    border-radius: 12px;
-    margin-top: 30px;
-    border: 1px solid #eee;
-}
-
-.grid-recomendados {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.card-rec {
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    transition: 0.2s;
-}
-
-.card-rec:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    border-color: #ffc107;
-}
-
-.card-rec img {
-    width: 100%;
-    height: 120px;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
-/* Lightbox */
-.lightbox-modal {
-    display: none;
-    position: fixed;
-    z-index: 6000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-}
-
-.lightbox-content {
-    margin: auto;
-    display: block;
+/* 2. El nombre toma todo el espacio sobrante */
+.col-nombre {
     width: auto;
-    max-width: 90%;
-    max-height: 90vh;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
 }
 
-.close-lightbox {
-    position: absolute;
-    top: 20px;
-    right: 35px;
-    color: #fff;
-    font-size: 40px;
-    cursor: pointer;
-    z-index: 6001;
-}
-
-
-/* ==========================================================================
-   5. ESTILOS PÁGINA: PERFIL
-   ========================================================================== */
-.container-perfil {
-    max-width: 1200px;
-    margin: 20px auto;
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 25px;
+/* 3. Cantidad y Precio ocupan solo lo necesario */
+.col-cantidad,
+.col-precio {
+    width: 1%;
+    /* Truco CSS: "ocupa el mínimo posible sin aplastarte" */
+    white-space: nowrap;
     padding: 0 20px;
-    min-height: 60vh;
-    align-items: start;
+    /* Aire a los lados */
 }
 
-.card-usuario {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    border-top: 5px solid #0056b3;
-    position: sticky;
-    top: 100px;
-}
-
-.avatar-circle {
-    width: 70px;
-    height: 70px;
-    background-color: #e9ecef;
-    color: #0056b3;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 10px auto;
-    font-size: 32px;
-}
-
-.user-email {
-    font-weight: bold;
-    font-size: 1em;
-    color: #333;
-    word-break: break-all;
-    margin-bottom: 5px;
-}
-
-.user-tag {
-    background: #e9ecef;
-    color: #666;
-    padding: 4px 10px;
-    border-radius: 15px;
-    font-size: 0.8em;
-    display: inline-block;
-    margin-bottom: 20px;
-}
-
-.btn-cerrar {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    width: 100%;
-    transition: 0.2s;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.btn-cerrar:hover {
-    background-color: #5a6268;
-}
-
-.danger-zone {
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
-}
-
-.btn-eliminar-cuenta {
-    background-color: white;
-    color: #dc3545;
-    border: 1px solid #dc3545;
-    padding: 8px 15px;
-    border-radius: 30px;
-    cursor: pointer;
-    width: 100%;
-    transition: 0.2s;
-    font-size: 0.85em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-}
-
-.btn-eliminar-cuenta:hover {
-    background-color: #dc3545;
-    color: white;
-}
-
-.card-pedidos {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-}
-
-.container-tabla-historial {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 5px;
-}
-
-.tabla-historial {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 700px;
-}
-
-.tabla-historial th {
-    text-align: left;
-    padding: 15px 10px;
-    color: #666;
-    font-size: 0.85em;
-    text-transform: uppercase;
-    border-bottom: 2px solid #eee;
-    background-color: #fcfcfc;
-    white-space: nowrap;
-}
-
-.tabla-historial td {
-    padding: 15px 10px;
-    border-bottom: 1px solid #eee;
-    font-size: 0.95em;
-    vertical-align: middle;
-}
-
-.tabla-historial tr:hover {
-    background-color: #f9f9f9;
-}
-
-/* Badges Pedidos */
-.badge {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8em;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    white-space: nowrap;
-}
-
-.bg-pagado {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.bg-pendiente {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-.btn-accion {
-    text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.85em;
-    font-weight: 600;
-    transition: 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    white-space: nowrap;
-}
-
-.btn-azul {
-    background: #007bff;
-    color: white;
-}
-
-.btn-rastrear {
-    background: #28a745;
-    color: white;
-}
-
-.btn-disabled {
-    background: #e9ecef;
-    color: #999;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-.btn-copy {
-    background: none;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-    color: #666;
-    padding: 2px;
-    margin-left: 5px;
-    vertical-align: middle;
-}
-
-.info-guia {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.85em;
-    color: #555;
-    gap: 3px;
-    min-width: 140px;
-}
-
-
-/* ==========================================================================
-   6. ESTILOS PÁGINA: ADMIN (DISEÑO PREMIUM RECUPERADO)
-   ========================================================================== */
-.admin-container {
-    max-width: 1300px;
-    /* Más ancho para que quepa la tabla */
-    margin: 30px auto;
-    padding: 0 20px;
-    min-height: 70vh;
-}
-
-.panel {
-    background: white;
-    padding: 30px;
-    margin-bottom: 30px;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-    /* Sombra más suave */
-    border-top: 5px solid #ffc107;
-}
-
-/* --- TABLA ADMIN (ESTILO PREMIUM) --- */
-.tabla-admin-scroll {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 15px;
-}
-
-.tabla-admin {
-    width: 100%;
-    border-collapse: separate;
-    /* Importante para bordes redondeados */
-    border-spacing: 0;
-    margin-top: 20px;
-    min-width: 1000px;
-    /* Fuerza el ancho */
-}
-
-/* Encabezados Oscuros */
-.tabla-admin th {
-    background: #343a40;
-    color: white;
-    padding: 15px;
-    font-size: 0.9em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    letter-spacing: 0.5px;
-    border-bottom: 3px solid #ffc107;
-    /* Línea amarilla decorativa */
-}
-
-.tabla-admin th:first-child {
-    border-top-left-radius: 8px;
-}
-
-.tabla-admin th:last-child {
-    border-top-right-radius: 8px;
-}
-
-/* Celdas */
-.tabla-admin td {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-    vertical-align: middle;
-    color: #555;
-    background: white;
-}
-
-.tabla-admin tr:hover td {
-    background-color: #f8f9fa;
-}
-
-/* --- CONTROLES DENTRO DE LA TABLA --- */
-.input-tech {
-    padding: 8px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    font-size: 0.9em;
-    outline: none;
-    transition: 0.3s;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.input-tech:focus {
-    border-color: #0056b3;
-    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
-}
-
-.select-estado {
-    font-weight: bold;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    text-align: center;
-    display: block;
-    margin: 0 auto;
-    min-width: 130px;
-    font-size: 0.85em;
-    appearance: none;
-    -webkit-appearance: none;
-}
-
-.estado-pagado {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.estado-pendiente {
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeeba;
-}
-
-/* Bloqueo visual si ya tiene guía */
-.bloqueado {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #e9ecef !important;
-    color: #6c757d !important;
-    border: 1px solid #ced4da;
-    pointer-events: none;
-}
-
-/* Botón Guardar (Disquete) */
-.btn-guardar {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: 0.2s;
-}
-
-.btn-guardar:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* --- FORMULARIO PRODUCTOS --- */
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.input-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #444;
-}
-
-.input-group input,
-.input-group select {
-    padding: 12px;
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-    background: #fcfcfc;
-}
-
-.btn-subir {
-    grid-column: span 2;
-    padding: 15px;
-    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    margin-top: 10px;
-    cursor: pointer;
-    font-size: 1.1em;
-    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
-}
-
-.btn-subir:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
-}
-
-/* Responsive Admin */
-@media (max-width: 768px) {
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .btn-subir {
-        grid-column: span 1;
-    }
-
-    .panel {
-        padding: 15px;
-    }
-
-    /* Ajustes tabla móvil */
-    .tabla-admin th,
-    .tabla-admin td {
-        padding: 10px;
-        font-size: 0.85em;
-    }
-
-    .btn-guardar {
-        padding: 6px 10px;
-    }
-}
-
-/* ==========================================================================
-   7. RESPONSIVIDAD MÓVIL Y TABLET (APLICA A TODO)
-   ========================================================================== */
-@media (max-width: 768px) {
-
-    /* AJUSTES GLOBALES */
-    h1 {
-        font-size: 1.8em;
-    }
-
-    h2 {
-        font-size: 1.3em;
-    }
-
-    /* MODAL CARRITO COMPACTO */
-    .modal-contenido {
-        width: 95%;
-        margin: 15% auto;
-        padding: 15px;
-    }
-
-    /* TABLA CARRITO INTELIGENTE (Sin scroll, compacta) */
-    .tabla-carrito {
-        width: 100%;
-        table-layout: fixed;
-        border-spacing: 0 5px;
-    }
-
-    .tabla-carrito td:nth-child(1) {
-        width: 45px;
-    }
-
-    /* Img */
-    .tabla-carrito td:nth-child(3) {
-        width: 30px;
-        text-align: center;
-    }
-
-    /* Cantidad */
-    .tabla-carrito td:nth-child(4) {
-        width: 60px;
-        text-align: right;
-    }
-
-    /* Precio */
-    .tabla-carrito td:nth-child(5) {
-        width: 30px;
-        text-align: center;
-    }
-
-    /* Borrar */
-    .tabla-carrito td:nth-child(2) {
-        width: auto;
-        white-space: normal;
-        line-height: 1.2;
-        font-size: 0.85em;
-        padding-left: 5px;
-    }
-
-    /* Nombre producto */
-
-    .tabla-carrito td {
-        padding: 8px 2px;
-        font-size: 0.9em;
-    }
-
-    .tabla-carrito img {
-        width: 40px !important;
-        height: 40px !important;
-    }
-
-    .btn-eliminar {
-        width: 24px;
-        height: 24px;
-        font-size: 14px;
-    }
-
-    .total-pagar {
-        font-size: 1.4em;
-    }
-
-    /* INDEX */
-    .grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        padding: 10px;
-    }
-
-    .card h3 {
-        font-size: 0.9em;
-    }
-
-    .precio {
-        font-size: 1.2em;
-    }
-
-    /* PERFIL */
-    .container-perfil {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 0 15px;
-    }
-
-    .card-usuario {
-        position: static;
-    }
-
-    .card-pedidos {
-        padding: 15px;
-    }
-
-    /* PRODUCTO */
-    .container-producto {
-        grid-template-columns: 1fr;
-        padding: 20px;
-        gap: 25px;
-    }
-
-    .img-zoom-result,
-    .img-zoom-lens {
-        display: none !important;
-    }
-
-    /* ADMIN */
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .btn-subir {
-        grid-column: span 1;
-    }
-}
-
-/* ==========================================================================
-   8. ESTILOS PÁGINA: FINALIZAR COMPRA (Checkout)
-   ========================================================================== */
-
-/* LAYOUT */
-.contenedor-checkout {
-    max-width: 1200px;
-    margin: 20px auto;
-    display: grid;
-    grid-template-columns: 1.8fr 1.2fr;
-    gap: 30px;
-    padding: 20px;
-}
-
-.seccion {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
-
-/* ESTO SOLO AFECTA AL CHECKOUT */
-.contenedor-checkout h2 {
-    margin-top: 0;
-    border-bottom: 2px solid #f4f4f4;
-    padding-bottom: 15px;
-    color: #444;
-    font-size: 1.3em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* FORMULARIOS */
-.direccion-card {
-    background: #f8f9fa;
-    padding: 15px;
-    border-left: 4px solid #007bff;
-    display: none;
-}
-
-.form-direccion {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    display: none;
-    margin-top: 15px;
-}
-
-.full-width {
-    grid-column: span 2;
-}
-
-input[type="text"] {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.btn-azul {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* OPCIONES RADIO */
-.opcion-radio {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    transition: 0.2s;
-    position: relative;
-    overflow: hidden;
-}
-
-.opcion-radio:hover {
-    border-color: #007bff;
-    background-color: #f9fbff;
-}
-
-.opcion-radio input {
-    transform: scale(1.3);
-    accent-color: #007bff;
-}
-
-.logo-opcion {
-    width: 70px;
-    height: 40px;
-    object-fit: contain;
-    filter: grayscale(100%);
-    opacity: 0.7;
-    transition: 0.3s;
-}
-
-.opcion-radio:hover .logo-opcion,
-.opcion-radio input:checked~.logo-opcion {
-    filter: grayscale(0%);
-    opacity: 1;
-}
-
-.icon-opcion-big {
-    font-size: 40px;
-    color: #28a745;
-    width: 70px;
-    text-align: center;
-}
-
-.opcion-texto {
-    flex-grow: 1;
-}
-
-.precio-extra {
-    font-weight: bold;
-    color: #555;
-}
-
-/* RESUMEN */
-.resumen-card {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 100px;
-}
-
-.item-resumen {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #f4f4f4;
-    padding-bottom: 15px;
-}
-
-.item-resumen img {
+/* 4. Botón borrar fijo a la derecha */
+.col-borrar {
     width: 50px;
-    height: 50px;
-    object-fit: contain;
-    border: 1px solid #eee;
-    border-radius: 5px;
+    text-align: right;
 }
 
-.item-info {
-    flex-grow: 1;
-    font-size: 0.9em;
+/* MANTENER EL LOGIN PEQUEÑO */
+/* Esto asegura que el login no se vea gigante por accidente */
+#modal-login .modal-contenido {
+    max-width: 450px;
 }
 
-/* CUPON */
-.cupon-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
-}
+/* --- 2. VERSIÓN MÓVIL / TABLET (Aquí arreglamos el encimado) --- */
+@media (max-width: 768px) {
 
-.input-cupon {
-    flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-.btn-cupon {
-    background: #333;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* TOTALES E IMPUESTOS */
-.fila-total {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    color: #666;
-}
-
-.descuento-texto {
-    color: #28a745;
-    font-weight: bold;
-}
-
-.fila-total.final {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #333;
-    border-top: 2px solid #333;
-    padding-top: 15px;
-    margin-top: 15px;
-}
-
-.btn-pagar {
-    width: 100%;
-    background-color: #28a745;
-    color: white;
-    padding: 18px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.2em;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.btn-pagar:hover {
-    background-color: #218838;
-}
-
-#info-transferencia {
-    display: none;
-    background: #fff3cd;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 0.9em;
-    margin-top: 10px;
-    border: 1px solid #ffeeba;
-}
-
-/* =======================================================
-   RESPONSIVO PARA FINALIZAR COMPRA (RouterShop TX)
-   ======================================================= */
-@media (max-width: 850px) {
-
-    /* 1. Cambiamos el contenedor principal a columna */
-    .contenedor-checkout {
-        display: flex;
-        flex-direction: column;
-        /* Uno debajo del otro */
-        padding: 10px;
-        gap: 20px;
-    }
-
-    /* 2. Las columnas ahora ocupan todo el ancho */
-    .col-izq,
-    .col-der {
-        width: 100% !important;
-        flex: none;
-        /* Evita que intenten encogerse */
-        margin: 0;
-        padding: 0;
-    }
-
-    /* 3. Ajuste visual de las tarjetas */
-    .seccion,
-    .resumen-card {
-        padding: 15px;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    /* 4. Orden visual: Ponemos el Resumen PRIMERO (Opcional pero recomendado) */
-    .contenedor-checkout {
-        flex-direction: column-reverse;
-        /* Esto pone el formulario arriba y el resumen abajo. Si prefieres ver primero lo que pagas, borra esta línea */
-    }
-
-    /* Si usas column-reverse, el resumen queda abajo. 
-       Si quieres el resumen ARRIBA, usa:
-       .col-der { order: -1; margin-bottom: 20px; }
-    */
-
-    /* 5. Inputs y Botones más grandes para el dedo */
-    input[type="text"],
-    input[type="password"],
-    input[type="email"],
-    select {
-        font-size: 16px;
-        /* Evita zoom en iPhone */
-        padding: 12px;
-        height: auto;
-    }
-
-    .btn-pagar,
-    .btn-azul,
-    .btn-cupon {
+    /* Convertimos la tabla en bloques flexibles */
+    .tabla-carrito,
+    .tabla-carrito tbody,
+    .fila-carrito,
+    .tabla-carrito td {
+        display: block;
         width: 100%;
-        /* Botones de ancho completo */
+        box-sizing: border-box;
+    }
+
+    .fila-carrito {
+        position: relative;
+        /* Para posicionar la X absoluta */
         padding: 15px;
-        font-size: 1.1em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* 6. Ajuste de los métodos de pago */
-    .opcion-radio {
-        padding: 15px;
-        margin-bottom: 10px;
-    }
-
-    .logo-opcion {
-        width: 50px !important;
-        /* Logos un poco más pequeños */
-    }
-}
-
-
-/* =======================================================
-   CONFIRMACION DE LA COMPRA PAGADO/PENDIENTE (RouterShop TX)
-   ======================================================= */
-
-.container-confirmacion {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    background: white;
-    transition: all 0.3s ease;
-}
-
-.icon-status {
-    font-size: 80px;
-    margin-bottom: 20px;
-}
-
-h1 {
-    margin: 10px 0;
-    font-size: 2em;
-}
-
-.p {
-    font-size: 1.1em;
-    color: #d1d1d1;
-    line-height: 1.6;
-}
-
-.order-id-box {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    font-family: monospace;
-    font-size: 1.4em;
-    letter-spacing: 2px;
-    margin: 20px 0;
-    border: 1px solid #eee;
-    color: #333;
-}
-
-.btn-box {
-    margin-top: 30px;
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-}
-
-.btn {
-    text-decoration: none;
-    padding: 12px 25px;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
-.btn-secondary {
-    background-color: #e9ecef;
-    color: #333;
-}
-
-.btn-secondary:hover {
-    background-color: #ddd;
-}
-
-/* --- ESTILOS DINÁMICOS --- */
-
-/* ESTILO: PAGADO (Verde) */
-.tipo-pagado {
-    border-top: 6px solid #28a745;
-}
-
-.tipo-pagado .icon-status {
-    color: #28a745;
-}
-
-.tipo-pagado h1 {
-    color: #28a745;
-}
-
-/* ESTILO: PENDIENTE (Amarillo) */
-.tipo-pendiente {
-    border-top: 6px solid #ffc107;
-}
-
-.tipo-pendiente .icon-status {
-    color: #ffc107;
-}
-
-.tipo-pendiente h1 {
-    color: #d39e00;
-}
-
-/* Un amarillo más oscuro para leerse bien */
-
-/* Instrucciones de pago (Solo visible en pendiente) */
-.instrucciones-pago {
-    text-align: left;
-    background-color: #fff3cd;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-size: 0.95em;
-    border: 1px solid #ffeeba;
-    display: none;
-    /* Oculto por defecto */
-}
-
-/* --- RESPONSIVO PARA CELULARES --- */
-@media (max-width: 600px) {
-    .container-confirmacion {
-        margin: 20px 15px;
-        /* Menos margen arriba/lados */
-        padding: 25px 15px;
-        /* Menos relleno interno */
-        width: auto;
-        /* Que ocupe el ancho disponible */
-    }
-
-    .icon-status {
-        font-size: 60px;
-        /* Ícono un poco más chico */
-    }
-
-    h1 {
-        font-size: 1.6em;
-    }
-
-    /* Título más chico */
-
-    .btn-box {
-        flex-direction: column;
-        /* Botones uno debajo del otro */
+        padding-right: 40px;
+        /* Dejamos espacio para la X a la derecha */
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        display: grid;
+        grid-template-columns: 70px 1fr;
+        /* Columna imagen | Columna info */
+        grid-template-rows: auto auto;
         gap: 10px;
     }
 
-    .btn {
-        width: 100%;
-        /* Botones de ancho completo */
-        box-sizing: border-box;
+    /* Imagen a la izquierda */
+    .col-img {
+        grid-row: 1 / 3;
+        /* Ocupa 2 filas de alto */
+        padding: 0 !important;
+        border: none !important;
     }
+
+    /* Nombre arriba */
+    .col-nombre {
+        padding: 0 !important;
+        border: none !important;
+        align-self: start;
+    }
+
+    .nombre-producto {
+        font-size: 1em;
+        margin-bottom: 5px;
+    }
+
+    /* Cantidad y Precio abajo */
+    .col-cantidad,
+    .col-precio {
+        padding: 0 !important;
+        border: none !important;
+        display: inline-block;
+        width: auto;
+    }
+
+    /* Movemos el precio y cantidad a la misma linea visualmente */
+    .col-cantidad {
+        grid-column: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* El precio lo ponemos grande y a la derecha de la cantidad */
+    .col-precio {
+        margin-left: 15px;
+        font-size: 1.1em;
+    }
+
+    /* --- BOTÓN BORRAR FLOTANTE --- */
+    /* Lo sacamos del flujo y lo pegamos en la esquina superior derecha */
+    .col-borrar {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: auto !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* AGREGA ESTO AL FINAL DE LA MEDIA QUERY PARA REFORZAR */
+    #modal-carrito .modal-contenido {
+        max-width: 95% !important;
+        /* En celular usamos todo el ancho disponible */
+        padding: 20px 15px;
+        /* Menos relleno para ganar espacio */
+    }
+
 }

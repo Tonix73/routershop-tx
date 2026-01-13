@@ -11,302 +11,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/index.css">
 
-    <style>
-        /* Estilo "Banner de Marca" MEJORADO */
-        .brand-section {
-            /* Aseguramos un color de fondo por si las variables fallan */
-            background-color: #003366;
-            background: linear-gradient(135deg, var(--color-primario, #0a192f) 0%, #003366 100%);
-            color: white;
-            padding: 100px 20px;
-            /* Un poco más de aire arriba y abajo */
-            margin-top: 60px;
-            position: relative;
-            overflow: hidden;
-
-            /* 2. APLICAMOS LA FUENTE AQUÍ */
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .brand-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            /* Centrado vertical en escritorio */
-            justify-content: space-between;
-            gap: 40px;
-        }
-
-        .brand-content {
-            flex: 1.5;
-            text-align: left;
-            /* En escritorio va a la izquierda */
-        }
-
-        /* TÍTULO (Ahora todo amarillo si borraste el span, o blanco y amarillo) */
-        .brand-content h2 {
-            font-size: 2.8em;
-            margin-bottom: 15px;
-            font-weight: 700;
-            line-height: 1.1;
-            color: #ffc107;
-            /* Hacemos TODO el texto amarillo como pediste */
-            letter-spacing: -0.5px;
-        }
-
-        .brand-content h1 {
-            font-size: 2.9em;
-            margin: 0 0 15px 0;
-            font-weight: 800;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            color: white;
-        }
-
-        /* Subrayado decorativo opcional para el texto destacado */
-        .brand-content h2 span::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 8px;
-            background: rgba(0, 0, 0, 0.568);
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-        }
-
-        .brand-content p {
-            font-size: 1.15em;
-            line-height: 1.8;
-            opacity: 0.9;
-
-            font-weight: 300;
-            /* Letra más fina para el párrafo, se ve elegante */
-            max-width: 90%;
-            /* Evita que el texto sea demasiado ancho para leer */
-        }
-
-        .btn-brand {
-            display: inline-block;
-            background-color: var(--color-secundario, #ffc107);
-            color: var(--color-oscuro, #333);
-            padding: 15px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            border: 2px solid var(--color-secundario, #ffc107);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            /* Sombra suave */
-            text-transform: uppercase;
-            /* Texto en mayúsculas */
-            letter-spacing: 1px;
-            font-size: 0.9em;
-        }
-
-        .btn-brand:hover {
-            background-color: transparent;
-            color: white;
-            /* Al hacer hover, el texto se vuelve blanco */
-            border-color: white;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
-            transform: translateY(-3px);
-            /* Efecto de elevación */
-        }
-
-        .brand-visual {
-            flex: 1;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* Círculo decorativo detrás del icono */
-        .brand-visual::before {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            z-index: -1;
-        }
-
-        .icon-bg {
-            font-size: 220px;
-            color: white;
-            opacity: 0.8;
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transform: rotate(-10deg);
-            transition: transform 0.5s ease;
-        }
-
-        /* Animación suave al pasar el mouse sobre la sección */
-        .brand-section:hover .icon-bg {
-            transform: rotate(0deg) scale(1.05);
-        }
-
-        /* 3. VERSIÓN MÓVIL (Aquí forzamos el centrado) */
-        @media (max-width: 768px) {
-            .brand-container {
-                flex-direction: column;
-                /* Apila uno sobre otro */
-                align-items: center !important;
-                /* Fuerza centrado de la caja */
-                text-align: center !important;
-                /* Fuerza centrado del texto */
-                gap: 20px;
-            }
-
-            .brand-content {
-                width: 100%;
-                /* Ocupa todo el ancho */
-                text-align: center !important;
-                /* REQUERIDO: Fuerza al texto a centrarse */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                /* Centra el botón y párrafos */
-            }
-
-            .brand-content h2 {
-                font-size: 2.2em;
-                text-align: center;
-                /* Asegura que el título se centre */
-            }
-
-            .brand-content p {
-                margin-left: auto;
-                /* Truco para centrar bloques de texto */
-                margin-right: auto;
-                text-align: center;
-            }
-
-            .brand-visual {
-                display: block;
-                /* Mostramos el icono también en móvil pero más pequeño */
-                margin-top: 20px;
-            }
-
-            .icon-bg {
-                font-size: 100px;
-                /* Icono más pequeño en móvil */
-                opacity: 0.5;
-            }
-        }
-
-        /* Contenedor general de la sección */
-.contacto-profesional {
-    padding: 60px 20px;
-    background-color: #f9f9f9; /* Un fondo gris muy suave para separar del blanco */
-}
-
-.contenedor-principal {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;         /* Esto pone los elementos lado a lado */
-    flex-wrap: wrap;       /* Permite que bajen si no caben (móvil) */
-    background: white;
-    border-radius: 20px;   /* Bordes redondeados para toda la tarjeta */
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* Sombra elegante */
-    overflow: hidden;      /* Para que nada se salga de los bordes redondeados */
-}
-
-/* Estilos de la Columna de Información */
-.info-box {
-    flex: 1 1 400px;       /* Crece, se encoge, base de 400px */
-    padding: 40px;
-    background-color: #fff;
-}
-
-.info-box h3 {
-    color: #003366; /* Azul oscuro (parecido al de tu header) */
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-    border-bottom: 3px solid #FFC107; /* Línea amarilla decorativa */
-    display: inline-block;
-    padding-bottom: 5px;
-}
-
-.desc-tienda {
-    color: #666;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-
-.dato-fila {
-    display: flex;
-    align-items: start;
-    margin-bottom: 20px;
-}
-
-.icono {
-    font-size: 1.5rem;
-    margin-right: 15px;
-    background: #f0f4f8;
-    padding: 10px;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Estilos del Botón */
-.btn-como-llegar {
-    display: inline-block;
-    background-color: #FFC107; /* El amarillo de tus botones */
-    color: #000;
-    padding: 12px 30px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 20px;
-    transition: transform 0.2s, background 0.2s;
-}
-
-.btn-como-llegar:hover {
-    background-color: #e0a800;
-    transform: translateY(-2px); /* Efecto de elevación al pasar el mouse */
-}
-
-/* Estilos de la Columna del Mapa */
-.mapa-box {
-    flex: 1 1 400px;
-    min-height: 400px; /* Altura mínima para que se vea bien el mapa */
-    position: relative;
-}
-
-.mapa-box iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    display: block; /* Elimina espacios extraños */
-}
-
-/* Ajuste para Móviles */
-@media (max-width: 768px) {
-    .contenedor-principal {
-        flex-direction: column-reverse; /* Pone el mapa arriba y la info abajo en móvil */
-    }
-    
-    .mapa-box {
-        min-height: 300px; /* Mapa un poco más pequeño en celular */
-    }
-}
-    </style>
 </head>
 
 <body>
     <div id="loader-wrapper" class="loader-container">
-
         <div class="loader-brand">
             <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
                 style="height: 60px;">
+
             <div style="text-align: left;">
                 <div style="color: #003366; font-weight: 800; font-size: 24px; font-family: 'Poppins', sans-serif;">
                     RouterShop</div>
@@ -315,20 +29,46 @@
                     TX</div>
             </div>
         </div>
-
         <div class="spinner"></div>
     </div>
-
     <div id="app-navbar"></div>
 
-    <header class="hero-section">
-        <div class="hero-content">
-            <h1>Conecta tu Mundo 📡</h1>
-            <p>Encuentra los mejores routers, antenas y equipos de red para tu hogar o negocio con envío a todo México.
-            </p>
-            <a href="#lista-productos" class="btn-hero">Ver Catálogo</a>
+    <div class="carrusel-hero">
+        <div class="slide active"
+            style="background-image: url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop');">
+            <div class="slide-content">
+                <h2>Conecta tu Mundo 📡</h2>
+                <p>La mejor tecnología en redes para hogar y empresa.</p>
+                <a href="catalogo.html" class="btn-slider">Ver Catálogo</a>
+            </div>
         </div>
-    </header>
+
+        <div class="slide"
+            style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop');">
+            <div class="slide-content">
+                <h2>Ofertas de Temporada</h2>
+                <p>Hasta 30% de descuento en Routers Mesh.</p>
+                <a href="#seccion-promociones" class="btn-slider">Ver Ofertas</a>
+            </div>
+        </div>
+
+        <div class="slide"
+            style="background-image: url('https://images.unsplash.com/photo-1526738549149-8e07eca6c147?q=80&w=1925&auto=format&fit=crop');">
+            <div class="slide-content">
+                <h2>Lo Nuevo en Redes</h2>
+                <p>Equipos de última generación ya disponibles.</p>
+                <a href="#seccion-nuevos" class="btn-slider">Conocer Más</a>
+            </div>
+        </div>
+
+        <button class="flecha prev" onclick="moverSlide(-1)">&#10094;</button>
+        <button class="flecha next" onclick="moverSlide(1)">&#10095;</button>
+    </div>
+
+
+    <hr style="border:0; border-top:1px solid #eee; margin: 40px 0;">
+
+
 
     <div class="beneficios-container">
         <div class="beneficio-card">
@@ -349,86 +89,34 @@
         <div class="beneficio-card">
             <span class="material-icons">credit_card</span>
             <h4>Pago Seguro</h4>
-            <p>Mercado Pago, Efectivo, Tarjetas de Crédito y Débito y Transferencias</p>
+            <p>Tarjetas de Crédito, Débito y Transferencias</p>
         </div>
     </div>
 
-    <div class="controles">
-        <div class="buscador-box">
-            <input type="text" id="buscador" placeholder="🔍 Buscar routers, antenas, cables..."
-                onkeyup="buscarProducto()">
-        </div>
-        <div id="contenedor-categorias" class="botones-categorias">
-            <button class="btn-cat activo">Cargando...</button>
-        </div>
-    </div>
-
-    <div id="lista-productos" class="grid">
-        <div style="grid-column: span 3; text-align: center; padding: 40px;">
-            <p style="color:#666; font-size:1.2em;">📡 Cargando inventario...</p>
-        </div>
-    </div>
-
-    <section class="brand-section">
-        <div class="brand-container">
-            <div class="brand-content">
-                <h1>QUIENES SOMOS</h1>
-                <h2>Ingeniería detrás <br>de cada conexión.</h2>
-                <p>
-                    En <strong>RouterShop TX</strong> no somos una tienda genérica. Somos especialistas en redes
-                    apasionados por el rendimiento.
-                    <br><br>
-                    Entendemos que un equipo no es solo hardware; es la columna vertebral de tu negocio o la estabilidad
-                    de tu hogar.
-                    Seleccionamos nuestro catálogo basándonos en pruebas técnicas reales, no en tendencias.
-                </p>
-                <a href="#lista-productos" class="btn-brand">Explorar Catálogo Profesional</a>
-            </div>
-
-            <div class="brand-visual">
-                <span class="material-icons icon-bg">hub</span>
-            </div>
+    <section id="seccion-promociones" class="seccion-destacada">
+        <h2 class="titulo-seccion">🔥 Promociones del Mes</h2>
+        <div class="grid-destacados">
+            <p style="grid-column: span 4; text-align: center; color: #999;">Cargando ofertas...</p>
         </div>
     </section>
 
-<section class="contacto-profesional">
-    <div class="contenedor-principal">
-        
-        <div class="info-box">
-            <h3>📍 Visítanos en Tienda</h3>
-            <p class="desc-tienda">Ven a conocer nuestros equipos y recibe asesoría personalizada de expertos en redes.</p>
-            
-            <div class="dato-fila">
-                <span class="icono">🏢</span>
-                <p><strong>Dirección:</strong><br>31 de Julio 55, Naciones Unidas<br>72210 Heroica Puebla de Zaragoza, Pue.</p>
-            </div>
-
-            <div class="dato-fila">
-                <span class="icono">🕒</span>
-                <p><strong>Horario:</strong><br>Lunes a Viernes: 9:00 AM - 7:00 PM<br>Sábados: 10:00 AM - 3:00 PM</p>
-            </div>
-
-            <div class="dato-fila">
-                <span class="icono">📞</span>
-                <p><strong>Teléfono:</strong><br>+52 (221) 207-0703</p>
-            </div>
-
-            <a href="https://maps.google.com/?q=31+de+Julio+55,+Naciones+Unidas,+Puebla" target="_blank" class="btn-como-llegar">
-                Cómo llegar ➔
-            </a>
+    <section id="seccion-vendidos" class="seccion-destacada" style="background-color: #fff;">
+        <h2 class="titulo-seccion">🏆 Los Más Vendidos</h2>
+        <div class="grid-destacados">
+            <p style="grid-column: span 4; text-align: center; color: #999;">Cargando top ventas...</p>
         </div>
+    </section>
 
-        <div class="mapa-box">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13688.317205220354!2d-98.18038697724467!3d19.072223049076275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cfc10bc647a737%3A0x2d70a18fb351ee2e!2s31%20de%20Julio%2055%2C%20Naciones%20Unidas%2C%2072210%20Heroica%20Puebla%20de%20Zaragoza%2C%20Pue.!5e0!3m2!1ses!2smx!4v1767981110929!5m2!1ses!2smx"
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+    <section id="seccion-nuevos" class="seccion-destacada">
+        <h2 class="titulo-seccion">✨ Recién Llegados</h2>
+        <div class="grid-destacados">
+            <p style="grid-column: span 4; text-align: center; color: #999;">Cargando novedades...</p>
         </div>
+    </section>
 
-    </div>
-</section>
+    <hr style="border:0; border-top:1px solid #eee; margin: 40px 0;">
+
+
 
     <div id="app-footer"></div>
 
@@ -438,25 +126,26 @@
 
     <div id="modal-carrito" class="modal-fondo">
         <div class="modal-contenido">
-            <span class="cerrar-modal" onclick="cerrarModal('modal-carrito')">&times;</span>
+            <span class="cerrar-modal" onclick="cerrarModal('modal-carrito')">×</span>
             <h2
                 style="margin-top:0; color:#333; display:flex; align-items:center; gap:10px; justify-content: center !important;">
                 <span class="material-icons" style="color:#0056b3;">shopping_cart</span> Tu Carrito
             </h2>
+
             <div style="max-height: 50vh; overflow-y: auto; overflow-x: hidden;">
                 <table class="tabla-carrito">
                     <tbody id="cuerpo-tabla-carrito"></tbody>
                 </table>
             </div>
+
             <div class="total-pagar" id="total-carrito">Total: $0.00</div>
-            <button id="btn-pagar-dinamico" class="btn-ir-pagar" onclick="procederAlPago()">Proceder al Pago
-                ➝</button>
+            <button id="btn-pagar-dinamico" class="btn-ir-pagar" onclick="procederAlPago()">Proceder al Pago ➝</button>
         </div>
     </div>
 
     <div id="modal-login" class="modal-fondo">
         <div class="modal-contenido">
-            <span class="cerrar-modal" onclick="cerrarModal('modal-login')">&times;</span>
+            <span class="cerrar-modal" onclick="cerrarModal('modal-login')">×</span>
             <h2 id="titulo-login" style="text-align:center; margin-top:0;">Iniciar Sesión</h2>
             <div class="form-grupo"><label>Correo</label><input type="email" id="email-input" class="input-login">
             </div>
@@ -490,20 +179,61 @@
 
         // Al cargar la página
         window.onload = function () {
-            // Verificar si hay hash para abrir modales (redirección desde perfil)
+            // Verificar si hay hash para abrir modales
             if (window.location.hash === '#abrir-carrito') { setTimeout(() => abrirCarrito(), 500); history.replaceState(null, null, 'index.html'); }
             if (window.location.hash === '#abrir-login') { setTimeout(() => abrirLogin(), 500); history.replaceState(null, null, 'index.html'); }
 
-            // Cargar datos
+            // Cargar datos principales
             cargarCategorias();
             cargarProductos();
+
+            // Cargar datos destacados (AQUÍ ESTABA EL ERROR, AHORA SE LLAMA SIEMPRE)
+            cargarDestacados();
         };
 
-        // Cargar Categorías
+        // --- LÓGICA DEL CARRUSEL ---
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        let autoSlideInterval;
+
+        function mostrarSlide(index) {
+            if (index >= slides.length) slideIndex = 0;
+            if (index < 0) slideIndex = slides.length - 1;
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[slideIndex].classList.add('active');
+        }
+
+        function moverSlide(n) {
+            slideIndex += n;
+            mostrarSlide(slideIndex);
+            reiniciarAutoSlide();
+        }
+
+        function iniciarAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                slideIndex++;
+                mostrarSlide(slideIndex);
+            }, 5000);
+        }
+
+        function reiniciarAutoSlide() {
+            clearInterval(autoSlideInterval);
+            iniciarAutoSlide();
+        }
+
+        if (slides.length > 0) iniciarAutoSlide();
+
+        // --- LÓGICA DE PRODUCTOS ---
         async function cargarCategorias() {
+            const contenedor = document.getElementById('contenedor-categorias');
+
+            // --- LÍNEA DE PROTECCIÓN ---
+            // Si no existe el contenedor en esta página, detenemos la función aquí.
+            if (!contenedor) return;
+
             const { data } = await clienteSupabase.from('categorias').select('*').order('nombre');
+
             if (data) {
-                const contenedor = document.getElementById('contenedor-categorias');
                 contenedor.innerHTML = '<button class="btn-cat activo" onclick="filtrarPorCategoria(null, this)">Todos</button>';
                 data.forEach(cat => {
                     contenedor.innerHTML += `<button class="btn-cat" onclick="filtrarPorCategoria(${cat.id}, this)">${cat.nombre}</button>`;
@@ -511,27 +241,27 @@
             }
         }
 
-        // Cargar Productos
         async function cargarProductos(busqueda = '') {
             let consulta = clienteSupabase.from('productos').select('*');
-
             if (categoriaActual !== null) consulta = consulta.eq('categoria_id', categoriaActual);
             if (busqueda.length > 0) consulta = consulta.ilike('nombre', `%${busqueda}%`);
 
             const { data, error } = await consulta;
-
             if (error) {
                 console.error(error);
                 document.getElementById('lista-productos').innerHTML = '<p style="text-align:center; width:100%;">Error cargando productos.</p>';
                 return;
             }
-
             mostrarEnPantalla(data);
         }
 
-        // Renderizar (Dibujar) productos
         function mostrarEnPantalla(productos) {
             const contenedor = document.getElementById('lista-productos');
+
+            // --- LÍNEA DE PROTECCIÓN ---
+            // Si no existe la lista de productos en esta página, paramos.
+            if (!contenedor) return;
+
             contenedor.innerHTML = '';
 
             if (!productos || productos.length === 0) {
@@ -539,34 +269,127 @@
                 return;
             }
 
+            // ... (El resto de tu código sigue igual) ...
             productos.forEach(prod => {
-                const img = prod.imagen_url || 'https://via.placeholder.com/150';
-                contenedor.innerHTML += `
-                    <div class="card">
-                        <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit; display:block;">
-                            <img src="${img}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/150'">
-                            <div>
-                                <h3>${prod.nombre}</h3>
-                                <p class="precio">$${prod.precio.toFixed(2)}</p>
-                            </div>
-                        </a>
-                        <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${prod.precio}, '${img}')">
-                            <span class="material-icons">add_shopping_cart</span> Agregar
-                        </button>
-                    </div>`;
+                // Tu lógica para dibujar las tarjetas
+                // ...
+                // (Asegúrate de pegar aquí el código de la tarjeta que hicimos antes)
             });
         }
 
-        // Filtros
         function filtrarPorCategoria(id, btn) {
             categoriaActual = id;
             document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('activo'));
             btn.classList.add('activo');
-            cargarProductos(document.getElementById('buscador').value);
+            const inputBusqueda = document.getElementById('buscador');
+            const valorBusqueda = inputBusqueda ? inputBusqueda.value : '';
+            cargarProductos(valorBusqueda);
         }
 
         function buscarProducto() {
-            cargarProductos(document.getElementById('buscador').value);
+            const inputBusqueda = document.getElementById('buscador');
+            const valorBusqueda = inputBusqueda ? inputBusqueda.value : '';
+            cargarProductos(valorBusqueda);
+        }
+
+        // ==========================================
+        // 8. CARGAR SECCIONES DESTACADAS (AUTOMÁTICO)
+        // ==========================================
+        async function cargarDestacados() {
+            console.log("Cargando secciones destacadas...");
+
+            // 1. CARGAR PROMOCIONES (Productos con descuento > 0)
+            const { data: promos } = await clienteSupabase
+                .from('productos')
+                .select('*')
+                .gt('descuento', 0)
+                .limit(4);
+
+            if (promos && promos.length > 0) {
+                renderizarSeccion('seccion-promociones', promos, 'bg-oferta', 'OFERTA');
+            } else {
+                document.getElementById('seccion-promociones').style.display = 'none';
+            }
+
+            // 2. CARGAR MÁS VENDIDOS
+            const { data: topVentas } = await clienteSupabase
+                .from('productos')
+                .select('*')
+                .order('ventas', { ascending: false })
+                .limit(4);
+
+            if (topVentas) {
+                renderizarSeccion('seccion-vendidos', topVentas, 'bg-top', 'TOP VENTAS');
+            }
+
+            // 3. CARGAR NUEVOS
+            const { data: nuevos } = await clienteSupabase
+                .from('productos')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(4);
+
+            if (nuevos) {
+                renderizarSeccion('seccion-nuevos', nuevos, 'bg-nuevo', 'NUEVO');
+            }
+        }
+
+        function renderizarSeccion(idSeccion, productos, claseBadge, textoBadge) {
+            const seccion = document.getElementById(idSeccion);
+            if (!seccion) return;
+            const grid = seccion.querySelector('.grid-destacados');
+            if (!grid) return;
+
+            grid.innerHTML = '';
+
+            productos.forEach(prod => {
+                const img = prod.imagen_url || 'https://via.placeholder.com/150';
+
+                // 1. CALCULAR PRECIO REAL PARA EL CARRITO
+                // Si hay descuento, restamos el porcentaje. Si no, queda el precio normal.
+                let precioParaCarrito = prod.precio;
+
+                let precioHTML = `$${prod.precio.toFixed(2)}`;
+                let badgeHTML = `<span class="badge ${claseBadge}">${textoBadge}</span>`;
+
+                if (prod.descuento > 0) {
+                    // Calculamos el precio con descuento
+                    const precioConDescuento = prod.precio * (1 - prod.descuento / 100);
+
+                    // ACTUALIZAMOS LA VARIABLE QUE SE ENVIARÁ AL CARRITO
+                    precioParaCarrito = precioConDescuento;
+
+                    // Generamos el HTML visual (Tachado vs Nuevo)
+                    precioHTML = `
+                <span style="text-decoration: line-through; color: #999; font-size: 0.8em; margin-right: 5px;">
+                    $${prod.precio.toFixed(2)}
+                </span> 
+                <span style="color: #dc3545; font-weight:bold;">
+                    $${precioConDescuento.toFixed(2)}
+                </span>`;
+
+                    if (idSeccion === 'seccion-promociones') {
+                        badgeHTML = `<span class="badge bg-oferta">-${prod.descuento}%</span>`;
+                    }
+                }
+
+                // 2. INYECTAR EL PRECIO CALCULADO EN LA FUNCIÓN agregarAlCarrito
+                // Fíjate en la variable ${precioParaCarrito} dentro del onclick
+                grid.innerHTML += `
+            <div class="card" style="position: relative;">
+                ${badgeHTML}
+                <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit;">
+                    <img src="${img}" alt="${prod.nombre}" onerror="this.src='https://via.placeholder.com/150'">
+                    <div>
+                        <h3>${prod.nombre}</h3>
+                        <p class="precio">${precioHTML}</p>
+                    </div>
+                </a>
+                <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${precioParaCarrito}, '${img}')">
+                    <span class="material-icons">add_shopping_cart</span> Agregar
+                </button>
+            </div>`;
+            });
         }
     </script>
 </body>

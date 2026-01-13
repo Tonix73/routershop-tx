@@ -1,5 +1,5 @@
 <style>
-    /* 1. PALETA DE COLORES */
+    /* 1. CONFIGURACIÓN Y VARIABLES */
     :root {
         --color-primario: #0056b3;
         --color-secundario: #ffc107;
@@ -9,17 +9,12 @@
         --color-blanco: #ffffff;
     }
 
-    /* Ajuste Body para compensar barras fijas */
-    body {
-        background-color: var(--color-fondo) !important;
-        color: var(--color-texto);
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        margin: 0;
-        padding-top: 105px !important;
-        /* 35px TopBar + 70px Navbar */
+    /* Reset preventivo para que nada se aplaste */
+    * {
+        box-sizing: border-box;
     }
 
-    /* --- TOP BAR (Avisos) --- */
+    /* 2. TOP BAR (Avisos) */
     .top-bar {
         background-color: #000000;
         color: var(--color-blanco);
@@ -36,18 +31,17 @@
         letter-spacing: 0.5px;
     }
 
-    /* --- NAVBAR --- */
+    /* 3. NAVBAR PRINCIPAL */
     .navbar {
         background-color: var(--color-oscuro);
         position: fixed;
         top: 35px;
-        /* Debajo de la Top Bar */
         width: 100%;
         z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        padding: 0 15px;
-        box-sizing: border-box;
-        height: 70px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        padding: 0 20px;
+        height: 75px;
+        /* Altura optimizada para que respire */
         display: flex;
         align-items: center;
     }
@@ -62,22 +56,31 @@
     }
 
     /* LOGO */
-    .brand {
-        color: var(--color-blanco);
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 1.4em;
+    .logo-brand {
         display: flex;
         align-items: center;
-        gap: 10px;
-        letter-spacing: 0.5px;
+        text-decoration: none;
+        gap: 12px;
     }
 
-    .brand span {
+    .logo-brand img {
+        height: 48px;
+        width: auto;
+        object-fit: contain;
+    }
+
+    .brand-text {
+        color: white;
+        font-weight: 700;
+        font-size: 1.4em;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .brand-text span {
         color: var(--color-secundario);
     }
 
-    /* GRUPO DERECHA */
+    /* 4. LINKS DE NAVEGACIÓN (ANIMACIÓN BOTÓN) */
     .nav-right-group {
         display: flex;
         align-items: center;
@@ -86,197 +89,211 @@
 
     .nav-links {
         display: flex;
-        gap: 15px;
+        gap: 8px;
+        align-items: center;
     }
 
     .nav-links a {
-        color: rgba(255, 255, 255, 0.85);
+        color: rgba(255, 255, 255, 0.9);
         text-decoration: none;
-        font-size: 0.95em;
-        font-weight: 500;
-        padding: 8px 12px;
-        border-radius: 4px;
-        transition: all 0.3s ease;
+        font-weight: 600;
+        font-size: 0.9em;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        /* Contorno invisible inicial */
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        display: inline-block;
     }
 
+    /* EFECTO AL PASAR EL MOUSE: SE LEVANTA Y APARECE CONTORNO */
     .nav-links a:hover {
-        color: var(--color-oscuro);
-        background-color: var(--color-secundario);
+        color: var(--color-secundario) !important;
+        border-color: var(--color-secundario);
+        /* Contorno amarillo */
+        background-color: rgba(255, 193, 7, 0.05);
+        /* Fondo muy sutil */
+        transform: translateY(-4px);
+        /* Efecto de levante Premium */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
-    /* ICONOS */
+    /* Estilo especial para ADMIN */
+    #link-admin {
+        color: var(--color-secundario);
+        border: 1px dashed rgba(255, 193, 7, 0.4);
+    }
+
+    #link-admin:hover {
+        border-style: solid;
+    }
+
+    /* 5. ICONOS DE ACCIÓN */
     .nav-icons {
         display: flex;
         align-items: center;
         gap: 15px;
         border-left: 1px solid rgba(255, 255, 255, 0.2);
-        padding-left: 15px;
+        padding-left: 20px;
     }
 
     .icon-link {
-        color: var(--color-blanco);
+        color: white;
         text-decoration: none;
         position: relative;
-        transition: 0.3s;
         display: flex;
-        align-items: center;
+        padding: 8px;
+        border-radius: 50%;
+        transition: 0.3s;
+        cursor: pointer;
     }
 
     .icon-link:hover {
         color: var(--color-secundario);
+        background-color: rgba(255, 255, 255, 0.1);
         transform: scale(1.1);
     }
 
     .cart-badge {
         position: absolute;
-        top: -8px;
-        right: -8px;
+        top: -2px;
+        right: -2px;
         background-color: #dc3545;
         color: white;
         border-radius: 50%;
-        padding: 2px 5px;
-        min-width: 15px;
-        text-align: center;
+        padding: 2px 6px;
         font-size: 10px;
         font-weight: bold;
-        display: none;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        min-width: 18px;
+        text-align: center;
+        border: 2px solid var(--color-oscuro);
     }
 
     .menu-toggle {
         display: none;
-        color: var(--color-blanco);
+        color: white;
         font-size: 30px;
         cursor: pointer;
-        margin-left: 15px;
     }
 
-    /* --- BOTÓN WHATSAPP --- */
-    .btn-whatsapp-float {
+    /* 6. MODAL DE BÚSQUEDA */
+    .modal-busqueda-overlay {
+        display: none;
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #25d366;
-        color: white;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-        z-index: 2000;
-        text-decoration: none;
-        transition: transform 0.3s;
-        overflow: hidden;
-        /* Asegura que la imagen no se salga */
-    }
-
-    .btn-whatsapp-float:hover {
-        transform: scale(1.1);
-        background-color: #128c7e;
-    }
-
-    /* AJUSTE IMAGEN LOGO */
-    .btn-whatsapp-float img {
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 2000;
+        backdrop-filter: blur(8px);
+        animation: fadeIn 0.3s;
     }
 
-    /* --- RESPONSIVE --- */
-    @media (max-width: 768px) {
+    .modal-busqueda-content {
+        position: absolute;
+        top: 15%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 600px;
+    }
+
+    .input-busqueda-grande {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.8em;
+        border: none;
+        border-bottom: 3px solid var(--color-secundario);
+        background: transparent;
+        color: white;
+        outline: none;
+        text-align: center;
+    }
+
+    .btn-cerrar-busqueda {
+        position: absolute;
+        top: 30px;
+        right: 40px;
+        color: white;
+        font-size: 45px;
+        cursor: pointer;
+    }
+
+    /* 7. RESPONSIVO */
+    @media (max-width: 900px) {
+        .nav-links {
+            display: none;
+        }
+
         .menu-toggle {
             display: block;
         }
 
-        .nav-links {
-            display: none;
+        .nav-links.active {
+            display: flex;
+            flex-direction: column;
             position: absolute;
-            top: 70px;
+            top: 75px;
             left: 0;
             width: 100%;
             background-color: var(--color-oscuro);
-            flex-direction: column;
-            gap: 0;
-            padding: 10px 0;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
-            border-top: 2px solid var(--color-secundario);
-        }
-
-        .nav-links.active {
-            display: flex;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            padding: 20px;
+            border-bottom: 3px solid var(--color-secundario);
         }
 
         .nav-links a {
-            display: block;
             width: 100%;
             text-align: center;
-            padding: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .nav-icons {
-            border-left: none;
+            border: none;
+            padding-left: 0;
         }
 
-        .nav-right-group {
-            gap: 5px;
-        }
-
-        .top-bar {
-            font-size: 0.75em;
-            padding: 0 10px;
-            text-align: center;
+        .brand-text {
+            font-size: 1.1em;
         }
     }
 </style>
 
 <div class="top-bar">
-    🚚 Envíos GRATIS a todo México en compras > $1,500 | 💳 3 MSI con Tarjeta
+    🚚 Envíos GRATIS > $2,000 | 💳 3 MSI
 </div>
 
 <nav class="navbar">
     <div class="nav-container">
         <a href="index.html" class="logo-brand">
-            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png" alt="Logo" class="logo-img">
-
-            <div class="logo-text-container">
-                <span class="txt-main">RouterShop</span>
-                <span class="txt-accent">TX</span>
-            </div>
+            <img src="https://qalbtsegnuwbnjnndvag.supabase.co/storage/v1/object/public/fotos-productos/logo.png"
+                alt="RouterShop Logo">
+            <div class="brand-text">RouterShop <span>TX</span></div>
         </a>
 
         <div class="nav-right-group">
             <div class="nav-links" id="nav-links">
-                <a href="index.html" id="link-inicio">Inicio</a>
-                <a href="admin.html" id="link-admin" style="display:none; color:var(--color-secundario);">Panel
-                    Admin</a>
+                <a href="index.html">Inicio</a>
+                <a href="catalogo.html">Productos</a>
+                <a href="nosotros.html">Nosotros</a>
+                <a href="admin.html" id="link-admin" style="display:none;">Admin</a>
             </div>
 
             <div class="nav-icons">
-                <a href="#" class="icon-link" id="btn-carrito" onclick="abrirCarritoGlobal(event)">
+                <a href="#" class="icon-link" onclick="toggleBuscador(event)" title="Buscar">
+                    <span class="material-icons">search</span>
+                </a>
+
+                <a href="#" class="icon-link" id="btn-carrito" onclick="abrirCarritoGlobal(event)" title="Carrito">
                     <span class="material-icons">shopping_cart</span>
                     <span id="contador-carrito-global" class="cart-badge">0</span>
                 </a>
-                <a href="#" id="btn-login-nav" class="icon-link" onclick="abrirLoginGlobal(event)">
-                    <span class="material-icons">login</span>
+
+                <a href="#" id="btn-login-nav" class="icon-link" onclick="abrirLoginGlobal(event)" title="Mi Cuenta">
+                    <span class="material-icons">account_circle</span>
                 </a>
-                <a href="perfil.html" id="user-display" class="icon-link" style="display:none;">
-                    <span class="material-icons">account_circle</span>Mi Cuenta
+
+                <a href="perfil.html" id="user-display" class="icon-link" style="display:none;" title="Ver Perfil">
+                    <span class="material-icons">person</span>
                 </a>
             </div>
 
@@ -284,6 +301,15 @@
         </div>
     </div>
 </nav>
+
+<div id="modal-busqueda" class="modal-busqueda-overlay">
+    <span class="btn-cerrar-busqueda" onclick="toggleBuscador(event)">&times;</span>
+    <div class="modal-busqueda-content">
+        <input type="text" id="input-busqueda-global" class="input-busqueda-grande" placeholder="¿Qué equipo buscas?"
+            onkeyup="buscarEnTiempoReal(this.value)">
+        <div id="resultados-busqueda-container" class="resultados-busqueda" style="display: none;"></div>
+    </div>
+</div>
 
 <a href="https://wa.me/5212212070703?text=Hola,%20tengo%20una%20duda%20sobre%20un%20producto" class="btn-whatsapp-float"
     target="_blank">
