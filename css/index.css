@@ -248,6 +248,7 @@ button.add-cart:hover {
 
 /* --- AJUSTES PARA EL CARRUSEL (RESPONSIVO) --- */
 .carrusel-hero {
+    margin-top: 100px;
     position: relative;
     width: 100%;
     height: 500px;
