@@ -66,15 +66,49 @@ window.onclick = function (event) {
 // ==========================================
 // 4. LÓGICA DEL CARRITO DE COMPRAS
 // ==========================================
-function agregarAlCarrito(id, nombre, precio, imagen) {
-    const item = carrito.find(i => i.id === id);
-    if (item) {
-        item.cantidad++;
+// ==========================================
+// 4. LÓGICA DEL CARRITO (CON VALIDACIÓN DE STOCK)
+// ==========================================
+
+async function agregarAlCarrito(id, nombre, precio, imagen) {
+    // 1. Consultamos el stock real en Supabase antes de agregar
+    const { data: producto, error } = await clienteSupabase
+        .from('productos')
+        .select('stock_actual')
+        .eq('id', id)
+        .single();
+
+    if (error) {
+        console.error(error);
+        mostrarNotificacion("Error al verificar disponibilidad", "error");
+        return;
+    }
+
+    const stockMaximo = producto.stock_actual;
+    const itemEnCarrito = carrito.find(i => i.id === id);
+    const cantidadActual = itemEnCarrito ? itemEnCarrito.cantidad : 0;
+
+    // 2. Validación: ¿Hay espacio para uno más?
+    if (cantidadActual + 1 > stockMaximo) {
+        mostrarNotificacion(`¡Lo sentimos! Solo quedan ${stockMaximo} unidades.`, "error");
+        return; // Detenemos la función aquí
+    }
+
+    // 3. Si pasó la validación, agregamos
+    if (itemEnCarrito) {
+        itemEnCarrito.cantidad++;
     } else {
         carrito.push({ id, nombre, precio, imagen, cantidad: 1 });
     }
+
     guardarCarrito();
     mostrarNotificacion("Producto agregado al carrito", "success");
+
+    // Si el carrito está abierto, actualizamos la vista
+    const modal = document.getElementById('modal-carrito');
+    if (modal && modal.style.display === 'block') {
+        renderizarCarrito();
+    }
 }
 
 function abrirCarrito() {
@@ -164,17 +198,41 @@ function renderizarCarrito() {
     if (window.actualizarContadorGlobal) window.actualizarContadorGlobal();
 }
 
-// --- NUEVA FUNCIÓN: Lógica para sumar/restar ---
-function cambiarCantidad(id, cambio) {
+async function cambiarCantidad(id, cambio) {
     const item = carrito.find(i => i.id === id);
-    if (item) {
-        item.cantidad += cambio;
+    if (!item) return;
 
-        // Evitar que la cantidad sea menor a 1
-        if (item.cantidad < 1) item.cantidad = 1;
+    // CASO 1: Si queremos RESTAR (-), no necesitamos checar stock en BD
+    if (cambio === -1) {
+        if (item.cantidad > 1) {
+            item.cantidad--;
+            guardarCarrito();
+            renderizarCarrito();
+        }
+        return;
+    }
 
+    // CASO 2: Si queremos SUMAR (+), verificamos stock primero
+    if (cambio === 1) {
+        const { data, error } = await clienteSupabase
+            .from('productos')
+            .select('stock_actual')
+            .eq('id', id)
+            .single();
+
+        if (error) return mostrarNotificacion("Error de conexión", "error");
+
+        const stockMaximo = data.stock_actual;
+
+        if (item.cantidad + 1 > stockMaximo) {
+            mostrarNotificacion(`Stock insuficiente. Máximo: ${stockMaximo}`, "error");
+            return;
+        }
+
+        // Si hay stock, procedemos
+        item.cantidad++;
         guardarCarrito();
-        renderizarCarrito(); // Repintar la tabla para ver el cambio
+        renderizarCarrito();
     }
 }
 

@@ -301,38 +301,25 @@
         function agregarEsteProducto() {
             if (!productoActual) return;
 
-            // 1. CALCULAR PRECIO REAL PARA EL CARRITO
+            // 1. CALCULAR PRECIO REAL (Esto sí lo dejamos aquí)
             let precioFinal = productoActual.precio;
-
             if (productoActual.descuento > 0) {
-                // Aplicar la fórmula matemática
                 precioFinal = productoActual.precio * (1 - productoActual.descuento / 100);
             }
 
-            // 2. BUSCAR SI YA EXISTE EN EL CARRITO
-            const item = carrito.find(i => i.id === productoActual.id);
+            // 2. ¡CORRECCIÓN! 
+            // En lugar de hacer "carrito.push" manualmente, llamamos a la función 
+            // SEGURA de app.js que revisa el stock antes de agregar.
 
-            if (item) {
-                item.cantidad++;
-                // Opcional: Actualizar el precio si cambió en la base de datos mientras navegaba
-                item.precio = precioFinal;
-            } else {
-                carrito.push({
-                    id: productoActual.id,
-                    nombre: productoActual.nombre,
-                    precio: precioFinal, // <--- AQUÍ GUARDAMOS EL PRECIO CON DESCUENTO
-                    imagen: productoActual.imagen_url,
-                    cantidad: 1
-                });
-            }
-
-            // 3. GUARDAR Y NOTIFICAR
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-
-            if (window.actualizarContadorGlobal) window.actualizarContadorGlobal();
-
-            mostrarNotificacion(`¡Agregado por $${precioFinal.toFixed(2)}!`, "success");
+            agregarAlCarrito(
+                productoActual.id,
+                productoActual.nombre,
+                precioFinal,
+                productoActual.imagen_url,
+                1 // Cantidad: 1 (O si tuvieras un input de cantidad, pon su valor aquí)
+            );
         }
+
         async function verificarSesion() { const { data: { session } } = await clienteSupabase.auth.getSession(); if (session) { document.getElementById('box-form-resena').style.display = 'block'; document.getElementById('msg-login-resena').style.display = 'none'; } else { document.getElementById('box-form-resena').style.display = 'none'; document.getElementById('msg-login-resena').style.display = 'block'; } }
 
         async function cargarResenas(id) {

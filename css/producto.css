@@ -11,8 +11,9 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
     position: relative;
+    gap: 2rem;
+    padding-top: 110px;
 }
 
 /* Imagen y Zoom */

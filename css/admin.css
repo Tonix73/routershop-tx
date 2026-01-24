@@ -6,8 +6,9 @@
     max-width: 1600px;
     margin: 0 auto;
     position: relative;
+    gap: 2rem;
+    padding-top: 110px;
 }
-
 /* --- SIDEBAR --- */
 .sidebar {
     width: 250px;
@@ -21,6 +22,7 @@
     height: 100vh;
     overflow-y: auto;
     box-sizing: border-box;
+    
 }
 
 /* Perfil en Sidebar */

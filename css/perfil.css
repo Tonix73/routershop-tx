@@ -1,10 +1,9 @@
-
 /* ==========================================================================
    5. ESTILOS PÁGINA: PERFIL
    ========================================================================== */
 .container-perfil {
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 50px auto 20px auto;
     display: grid;
     grid-template-columns: 280px 1fr;
     gap: 25px;
@@ -14,6 +13,7 @@
 }
 
 .card-usuario {
+    margin: 80px auto 20px auto;
     background: white;
     padding: 25px;
     border-radius: 12px;
@@ -103,6 +103,8 @@
 }
 
 .card-pedidos {
+    padding-top: 2rem;
+    margin-top: 80px;
     background: white;
     padding: 25px;
     border-radius: 12px;
@@ -220,3 +222,107 @@
     min-width: 140px;
 }
 
+/* ==========================================================================
+   RESPONSIVE DESIGN (Móvil Moderno)
+   ========================================================================== */
+@media (max-width: 768px) {
+
+    .container-perfil {
+        grid-template-columns: 1fr;
+        margin-top: 80px;
+        /* Ajuste para la navbar fija */
+        gap: 15px;
+        padding: 0 15px;
+    }
+
+    /* 1. Transformar tarjeta de usuario en barra horizontal */
+    .card-usuario {
+        display: flex;
+        flex-direction: row;
+        /* Elementos lado a lado */
+        flex-wrap: wrap;
+        /* Permitir que bajen si no caben */
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        text-align: left;
+        /* Alinear texto a la izquierda */
+        gap: 10px;
+    }
+
+    /* 2. Ajustar Avatar más pequeño */
+    .avatar-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        margin: 0;
+        /* Quitar margen automático */
+    }
+
+    /* 3. Ajustar Textos */
+    .user-email {
+        font-size: 0.9em;
+        margin-bottom: 0;
+    }
+
+    .user-tag {
+        margin-bottom: 0;
+        font-size: 0.7em;
+        padding: 2px 8px;
+    }
+
+    /* Contenedor para agrupar nombre y tag */
+    .info-usuario-movil {
+        display: flex;
+        flex-direction: column;
+        margin-right: auto;
+        /* Empuja el botón de cerrar a la derecha */
+        padding-left: 10px;
+    }
+
+    /* 4. Botón Cerrar Sesión Compacto */
+    .btn-cerrar {
+        width: auto;
+        /* Que no ocupe todo el ancho */
+        padding: 8px 15px;
+        font-size: 0.8em;
+    }
+
+    /* 5. Ocultar o Minimizar Zona de Peligro en el Header Móvil */
+    /* Opción A: Hacerla muy discreta (Recomendada) */
+    .danger-zone {
+        width: 100%;
+        margin-top: 10px;
+        padding-top: 10px;
+        border: none;
+        text-align: center;
+    }
+
+    .danger-zone p {
+        display: none;
+        /* Ocultar texto "Zona de Peligro" */
+    }
+
+    .btn-eliminar-cuenta {
+        border: none;
+        background: none;
+        color: #999;
+        text-decoration: underline;
+        font-size: 0.8em;
+        padding: 5px;
+        width: auto;
+        margin: 0 auto;
+    }
+
+    .btn-eliminar-cuenta:hover {
+        background: none;
+        color: #dc3545;
+    }
+
+    /* Ajuste de la tarjeta de pedidos */
+    .card-pedidos {
+        margin-top: 0;
+        padding: 15px;
+        /* Menos padding en móvil */
+    }
+}
