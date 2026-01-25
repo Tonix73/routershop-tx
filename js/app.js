@@ -19,6 +19,10 @@ clienteSupabase.auth.onAuthStateChange(async (event, session) => {
     }
 });
 
+if (typeof emailjs !== 'undefined') {
+    emailjs.init("S6x887RD35YnO33Eg");
+}
+
 // Variables Globales
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 let modoRegistro = false; // Para alternar entre Login y Registro
@@ -300,20 +304,67 @@ async function manejarAuth() {
     }
 
     errorElem.innerText = "Procesando...";
-    let result;
 
+    // --- MODO REGISTRO ---
     if (modoRegistro) {
-        result = await clienteSupabase.auth.signUp({ email, password });
-    } else {
-        result = await clienteSupabase.auth.signInWithPassword({ email, password });
-    }
+        // 1. Crear usuario en Supabase
+        const { data, error } = await clienteSupabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                emailRedirectTo: window.location.origin + window.location.pathname
+            }
+        });
 
-    if (result.error) {
-        errorElem.innerText = result.error.message === "Invalid login credentials" ? "Correo o contraseña incorrectos" : result.error.message;
-    } else {
+        if (error) {
+            errorElem.innerText = error.message;
+            return;
+        }
+
+        // 2. Éxito en Supabase -> Enviamos correo EmailJS
         cerrarModal('modal-login');
-        mostrarNotificacion(modoRegistro ? "¡Cuenta creada! Bienvenido" : "¡Bienvenido de vuelta!", "success");
-        setTimeout(() => window.location.reload(), 1000);
+
+        // Preparamos los datos
+        const paramsEmail = {
+            to_email: email,
+            to_name: email.split('@')[0],
+            message: "Gracias por unirte a RouterShop TX. Tu cuenta ha sido creada."
+        };
+
+        try {
+            // AWAIT IMPORTANTE: Esperamos a que se envíe el correo
+            await emailjs.send('service_i1yzl9c', 'template_z9pflqg', paramsEmail);
+            console.log("✅ EmailJS enviado correctamente");
+        } catch (err) {
+            console.error("❌ Falló EmailJS pero el usuario se creó:", err);
+            // No detenemos el flujo, el usuario ya se creó
+        }
+
+        // 3. Mostrar el NUEVO MODAL (Aquí ya no hay alerta fea)
+        await mostrarAviso(
+            "¡Registro Exitoso!",
+            `Hemos enviado un enlace de confirmación a <b>${email}</b>.<br><br>1. Revisa tu correo (y spam).<br>2. Confirma tu cuenta.<br>3. ¡Recibirás tu bienvenida!`
+        );
+
+    }
+    // --- MODO LOGIN ---
+    else {
+        const { data, error } = await clienteSupabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            if (error.message.includes("Email not confirmed")) {
+                errorElem.innerHTML = "⚠️ Tu correo no ha sido confirmado.<br>Revisa tu bandeja de entrada.";
+            } else {
+                errorElem.innerText = "Credenciales incorrectas.";
+            }
+        } else {
+            cerrarModal('modal-login');
+            mostrarNotificacion("¡Bienvenido de vuelta!", "success");
+            setTimeout(() => window.location.reload(), 1000);
+        }
     }
 }
 

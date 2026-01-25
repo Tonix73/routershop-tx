@@ -195,3 +195,125 @@ window.navegarProtegido = async function (url, event) {
         }
     }
 };
+
+// ==========================================
+// 8. INYECCIÓN AUTOMÁTICA DE MODALES (GLOBAL)
+// ==========================================
+function inyectarModales() {
+    // Protección: Si ya existen los modales en el HTML, no los duplicamos
+    if (document.getElementById('modal-carrito')) return;
+
+    const htmlModales = `
+    <div id="modal-carrito" class="modal-fondo">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" onclick="cerrarModal('modal-carrito')">×</span>
+            <h2 style="margin-top:0; color:#333; display:flex; align-items:center; gap:10px; justify-content: center !important;">
+                <span class="material-icons" style="color:#0056b3;">shopping_cart</span> Tu Carrito
+            </h2>
+
+            <div style="max-height: 50vh; overflow-y: auto; overflow-x: hidden;">
+                <table class="tabla-carrito">
+                    <tbody id="cuerpo-tabla-carrito"></tbody>
+                </table>
+            </div>
+
+            <div class="total-pagar" id="total-carrito">Total: $0.00</div>
+            <button id="btn-pagar-dinamico" class="btn-ir-pagar" onclick="procederAlPago()">Proceder al Pago ➝</button>
+        </div>
+    </div>
+
+    <div id="modal-login" class="modal-fondo">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" onclick="cerrarModal('modal-login')">×</span>
+            <h2 id="titulo-login" style="text-align:center; margin-top:0;">Iniciar Sesión</h2>
+            <div class="form-grupo">
+                <label>Correo</label>
+                <input type="email" id="email-input" class="input-login">
+            </div>
+            <div class="form-grupo">
+                <label>Contraseña</label>
+                <input type="password" id="password-input" class="input-login">
+                <div style="text-align: right; margin-top: 5px;">
+                    <a href="#" onclick="recuperarContrasena()" style="color: #666; font-size: 0.85em; text-decoration: none;">¿Olvidaste tu contraseña?</a>
+                </div>
+            </div>
+            <button class="btn-full" onclick="manejarAuth()">Entrar</button>
+            <p id="error-login" style="color: red; text-align: center; margin-top: 15px; font-size:0.9em;"></p>
+            <span class="link-toggle" onclick="toggleModoLogin()">¿No tienes cuenta? Regístrate aquí</span>
+        </div>
+    </div>
+
+    <div id="modal-reset-password" class="modal-fondo">
+        <div class="modal-contenido" style="border-top-color: #ffc107;">
+            <h2 style="text-align:center; margin-top:0;">🔒 Nueva Contraseña</h2>
+            <div class="form-grupo">
+                <input type="password" id="new-password-input" class="input-login" placeholder="Mínimo 6 caracteres">
+            </div>
+            <button class="btn-full" onclick="guardarNuevaContrasena()" style="background-color:#ffc107; color:#333;">Actualizar</button>
+        </div>
+    </div>
+    `;
+
+    // Insertamos todo el bloque al final del body
+    document.body.insertAdjacentHTML('beforeend', htmlModales);
+}
+
+// Ejecutar automáticamente al cargar cualquier página
+document.addEventListener('DOMContentLoaded', () => {
+    inyectarModales();
+});
+
+// ==========================================
+// 9. MODAL DE AVISO (ÉXITO / INFO)
+// ==========================================
+window.mostrarAviso = function (titulo, mensaje, tipo = 'success') {
+    return new Promise((resolve) => {
+        // 1. Inyectar HTML si no existe
+        if (!document.getElementById('modal-aviso')) {
+            const html = `
+            <div id="modal-aviso" class="modal-fondo" style="display: none; align-items: center; justify-content: center; z-index: 3000;">
+                <div class="modal-contenido" style="max-width: 400px; text-align: center; border-top: 5px solid #28a745;">
+                    <span id="aviso-icono" class="material-icons" style="font-size: 48px; color: #28a745; margin-bottom: 10px;">check_circle</span>
+                    <h3 id="aviso-titulo" style="margin: 0 0 10px 0; color: #333;"></h3>
+                    <p id="aviso-mensaje" style="color: #666; margin-bottom: 25px; line-height: 1.5;"></p>
+                    <button id="btn-aviso-ok" class="btn-full" style="background: #0056b3; margin: 0 auto; width: 50%;">Entendido</button>
+                </div>
+            </div>`;
+            document.body.insertAdjacentHTML('beforeend', html);
+        }
+
+        // 2. Configurar contenido
+        const modal = document.getElementById('modal-aviso');
+        const icono = document.getElementById('aviso-icono');
+        const borde = modal.querySelector('.modal-contenido');
+
+        document.getElementById('aviso-titulo').innerText = titulo;
+        document.getElementById('aviso-mensaje').innerHTML = mensaje; // innerHTML para permitir saltos de línea <br>
+
+        // Cambiar colores si es error
+        if (tipo === 'error') {
+            icono.innerText = 'error';
+            icono.style.color = '#dc3545';
+            borde.style.borderTopColor = '#dc3545';
+        } else {
+            icono.innerText = 'check_circle';
+            icono.style.color = '#28a745';
+            borde.style.borderTopColor = '#28a745';
+        }
+
+        // 3. Mostrar
+        modal.style.display = 'flex';
+
+        // 4. Manejar cierre
+        const btnOk = document.getElementById('btn-aviso-ok');
+        const cerrar = () => {
+            modal.style.display = 'none';
+            // Clonar el botón para eliminar listeners viejos y evitar duplicados
+            const nuevoBtn = btnOk.cloneNode(true);
+            btnOk.parentNode.replaceChild(nuevoBtn, btnOk);
+            resolve();
+        };
+
+        btnOk.addEventListener('click', cerrar);
+    });
+};

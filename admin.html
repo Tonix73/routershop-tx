@@ -229,25 +229,44 @@
             </div>
 
             <div id="vista-cupones" class="card-panel">
-                <h3>🎟️ Cupones</h3>
-                <div style="display:flex; gap:10px; margin:20px 0;">
-                    <input id="cup-code" class="input-std" placeholder="CÓDIGO"
-                        style="max-width:200px; text-transform:uppercase;">
-                    <input id="cup-val" class="input-std" type="number" placeholder="%" style="width:80px;">
-                    <button onclick="crearCup()" class="btn-txt-icon btn-success">CREAR</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; color: #003366;">🎟️ Gestión de Cupones</h3>
+                    <button onclick="cargarCups()" class="btn-txt-icon btn-secondary">
+                        <span class="material-icons">refresh</span> ACTUALIZAR
+                    </button>
                 </div>
-                <table class="tabla-admin">
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>%</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-cup"></tbody>
-                </table>
-            </div>
 
+                <div
+                    style="display: flex; gap: 10px; margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px; align-items: flex-end;">
+                    <div style="flex: 1;">
+                        <label
+                            style="display: block; font-size: 0.85em; color: #666; margin-bottom: 5px;">Código</label>
+                        <input type="text" id="cup-code" class="input-std" placeholder="Ej. DESCUENTO10"
+                            style="text-transform:uppercase;">
+                    </div>
+                    <div style="width: 100px;">
+                        <label style="display: block; font-size: 0.85em; color: #666; margin-bottom: 5px;">%
+                            Desc.</label>
+                        <input type="number" id="cup-val" class="input-std" placeholder="10">
+                    </div>
+                    <button onclick="crearCup()" class="btn-txt-icon btn-success" style="height: 42px;">CREAR</button>
+                </div>
+
+                <div class="tabla-scroll">
+                    <table class="tabla-admin">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Código</th>
+                                <th>Descuento</th>
+                                <th style="text-align: right;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-cup">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -266,6 +285,25 @@
             <p><strong>Dirección:</strong> <span id="d-direccion"></span></p>
             <ul id="d-productos" style="background:#f9f9f9; padding:15px; border-radius:5px; list-style:none;"></ul>
             <h3 style="text-align:right; color:#28a745;">Total: <span id="d-total"></span></h3>
+        </div>
+    </div>
+
+    <div id="modal-confirmacion" class="modal-fondo"
+        style="display: none; align-items: center; justify-content: center; z-index: 3000;">
+        <div class="modal-contenido" style="max-width: 400px; text-align: center;">
+            <span class="material-icons"
+                style="font-size: 48px; color: #ffc107; margin-bottom: 10px;">help_outline</span>
+            <h3 id="confirm-titulo" style="margin: 0 0 10px 0; color: #333;">¿Estás seguro?</h3>
+            <p id="confirm-mensaje" style="color: #666; margin-bottom: 25px;">Esta acción no se puede deshacer.</p>
+
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button id="btn-confirm-no" class="btn-txt-icon btn-secondary" style="padding: 10px 20px;">
+                    Cancelar
+                </button>
+                <button id="btn-confirm-si" class="btn-txt-icon btn-danger" style="padding: 10px 20px;">
+                    Sí, Confirmar
+                </button>
+            </div>
         </div>
     </div>
 

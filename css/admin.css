@@ -1,34 +1,46 @@
-/* Contenedor Central */
+/* =======================================================
+   1. CONFIGURACIÓN BASE Y LAYOUT
+   ======================================================= */
 .admin-wrapper {
     display: flex;
     flex: 1;
     width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
     position: relative;
-    gap: 2rem;
-    padding-top: 110px;
+    gap: 20px;
+
+    /* CORRECCIÓN: Aumentado de 90px a 120px para librar la barra de navegación */
+    padding-top: 120px;
+
+    box-sizing: border-box;
 }
-/* --- SIDEBAR --- */
+
+/* --- SIDEBAR (Barra Lateral) --- */
 .sidebar {
-    width: 250px;
+    width: 260px;
     background-color: white;
     border-right: 1px solid #e0e0e0;
-    padding: 20px 10px;
+    padding: 20px 15px;
     flex-shrink: 0;
+
     position: -webkit-sticky;
     position: sticky;
-    top: 0;
-    height: 100vh;
+
+    /* CORRECCIÓN: Ajustado para que se pegue justo debajo de tu navbar */
+    top: 120px;
+
+    /* CORRECCIÓN: Ajustamos la altura para que no se corte abajo */
+    height: calc(100vh - 120px);
+
     overflow-y: auto;
     box-sizing: border-box;
-    
 }
 
 /* Perfil en Sidebar */
 .sidebar-profile {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid #f0f0f0;
 }
@@ -46,16 +58,14 @@
     box-shadow: 0 4px 10px rgba(0, 51, 102, 0.2);
 }
 
-.avatar-circle .material-icons {
-    font-size: 32px;
-}
-
 .admin-label {
     font-weight: 700;
     color: #333;
-    font-size: 0.95em;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
 }
 
+/* Menú */
 .menu-list {
     list-style: none;
     padding: 0;
@@ -66,50 +76,55 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 20px;
-    margin-bottom: 5px;
-    border-radius: 8px;
+    padding: 10px 15px;
+    /* Más compacto */
+    margin-bottom: 4px;
+    border-radius: 6px;
     color: #555;
     cursor: pointer;
     transition: all 0.2s ease;
     font-weight: 500;
+    font-size: 0.95em;
 }
 
 .menu-item:hover {
-    background-color: #e3f2fd;
+    background-color: #f0f4f8;
     color: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .menu-item.active {
     background-color: #0056b3;
     color: white;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 86, 179, 0.2);
 }
 
 .menu-divider {
     height: 1px;
     background-color: #eee;
-    margin: 15px 10px;
+    margin: 15px 5px;
 }
 
-/* --- CONTENIDO --- */
+/* =======================================================
+   2. CONTENIDO PRINCIPAL (MAIN)
+   ======================================================= */
 .main-content {
     flex: 1;
-    padding: 30px;
+    padding: 0 30px 30px 0;
+    /* Padding derecho e inferior solamente */
     min-width: 0;
+    /* Vital para que el flexbox no rompa el scroll */
+    overflow-x: hidden;
 }
 
 .card-panel {
     background: white;
     padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
     display: none;
     border: 1px solid #e1e4e8;
-    animation: fadeIn 0.4s ease;
+    animation: fadeIn 0.3s ease;
 }
 
 .card-panel.active-view {
@@ -119,7 +134,7 @@
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(5px);
     }
 
     to {
@@ -128,64 +143,97 @@
     }
 }
 
-/* --- COMPONENTES --- */
+/* =======================================================
+   3. TABLAS OPTIMIZADAS (Sin scroll innecesario)
+   ======================================================= */
 .tabla-scroll {
     overflow-x: auto;
     border: 1px solid #eee;
     border-radius: 8px;
+    /* Scrollbar personalizado fino */
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f1f1f1;
+}
+
+/* Estilo webkit para scrollbar */
+.tabla-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.tabla-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
 }
 
 .tabla-admin {
     width: 100%;
     border-collapse: collapse;
-    min-width: 900px;
     font-size: 0.9em;
+    /* ELIMINADO: min-width: 900px; -> Esto causaba el scroll vacío */
+    white-space: nowrap;
+    /* Mantiene todo en una línea por defecto */
 }
 
+/* Encabezados Sticky (Se quedan fijos al bajar) */
 .tabla-admin th {
     background: #f8f9fa;
-    padding: 15px;
+    padding: 12px 15px;
     text-align: left;
     color: #444;
-    font-weight: 600;
+    font-weight: 700;
     border-bottom: 2px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    /* Asegura que quede encima del contenido */
 }
 
 .tabla-admin td {
-    padding: 12px 15px;
+    padding: 10px 15px;
     border-bottom: 1px solid #f0f0f0;
     vertical-align: middle;
     color: #555;
 }
 
+.tabla-admin tr:hover {
+    background-color: #fafafa;
+}
+
 .img-tabla {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
     border-radius: 4px;
-    padding: 2px;
     border: 1px solid #eee;
     background: white;
 }
 
+/* =======================================================
+   4. COMPONENTES UI (Botones, Inputs)
+   ======================================================= */
 /* Botones */
 .btn-txt-icon {
-    padding: 7px 12px;
+    padding: 6px 12px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.85em;
-    font-weight: 500;
+    font-weight: 600;
     display: inline-flex;
     align-items: center;
     gap: 6px;
     transition: 0.2s;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .btn-txt-icon:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     filter: brightness(1.1);
+}
+
+.btn-txt-icon:active {
+    transform: translateY(0);
 }
 
 .btn-info {
@@ -201,6 +249,8 @@
 .btn-success {
     background: #28a745;
     color: white;
+    text-align: center;
+
 }
 
 .btn-danger {
@@ -213,43 +263,58 @@
     color: white;
 }
 
-/* Inputs */
-.input-std {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: inherit;
-}
-
+/* Inputs y Grids */
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* Optimizado */
     gap: 20px;
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     font-weight: 600;
-    font-size: 0.85em;
+    font-size: 0.8em;
     color: #666;
     text-transform: uppercase;
 }
 
+.input-std {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.input-std:focus {
+    border-color: #0056b3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}
+
+/* Preview de Imagen */
 .img-preview-box {
-    border: 2px dashed #ccc;
-    padding: 20px;
+    border: 2px dashed #ddd;
+    padding: 15px;
     text-align: center;
     cursor: pointer;
     background: #fafafa;
     border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.img-preview-box:hover {
+    background: #f0f0f0;
+    border-color: #bbb;
 }
 
 .img-preview-box img {
     max-width: 100%;
-    max-height: 200px;
+    max-height: 180px;
     object-fit: contain;
 }
 
@@ -287,21 +352,44 @@
     }
 }
 
-/* --- RESPONSIVO --- */
+/* Estilo para pedidos cancelados */
+.tr-cancelado {
+    background-color: #f8f9fa;
+    /* Fondo gris claro */
+    opacity: 0.6;
+    /* Semi-transparente */
+}
+
+/* Bloquear interacción en elementos cancelados */
+.tr-cancelado select,
+.tr-cancelado input,
+.tr-cancelado button {
+    cursor: not-allowed !important;
+    color: #999 !important;
+    border-color: #ddd !important;
+}
+
+
+/* =======================================================
+   5. DISEÑO RESPONSIVO (Tablet y Móvil)
+   ======================================================= */
+
+/* TABLET (Menú pasa arriba) */
 @media (max-width: 900px) {
     .admin-wrapper {
         flex-direction: column;
+        /* Aumentamos a 130px para librar tu barra negra + barra envíos */
+        padding-top: 130px;
+        gap: 0;
     }
 
     .sidebar {
         width: 100%;
         height: auto;
-        position: relative;
+        position: static;
         border-right: none;
         border-bottom: 1px solid #ddd;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
+        padding: 10px 15px;
     }
 
     .sidebar-profile {
@@ -313,14 +401,23 @@
         overflow-x: auto;
         gap: 10px;
         padding-bottom: 5px;
+        scrollbar-width: none;
+    }
+
+    .menu-list::-webkit-scrollbar {
+        display: none;
     }
 
     .menu-item {
         white-space: nowrap;
         flex-shrink: 0;
-        padding: 8px 15px;
-        font-size: 0.9em;
         margin: 0;
+        background: #f8f9fa;
+        border: 1px solid #eee;
+    }
+
+    .menu-item.active {
+        border-color: #0056b3;
     }
 
     .menu-divider {
@@ -328,6 +425,105 @@
     }
 
     .main-content {
+        padding: 20px;
+    }
+}
+
+/* MÓVIL (Corrección del formulario "torcido") */
+@media (max-width: 768px) {
+    .card-panel {
         padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    /* 1. FORZAR FORMULARIOS EN COLUMNA (Vertical) */
+    #vista-categorias>div,
+    #vista-cupones>div {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        /* Estirar hijos al 100% */
+        gap: 15px !important;
+        height: auto !important;
+        /* Quitar alturas fijas si las hubiera */
+    }
+
+    /* 2. ARREGLO ESPECÍFICO CUPONES (Inputs y Labels) */
+    /* Esto fuerza a los contenedores de los inputs a ocupar todo el ancho */
+    #vista-cupones>div>div {
+        width: 100% !important;
+        flex: none !important;
+        /* Desactivar flex-grow/shrink del PC */
+        max-width: 100% !important;
+    }
+
+    /* 3. ESTILOS DE INPUTS Y BOTONES */
+    #vista-categorias input,
+    #vista-cupones input,
+    #vista-categorias button,
+    #vista-cupones button {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+
+        /* ESTA ES LA LÍNEA MÁGICA PARA CENTRAR ICONO Y TEXTO */
+        justify-content: center !important;
+    }
+
+    /* Botón Crear más alto para tocar fácil */
+    #vista-cupones button {
+        height: 45px !important;
+    }
+
+    /* 4. TABLA RESPONSIVA */
+    .tabla-scroll {
+        margin: 0 -15px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .tabla-admin th,
+    .tabla-admin td {
+        padding: 10px;
+        font-size: 0.85em;
+    }
+
+    /* Forzamos que el grid se convierta en una sola columna vertical */
+    #vista-agregar .form-grid {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    /* Ajuste para la Ficha Técnica (Inputs pequeños) */
+    /* Hacemos que se repartan el espacio equitativamente */
+    #contenedor-specs .spec-row {
+        display: flex !important;
+        gap: 10px !important;
+    }
+
+    #contenedor-specs input {
+        width: 100% !important;
+        /* Que ocupen el espacio disponible */
+        min-width: 0 !important;
+        /* Evita que se desborden */
+        flex: 1;
+        /* Reparte el ancho 50% y 50% */
+    }
+
+    /* Botón de borrar característica (la X roja) */
+    #contenedor-specs button {
+        width: 40px !important;
+        /* Cuadrado fijo */
+        padding: 0 !important;
+        flex: none;
+        /* No estirar */
+    }
+
+    /* Caja de previsualización de imagen */
+    .img-preview-box {
+        margin-top: 10px;
+        border-width: 2px;
     }
 }
