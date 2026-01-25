@@ -1,4 +1,3 @@
-
 /* ==========================================================================
    4. ESTILOS PÁGINA: PRODUCTO (Detalles)
    ========================================================================== */
@@ -285,3 +284,72 @@
     color: #000;
 }
 
+/* =========================================
+   ARREGLO RESPONSIVO PARA MÓVIL (Celular)
+   ========================================= */
+@media (max-width: 768px) {
+
+    /* 1. El contenedor principal: Forzamos una sola columna vertical */
+    .container-producto {
+        display: flex !important;
+        /* Cambiamos Grid por Flex */
+        flex-direction: column;
+        /* Elementos uno debajo del otro */
+        height: auto !important;
+        /* Quitamos alturas fijas */
+        margin-top: 85px !important;
+        /* Espacio para que no lo tape el Navbar */
+        padding: 15px;
+        gap: 0;
+    }
+
+    /* 2. Contenedor de la Imagen */
+    .img-wrapper {
+        width: 100% !important;
+        /* Ancho total */
+        height: 300px !important;
+        /* Altura fija para que se vea bien */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        background-color: white;
+        /* Fondo limpio */
+    }
+
+    /* La imagen en sí */
+    .img-producto {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        /* Ajustar sin recortar */
+        max-height: 280px;
+        /* Límite de altura */
+    }
+
+    /* 3. Contenedor de la Información */
+    .info-producto {
+        width: 100% !important;
+        padding: 0 5px;
+        /* Pequeño margen interno */
+    }
+
+    /* Títulos más pequeños para móvil */
+    .info-producto h1 {
+        font-size: 1.5em;
+        line-height: 1.2;
+    }
+
+    /* Botón de compra ancho completo */
+    .btn-agregar-grande {
+        width: 100%;
+        justify-content: center;
+        padding: 15px;
+    }
+
+    /* Ocultar la lupa de zoom en celular (es incómoda en táctil) */
+    .img-zoom-lens,
+    .img-zoom-result {
+        display: none !important;
+    }
+}

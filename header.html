@@ -220,6 +220,68 @@
         cursor: pointer;
     }
 
+    /* =========================================
+       8. ESTILOS DE RESULTADOS (SOLUCIÓN AL ERROR)
+       ========================================= */
+
+    /* El contenedor blanco que tendrá la lista */
+    #resultados-busqueda-container {
+        background-color: white;
+        margin-top: 20px;
+        border-radius: 8px;
+        max-height: 60vh;
+        /* Máximo el 60% de la altura de la pantalla */
+        overflow-y: auto;
+        /* Scroll si hay muchos resultados */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        text-align: left;
+    }
+
+    /* CADA FILA DE PRODUCTO */
+    /* Asegúrate de que tu JS genere los items con una clase o div contenedor */
+    #resultados-busqueda-container>a,
+    #resultados-busqueda-container>div {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee;
+        text-decoration: none;
+        color: #333;
+        transition: background 0.2s;
+    }
+
+    #resultados-busqueda-container>a:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* *** AQUÍ ESTÁ LA SOLUCIÓN MÁGICA *** */
+    /* Esto obliga a la imagen a ser pequeña */
+    #resultados-busqueda-container img {
+        width: 60px !important;
+        /* Ancho fijo pequeño */
+        height: 60px !important;
+        /* Alto fijo pequeño */
+        object-fit: contain;
+        /* Para que no se deforme */
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        flex-shrink: 0;
+        /* Evita que la imagen se aplaste */
+    }
+
+    /* Texto del producto */
+    #resultados-busqueda-container h4,
+    #resultados-busqueda-container p {
+        margin: 0;
+        font-size: 0.95em;
+    }
+
+    #resultados-busqueda-container span.precio {
+        color: var(--color-primario);
+        font-weight: bold;
+    }
+
     /* 7. RESPONSIVO */
     @media (max-width: 900px) {
         .nav-links {

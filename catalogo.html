@@ -132,6 +132,7 @@
         function mostrarEnPantalla(productos) {
             const contenedor = document.getElementById('lista-productos');
             contenedor.innerHTML = '';
+
             if (!productos || productos.length === 0) {
                 contenedor.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:50px;">No se encontraron productos.</p>';
                 return;
@@ -139,6 +140,8 @@
 
             productos.forEach(prod => {
                 const img = prod.imagen_url || 'https://via.placeholder.com/200';
+
+                // --- 1. Lógica de Precio ---
                 let pReal = prod.precio;
                 let pHtml = `<p class="precio">$${prod.precio.toFixed(2)}</p>`;
                 let badge = '';
@@ -147,23 +150,42 @@
                     pReal = prod.precio * (1 - prod.descuento / 100);
                     badge = `<span class="badge-oferta">-${prod.descuento}%</span>`;
                     pHtml = `<div class="precio">
-                                <span style="text-decoration:line-through; color:#999; font-size:0.7em; margin-right:8px;">$${prod.precio.toFixed(2)}</span>
-                                <span>$${pReal.toFixed(2)}</span>
-                             </div>`;
+                        <span style="text-decoration:line-through; color:#999; font-size:0.7em; margin-right:8px;">$${prod.precio.toFixed(2)}</span>
+                        <span>$${pReal.toFixed(2)}</span>
+                     </div>`;
                 }
 
+                // --- 2. Lógica de Stock (NUEVO) ---
+                // Usamos ?? 0 para que detecte correctamente si el stock es 0
+                const stock = prod.stock_actual ?? 0;
+                let botonHTML = '';
+
+                if (stock > 0) {
+                    // Caso: SÍ hay stock -> Botón Azul Normal
+                    botonHTML = `
+            <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${pReal}, '${img}')">
+                <span class="material-icons">add_shopping_cart</span> AGREGAR
+            </button>`;
+                } else {
+                    // Caso: NO hay stock -> Botón Gris Bloqueado
+                    botonHTML = `
+            <button class="add-cart" disabled style="background-color: #ccc; cursor: not-allowed; pointer-events: none;">
+                <span class="material-icons">block</span> AGOTADO
+            </button>`;
+                }
+
+                // --- 3. Dibujar Tarjeta ---
                 contenedor.innerHTML += `
-                    <div class="card">
-                        ${badge}
-                        <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit;">
-                            <img src="${img}" alt="${prod.nombre}">
-                            <h3>${prod.nombre}</h3>
-                            ${pHtml}
-                        </a>
-                        <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${pReal}, '${img}')">
-                            <span class="material-icons">add_shopping_cart</span> AGREGAR
-                        </button>
-                    </div>`;
+            <div class="card">
+                ${badge}
+                <a href="producto.html?id=${prod.id}" style="text-decoration:none; color:inherit;">
+                    <img src="${img}" alt="${prod.nombre}">
+                    <h3>${prod.nombre}</h3>
+                    ${pHtml}
+                </a>
+                
+                ${botonHTML}
+            </div>`;
             });
         }
 

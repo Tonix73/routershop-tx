@@ -345,21 +345,14 @@
             productos.forEach(prod => {
                 const img = prod.imagen_url || 'https://via.placeholder.com/150';
 
-                // 1. CALCULAR PRECIO REAL PARA EL CARRITO
-                // Si hay descuento, restamos el porcentaje. Si no, queda el precio normal.
+                // 1. Lógica de Precio
                 let precioParaCarrito = prod.precio;
-
                 let precioHTML = `$${prod.precio.toFixed(2)}`;
                 let badgeHTML = `<span class="badge ${claseBadge}">${textoBadge}</span>`;
 
                 if (prod.descuento > 0) {
-                    // Calculamos el precio con descuento
                     const precioConDescuento = prod.precio * (1 - prod.descuento / 100);
-
-                    // ACTUALIZAMOS LA VARIABLE QUE SE ENVIARÁ AL CARRITO
                     precioParaCarrito = precioConDescuento;
-
-                    // Generamos el HTML visual (Tachado vs Nuevo)
                     precioHTML = `
                 <span style="text-decoration: line-through; color: #999; font-size: 0.8em; margin-right: 5px;">
                     $${prod.precio.toFixed(2)}
@@ -373,8 +366,28 @@
                     }
                 }
 
-                // 2. INYECTAR EL PRECIO CALCULADO EN LA FUNCIÓN agregarAlCarrito
-                // Fíjate en la variable ${precioParaCarrito} dentro del onclick
+                // 2. Lógica de Stock (NUEVO)
+                // Usamos ?? 0 para proteger si viene null
+                const stock = prod.stock_actual ?? 0;
+                const hayStock = stock > 0;
+
+                let botonHTML = '';
+
+                if (hayStock) {
+                    // Botón Azul Normal
+                    botonHTML = `
+                <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${precioParaCarrito}, '${img}')">
+                    <span class="material-icons">add_shopping_cart</span> Agregar
+                </button>`;
+                } else {
+                    // Botón Gris Agotado
+                    botonHTML = `
+                <button class="add-cart" disabled style="background-color: #ccc; cursor: not-allowed; pointer-events: none;">
+                    <span class="material-icons">block</span> Agotado
+                </button>`;
+                }
+
+                // 3. Renderizado
                 grid.innerHTML += `
             <div class="card" style="position: relative;">
                 ${badgeHTML}
@@ -385,12 +398,11 @@
                         <p class="precio">${precioHTML}</p>
                     </div>
                 </a>
-                <button class="add-cart" onclick="agregarAlCarrito(${prod.id}, '${prod.nombre}', ${precioParaCarrito}, '${img}')">
-                    <span class="material-icons">add_shopping_cart</span> Agregar
-                </button>
+                ${botonHTML}
             </div>`;
             });
         }
+
     </script>
 </body>
 

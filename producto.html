@@ -173,38 +173,82 @@
         };
 
         function renderizarProducto() {
-            // 1. Obtenemos el contenedor y FORZAMOS la clase de tu CSS
+            // 1. Obtenemos el contenedor y aseguramos la clase para el CSS
             const cont = document.getElementById('detalle-producto');
-            cont.className = 'container-producto'; // <--- ESTO RECUPERA TU GRID Y SOMBRA
+            cont.className = 'container-producto';
 
-            // 2. Lógica del Precio (Normal vs Oferta)
+            // =========================================================
+            // LÓGICA DE STOCK (SOLUCIÓN AL BUG)
+            // =========================================================
+            // El operador '??' respeta el 0. Si viene null/undefined, pone 0.
+            const stockReal = productoActual.stock_actual ?? 0;
+            const hayStock = stockReal > 0;
+
+            // Preparamos la etiqueta visual del stock
+            let htmlStockTag = '';
+
+            if (hayStock) {
+                // STOCK DISPONIBLE (Verde o normal)
+                htmlStockTag = `
+            <div class="stock-tag">
+                <span class="material-icons" style="font-size:14px; vertical-align:text-bottom;">inventory_2</span> 
+                DISPONIBLES: ${stockReal}
+            </div>`;
+            } else {
+                // AGOTADO (Rojo y llamativo)
+                htmlStockTag = `
+            <div class="stock-tag" style="color: #dc3545; background-color: #fff5f5; border: 1px solid #dc3545; display: inline-block; padding: 5px 10px; border-radius: 5px;">
+                <span class="material-icons" style="font-size:14px; vertical-align:text-bottom;">block</span> 
+                🚫 AGOTADO
+            </div>`;
+            }
+
+            // =========================================================
+            // LÓGICA DEL BOTÓN (HABILITADO VS DESHABILITADO)
+            // =========================================================
+            let htmlBoton = '';
+
+            if (hayStock) {
+                // Botón Azul Normal
+                htmlBoton = `
+            <button class="btn-agregar-grande" onclick="agregarEsteProducto()">
+                <span class="material-icons">shopping_cart</span> Agregar al Carrito
+            </button>`;
+            } else {
+                // Botón Gris Deshabilitado (No deja hacer clic)
+                htmlBoton = `
+            <button class="btn-agregar-grande" disabled style="background-color: #ccc; cursor: not-allowed; opacity: 0.7;">
+                <span class="material-icons">remove_shopping_cart</span> Sin Stock
+            </button>`;
+            }
+
+            // =========================================================
+            // LÓGICA DE PRECIO (CON O SIN DESCUENTO)
+            // =========================================================
             let htmlPrecio = `<div class="precio-grande">$${productoActual.precio.toFixed(2)}</div>`;
 
             if (productoActual.descuento > 0) {
                 const precioConDescuento = productoActual.precio * (1 - productoActual.descuento / 100);
-
-                // Usamos tus clases pero añadimos estilos inline mínimos para la oferta
                 htmlPrecio = `
             <div style="display: flex; align-items: center; gap: 15px; margin: 15px 0;">
                 <span style="text-decoration: line-through; color: #999; font-size: 1.3em;">
                     $${productoActual.precio.toFixed(2)}
                 </span>
-                
                 <span class="precio-grande" style="color: #dc3545; margin: 0;">
                     $${precioConDescuento.toFixed(2)}
                 </span>
-                
                 <span style="background: #dc3545; color: white; padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 0.8em;">
                     -${productoActual.descuento}%
                 </span>
-            </div>
-        `;
+            </div>`;
             }
 
-            // 3. Renderizamos el HTML respetando tu estructura CSS exacta
+            // =========================================================
+            // RENDERIZADO FINAL DEL HTML
+            // =========================================================
             cont.innerHTML = `
         <div class="img-wrapper" onmouseenter="activarZoom()" onmouseleave="desactivarZoom()">
-            <img id="myimage" src="${productoActual.imagen_url}" class="img-producto" onclick="abrirLightbox('${productoActual.imagen_url}')">
+            <img id="myimage" src="${productoActual.imagen_url}" class="img-producto" onclick="abrirLightbox('${productoActual.imagen_url}')" onerror="this.src='https://via.placeholder.com/400'">
             
             <div id="lens" class="img-zoom-lens"></div>
             <div id="result" class="img-zoom-result"></div>
@@ -222,10 +266,7 @@
             
             <h1>${productoActual.nombre}</h1>
             
-            <div class="stock-tag">
-                <span class="material-icons" style="font-size:14px; vertical-align:text-bottom;">inventory_2</span> 
-                DISPONIBLES: ${productoActual.stock_actual || 10}
-            </div>
+            ${htmlStockTag}
             
             ${htmlPrecio}
 
@@ -234,17 +275,16 @@
                 <p>${productoActual.descripcion || "Sin descripción detallada."}</p>
             </div>
             
-            <button class="btn-agregar-grande" onclick="agregarEsteProducto()">
-                <span class="material-icons">shopping_cart</span> Agregar al Carrito
-            </button>
+            ${htmlBoton}
             
-            <div style="margin-top: 20px; font-size: 0.85em; color: #777; display: flex; gap: 15px;">
+            <div style="margin-top: 20px; font-size: 0.85em; color: #777; display: flex; gap: 15px; flex-wrap: wrap;">
                 <span style="display:flex; align-items:center; gap:5px;"><span class="material-icons" style="font-size:16px;">verified</span> Garantía directa</span>
                 <span style="display:flex; align-items:center; gap:5px;"><span class="material-icons" style="font-size:16px;">local_shipping</span> Envío seguro</span>
             </div>
         </div>
     `;
 
+            // Actualizamos el título de la pestaña del navegador
             document.title = productoActual.nombre + " - RouterShop TX";
         }
 
