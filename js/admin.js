@@ -403,7 +403,26 @@ window.procesarProducto = async function () {
 
 // Utils para el Formulario
 window.agregarSpec = function () {
-    document.getElementById('contenedor-specs').innerHTML += `<div class="spec-row" style="display:flex; gap:5px; margin-bottom:5px;"><input placeholder="Dato" class="input-std sk"><input placeholder="Valor" class="input-std sv"><button class="btn-txt-icon btn-danger" onclick="this.parentElement.remove()">x</button></div>`;
+    const contenedor = document.getElementById('contenedor-specs');
+
+    // 1. Crear el nuevo elemento (DIV)
+    const nuevaFila = document.createElement('div');
+
+    // 2. Ponerle tus clases y estilos originales
+    nuevaFila.className = 'spec-row';
+    nuevaFila.style.display = 'flex';
+    nuevaFila.style.gap = '5px';
+    nuevaFila.style.marginBottom = '5px';
+
+    // 3. Definir el HTML interno (Inputs + Botón)
+    nuevaFila.innerHTML = `
+        <input placeholder="Dato" class="input-std sk">
+        <input placeholder="Valor" class="input-std sv">
+        <button class="btn-txt-icon btn-danger" onclick="this.parentElement.remove()">x</button>
+    `;
+
+    // 4. Agregarlo al final (Esto NO borra lo que ya escribiste)
+    contenedor.appendChild(nuevaFila);
 };
 
 window.previewImg = function (e) {
