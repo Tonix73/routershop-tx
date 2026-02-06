@@ -372,7 +372,8 @@ window.procesarProducto = async function () {
     const fileInput = document.getElementById('p-img-file');
     if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
-        const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+        // Solo el nombre original (sin espacios)
+        const fileName = file.name.replace(/\s/g, '_');
         const { error } = await clienteSupabase.storage.from('fotos-productos').upload(fileName, file);
 
         if (!error) {
